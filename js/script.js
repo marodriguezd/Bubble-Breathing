@@ -426,6 +426,11 @@ class BubbleBreathingApp {
   showResults() { 
     this.session.isRunning = false; 
     this.showScreen('results'); 
+
+    // Para que si está en español salga también en español esta parte del resultado
+    this.elements.resultsScreen.querySelector('.results-title').textContent = this.t('resultsTitle');
+    this.elements.newSessionBtn.textContent = this.t('newSessionBtn');
+
     this.updateResultsContent();
   }
   
