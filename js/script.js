@@ -270,6 +270,7 @@ class BubbleBreathingApp {
   
   startBreathingPhase() { 
     this.session.phase = 'breathing'; 
+    this.showScreen('exercise');
     this.session.currentBreath = 0; 
     this.updateRoundInfo();
     this.updateExerciseInstruction();
