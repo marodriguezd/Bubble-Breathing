@@ -2,7 +2,7 @@
 
 This README is available in English and Spanish. / Este README está disponible en Inglés y Español.
 
-**[🇬🇧 English](#english-version)   •   [🇪🇸 Español](#versión-en-español)**
+**[🇬🇧 English](#english-version)   •   [🇪🇸 Español](#version-en-espanol)**
 
 ---
 
@@ -49,7 +49,7 @@ You can also easily host it on services like [GitHub Pages](https://pages.github
 
 This project is under the MIT License.
 
-[Go to Spanish version 🇪🇸](#versión-en-español)   •   [Back to top ⬆️](#bubble-breathing)
+[Go to Spanish version 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
 
 ---
 
@@ -94,6 +94,6 @@ También puedes alojarlo fácilmente en servicios como [GitHub Pages](https://pa
 
 ### 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT.
+This project is under the MIT License.
 
 [Ir a la versión en Inglés 🇬🇧](#english-version)   •   [Volver arriba ⬆️](#bubble-breathing)
