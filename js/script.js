@@ -97,9 +97,6 @@ class BubbleBreathingApp {
     localStorage.setItem('bubbleBreathingLanguage', lang);
     this.updateLanguage();
   }
-  
-  // A partir de aquí, el resto del código JS es idéntico al anterior,
-  // pero lo incluyo completo para que solo tengas que copiar y pegar.
 
   updateLanguage() {
     this.elements.langToggle.textContent = this.currentLanguage.toUpperCase();
@@ -156,6 +153,9 @@ class BubbleBreathingApp {
       `<div class="result-item"><span>${this.t('roundLabel', { round: r.round })}</span><span>${this.formatTime(r.retentionTime)}</span></div>`
     ).join('') + 
     `<div class="result-item highlight"><span><strong>${this.t('averageLabel')}</strong></span><span><strong>${this.formatTime(avg)}</strong></span></div>`;
+    
+    // Actualizar el texto del botón después de regenerar el contenido
+    this.elements.newSessionBtn.textContent = this.t('newSessionBtn');
   }
   
   initElements() {
@@ -426,11 +426,6 @@ class BubbleBreathingApp {
   showResults() { 
     this.session.isRunning = false; 
     this.showScreen('results'); 
-
-    // Para que si está en español salga también en español esta parte del resultado
-    // this.elements.resultsScreen.querySelector('.results-title').textContent = this.t('resultsTitle');
-    // this.elements.newSessionBtn.textContent = this.t('newSessionBtn');
-
     this.updateResultsContent();
   }
   
