@@ -11,6 +11,8 @@ This README is available in English and Spanish. / Este README está disponible 
 
 A simple and clean web application for guided rhythmic breathing exercises. This tool helps you maintain focus, control your pace, and track your progress through various rounds of breathing and retention.
 
+### ✨ [Live Demo Here](https://marodriguezd.github.io/Bubble-Breathing/)
+
 ![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot.png)
 
 ### ✨ Features
@@ -29,15 +31,13 @@ As this is a pure (vanilla) HTML, CSS, and JavaScript project, no installation i
 
 1.  Clone this repository:
     ```bash
-    git clone https://github.com/YOUR_USERNAME/bubble-breathing.git
+    git clone https://github.com/marodriguezd/Bubble-Breathing.git
     ```
 2.  Navigate to the project folder:
     ```bash
-    cd bubble-breathing
+    cd Bubble-Breathing
     ```
 3.  Open the `index.html` file in your web browser. That's it!
-
-You can also easily host it on services like [GitHub Pages](https://pages.github.com/), [Netlify](https://www.netlify.com/), or [Vercel](https://vercel.com/) to make it accessible online.
 
 ### 🛠️ Technologies Used
 
@@ -58,7 +58,9 @@ This project is under the MIT License.
 
 Una aplicación web simple y limpia para ejercicios de respiración rítmica guiada. Esta herramienta te ayuda a mantener la concentración, controlar tu ritmo y seguir tu progreso a través de varias rondas de respiración y retención.
 
-![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot.png)
+### ✨ [Demo en vivo aquí](https://marodriguezd.github.io/Bubble-Breathing/)
+
+![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot_es.png)
 
 ### ✨ Características
 
@@ -76,15 +78,13 @@ Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ning
 
 1.  Clona este repositorio:
     ```bash
-    git clone https://github.com/TU_USUARIO/bubble-breathing.git
+    git clone https://github.com/marodriguezd/Bubble-Breathing.git
     ```
 2.  Navega a la carpeta del proyecto:
     ```bash
-    cd bubble-breathing
+    cd Bubble-Breathing
     ```
 3.  Abre el fichero `index.html` en tu navegador web. ¡Y listo!
-
-También puedes alojarlo fácilmente en servicios como [GitHub Pages](https://pages.github.com/), [Netlify](https://www.netlify.com/) o [Vercel](https://vercel.com/) para tenerlo accesible online.
 
 ### 🛠️ Tecnologías Utilizadas
 
@@ -92,7 +92,7 @@ También puedes alojarlo fácilmente en servicios como [GitHub Pages](https://pa
 - **CSS3:** Para los estilos, animaciones y diseño responsivo, usando variables CSS para un fácil mantenimiento.
 - **JavaScript (ES6+):** Para toda la lógica de la aplicación, manejo de estado y interacciones del usuario, estructurado en una clase `BubbleBreathingApp`.
 
-### 📄 Licencia
+### 📄 License
 
 This project is under the MIT License.
 
