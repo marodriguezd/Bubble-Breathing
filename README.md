@@ -11,7 +11,7 @@ This README is available in English and Spanish. / Este README está disponible 
 
 A simple and clean web application for guided rhythmic breathing exercises. This tool helps you maintain focus, control your pace, and track your progress through various rounds of breathing and retention.
 
-*(I recommend taking a screenshot of your app and hosting it on a site like Imgur to display it here)*
+![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot.png)
 
 ### ✨ Features
 
@@ -58,7 +58,7 @@ This project is under the MIT License.
 
 Una aplicación web simple y limpia para ejercicios de respiración rítmica guiada. Esta herramienta te ayuda a mantener la concentración, controlar tu ritmo y seguir tu progreso a través de varias rondas de respiración y retención.
 
-*(Te recomiendo que hagas una captura de tu app y la subas a un sitio como Imgur para ponerla aquí)*
+![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot.png)
 
 ### ✨ Características
 
