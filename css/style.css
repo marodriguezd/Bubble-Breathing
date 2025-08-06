@@ -14,7 +14,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 html {
-  font-size: clamp(13px, 2.2vw, 16px); /* Aumentado ligeramente el tamaño mínimo para mejor legibilidad */
+  font-size: clamp(13px, 2.2vw, 16px);
 }
 
 body{
@@ -22,6 +22,7 @@ body{
   background:var(--color-bg);
   min-height:100vh;
   color:var(--color-text);
+  -webkit-tap-highlight-color: transparent; /* Mejora la experiencia en móvil */
 }
 
 .container{
@@ -34,7 +35,6 @@ body{
   padding-top: env(safe-area-inset-top);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative; flex-shrink: 0;}
@@ -53,13 +53,16 @@ body{
   max-width: 25rem;
   margin: 0 auto;
   padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); /* Añade padding inferior respetando la barra de gestos */
   text-align:center;
   flex-grow: 1;
   display:none;
   flex-direction:column;
   overflow: hidden;
-  justify-content: flex-start; 
-  gap: 1.25rem; /* Reajustado el gap vertical para un mejor aspecto */
+
+  /* --- CLAVE: Centra el bloque de contenido y usa un espaciado dinámico --- */
+  justify-content: center;
+  gap: clamp(1rem, 4vh, 2.5rem); /* El espaciado ahora depende de la altura de la pantalla! */
 }
 
 .screen.active{display:flex}
@@ -72,27 +75,8 @@ body{
 .phase-recovery{background:linear-gradient(135deg,#27ae60,#2ecc71)}
 .breath-counter{font-size:3rem;font-weight:700;color:#fff;text-shadow:0 0.125rem 0.25rem rgba(0,0,0,.3)}
 
-/* --- ARREGLO CLAVE 1: Aseguramos que el contenedor de botones ocupe el ancho --- */
-.speed-selector{
-  display:flex;
-  justify-content:center;
-  gap: 1rem;
-  width: 100%;
-} 
-
-/* --- ARREGLO CLAVE 2: Damos a los botones una base de tamaño explícita --- */
-.speed-btn{
-  flex-grow: 1;
-  flex-basis: 30%; /* Cada botón intenta ocupar un 30% del espacio */
-  padding:0.7rem;
-  border:0.125rem solid var(--color-border);
-  border-radius:1.25rem;
-  background:transparent;
-  cursor:pointer;
-  font-weight:600;
-  transition:all .3s
-}
-
+.speed-selector{display:flex;justify-content:center;gap: 1rem;width: 100%;}
+.speed-btn{flex-grow: 1;flex-basis: 30%;padding:0.7rem;border:0.125rem solid var(--color-border);border-radius:1.25rem;background:transparent;cursor:pointer;font-weight:600;transition:all .3s}
 .speed-btn.active{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
 
 .slider-group{padding:0 1rem;}
@@ -106,10 +90,10 @@ body{
   color:#fff;
   border:none;
   padding:1rem;
-  width:calc(100% - 2rem);
+  width:100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: auto;
+  margin-top: auto; /* Esta regla sigue siendo clave para anclar el botón abajo */
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
