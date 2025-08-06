@@ -30,7 +30,7 @@ body{
 .container{
   background:var(--color-card);
   width: 100vw;
-  height: 100dvh; /* Dynamic Viewport Height: se ajusta a la UI del navegador */
+  height: 100dvh; /* Dynamic Viewport Height: se ajusta a la UI del navegador en PC y Móvil */
   display:flex;
   flex-direction:column;
 }
