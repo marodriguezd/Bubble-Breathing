@@ -1,66 +1,23 @@
 // Aplicación de Respiración Bubble optimizada
 class BubbleBreathingApp {
   constructor() {
-    this.translations = {
-      es: {
-        appTitle: "Bubble Breathing",
-        finishBtn: "Finalizar",
-        previewLabel: "Previsualización de respiración",
-        speedSlow: "Lento",
-        speedStandard: "Estándar",
-        speedFast: "Rápido",
-        roundsLabel: "Rondas:",
-        breathsLabel: "Respiraciones:",
-        volumeLabel: "Volumen:",
-        startBtn: "Comenzar",
-        roundInfo: "Ronda {current} / {total}",
-        exerciseInstruction: "Toma {count} respiraciones profundas",
-        skipToRetentionBtn: "Saltar a apnea",
-        skipRecoveryBtn: "Saltar recuperación",
-        retentionInstruction: "Contén la respiración",
-        tapInstruction: "Toca cuando necesites respirar",
-        resultsTitle: "Resultados de la sesión",
-        roundLabel: "Ronda {round}",
-        averageLabel: "Promedio",
-        newSessionBtn: "Nueva sesión",
-        inhaleInstruction: "Inhala",
-        holdAirInstruction: "Retén el aire",
-        releaseAirInstruction: "Suelta el aire",
-        timeToInhale: "Tiempo para inhalar",
-        timeToExhale: "Tiempo para exhalar",
-        langIndicator: "Cambiar idioma"
-      },
-      en: {
-        appTitle: "Bubble Breathing",
-        finishBtn: "Finish",
-        previewLabel: "Breathing Preview",
-        speedSlow: "Slow",
-        speedStandard: "Standard",
-        speedFast: "Fast",
-        roundsLabel: "Rounds:",
-        breathsLabel: "Breaths:",
-        volumeLabel: "Volume:",
-        startBtn: "Start",
-        roundInfo: "Round {current} / {total}",
-        exerciseInstruction: "Take {count} deep breaths",
-        skipToRetentionBtn: "Skip to breath hold",
-        skipRecoveryBtn: "Skip recovery",
-        retentionInstruction: "Hold your breath",
-        tapInstruction: "Tap when you need to breathe",
-        resultsTitle: "Session Results",
-        roundLabel: "Round {round}",
-        averageLabel: "Average",
-        newSessionBtn: "New Session",
-        inhaleInstruction: "Inhale",
-        holdAirInstruction: "Hold the air",
-        releaseAirInstruction: "Release the air",
-        timeToInhale: "Time to inhale",
-        timeToExhale: "Time to exhale",
-        langIndicator: "Change language"
-      }
+    // Verificar que las traducciones estén cargadas
+    if (!window.translations) {
+      console.error('Translations not loaded! Make sure translations.js is loaded before script.js');
+      return;
+    }
+    
+    this.translations = window.translations;
+    
+    // Configuración mejorada de idiomas
+    this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
+    this.availableLanguages = ['en', 'es', 'fr'];
+    this.languageConfig = {
+      en: { flag: '🇬🇧', name: 'English' },
+      es: { flag: '🇪🇸', name: 'Español' },
+      fr: { flag: '🇫🇷', name: 'Français' }
     };
     
-    this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
     this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
     this.speedSettings = {
@@ -83,6 +40,7 @@ class BubbleBreathingApp {
     this.initElements();
     this.initEventListeners();
     this.updateLanguage();
+    this.updateLanguageDisplay();
     this.startPreviewAnimation();
   }
   
@@ -98,25 +56,25 @@ class BubbleBreathingApp {
     this.currentLanguage = lang;
     localStorage.setItem('bubbleBreathingLanguage', lang);
     this.updateLanguage();
+    this.updateLanguageDisplay();
+    this.closeLanguageDropdown();
   }
 
   updateLanguage() {
     const elements = this.elements;
     
     // Header y navegación
-    elements.langToggle.textContent = this.currentLanguage.toUpperCase();
-    elements.langIndicator.textContent = this.t('langIndicator');
     elements.headerTitle.textContent = this.t('appTitle');
     elements.finishBtn.textContent = this.t('finishBtn');
     
     // Pantalla de configuración
     elements.previewLabel.textContent = this.t('previewLabel');
-    elements.speedBtns[0].textContent = this.t('speedSlow');
-    elements.speedBtns[1].textContent = this.t('speedStandard');
-    elements.speedBtns[2].textContent = this.t('speedFast');
-    document.querySelector('#roundsSlider').parentElement.querySelector('.slider-label').textContent = this.t('roundsLabel');
-    document.querySelector('#breathsSlider').parentElement.querySelector('.slider-label').textContent = this.t('breathsLabel');
-    document.querySelector('#volumeSlider').parentElement.querySelector('.slider-label').textContent = this.t('volumeLabel');
+    elements.speedSlow.textContent = this.t('speedSlow');
+    elements.speedStandard.textContent = this.t('speedStandard');
+    elements.speedFast.textContent = this.t('speedFast');
+    elements.roundsLabel.textContent = this.t('roundsLabel');
+    elements.breathsLabel.textContent = this.t('breathsLabel');
+    elements.volumeLabel.textContent = this.t('volumeLabel');
     elements.startButton.textContent = this.t('startBtn');
     
     // Pantalla de ejercicio
@@ -130,12 +88,59 @@ class BubbleBreathingApp {
     elements.retentionTapInstruction.textContent = this.t('tapInstruction');
     
     // Pantalla de resultados
-    elements.resultsScreen.querySelector('.results-title').textContent = this.t('resultsTitle');
+    elements.resultsTitle.textContent = this.t('resultsTitle');
     elements.newSessionBtn.textContent = this.t('newSessionBtn');
     
     if (elements.screens.results.classList.contains('active') && this.session.results.length > 0) {
       this.updateResultsContent();
     }
+  }
+
+  updateLanguageDisplay() {
+    const langFlag = document.getElementById('langFlag');
+    const langCode = document.getElementById('langCode');
+    const langOptions = document.querySelectorAll('.lang-option');
+    
+    // Actualizar el botón principal
+    const currentLang = this.languageConfig[this.currentLanguage];
+    if (langFlag && langCode) {
+      langFlag.textContent = currentLang.flag;
+      langCode.textContent = this.currentLanguage.toUpperCase();
+    }
+    
+    // Actualizar opciones activas en el dropdown
+    langOptions.forEach(option => {
+      const lang = option.dataset.lang;
+      option.classList.toggle('active', lang === this.currentLanguage);
+    });
+  }
+
+  toggleLanguageDropdown() {
+    const dropdown = document.getElementById('langDropdown');
+    const toggle = document.getElementById('langToggle');
+    const overlay = document.getElementById('langOverlay');
+    
+    if (!dropdown || !toggle || !overlay) return;
+    
+    const isOpen = dropdown.classList.contains('open');
+    
+    if (isOpen) {
+      this.closeLanguageDropdown();
+    } else {
+      dropdown.classList.add('open');
+      toggle.classList.add('open');
+      overlay.classList.add('active');
+    }
+  }
+
+  closeLanguageDropdown() {
+    const dropdown = document.getElementById('langDropdown');
+    const toggle = document.getElementById('langToggle');
+    const overlay = document.getElementById('langOverlay');
+    
+    if (dropdown) dropdown.classList.remove('open');
+    if (toggle) toggle.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
   }
   
   updateRoundInfo() {
@@ -183,20 +188,24 @@ class BubbleBreathingApp {
       headerTitle: document.getElementById('headerTitle'),
       progressFill: document.getElementById('progressFill'),
       finishBtn: document.getElementById('finishBtn'),
-      langToggle: document.getElementById('langToggle'),
-      langIndicator: document.getElementById('langIndicator'),
       
       // Config screen
       previewHexagon: document.getElementById('previewHexagon'),
       previewCounter: document.getElementById('previewCounter'),
-      previewLabel: document.querySelector('.preview-label'),
+      previewLabel: document.getElementById('previewLabel'),
+      speedSlow: document.getElementById('speedSlow'),
+      speedStandard: document.getElementById('speedStandard'),
+      speedFast: document.getElementById('speedFast'),
       speedBtns: document.querySelectorAll('.speed-btn'),
       roundsSlider: document.getElementById('roundsSlider'),
       roundsValue: document.getElementById('roundsValue'),
+      roundsLabel: document.getElementById('roundsLabel'),
       breathsSlider: document.getElementById('breathsSlider'),
       breathsValue: document.getElementById('breathsValue'),
+      breathsLabel: document.getElementById('breathsLabel'),
       volumeSlider: document.getElementById('volumeSlider'),
       volumeValue: document.getElementById('volumeValue'),
+      volumeLabel: document.getElementById('volumeLabel'),
       startButton: document.getElementById('startButton'),
       
       // Exercise screen
@@ -218,14 +227,47 @@ class BubbleBreathingApp {
       // Results screen
       resultsContent: document.getElementById('resultsContent'),
       newSessionBtn: document.getElementById('newSessionBtn'),
-      resultsScreen: document.getElementById('resultsScreen')
+      resultsTitle: document.getElementById('resultsTitle')
     };
   }
   
   initEventListeners() {
-    // Idioma
-    this.elements.langToggle.addEventListener('click', () => {
-      this.setLanguage(this.currentLanguage === 'es' ? 'en' : 'es');
+    // Eventos de idioma mejorados
+    const langToggle = document.getElementById('langToggle');
+    const langOverlay = document.getElementById('langOverlay');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    // Toggle del dropdown
+    if (langToggle) {
+      langToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleLanguageDropdown();
+      });
+    }
+
+    // Cerrar dropdown al hacer clic en overlay
+    if (langOverlay) {
+      langOverlay.addEventListener('click', () => {
+        this.closeLanguageDropdown();
+      });
+    }
+
+    // Seleccionar idioma
+    langOptions.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const lang = option.dataset.lang;
+        if (lang && this.availableLanguages.includes(lang)) {
+          this.setLanguage(lang);
+        }
+      });
+    });
+
+    // Cerrar dropdown con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeLanguageDropdown();
+      }
     });
     
     // Configuración
@@ -272,6 +314,9 @@ class BubbleBreathingApp {
     // Mostrar/ocultar botón finish
     const showFinish = name !== 'config' && name !== 'results';
     this.elements.finishBtn.classList.toggle('hidden', !showFinish);
+    
+    // Cerrar dropdown de idioma al cambiar de pantalla
+    this.closeLanguageDropdown();
     
     // Manejar botones de skip
     if (name === 'exercise') {
@@ -401,10 +446,24 @@ class BubbleBreathingApp {
     this.updateRoundInfo();
     this.updateProgress();
     
+    // Sonido y vibración prolongados para el inicio de la apnea
+    this.playRetentionStartSignal();
+    
     this.retentionInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - this.session.retentionStart) / 1000);
       this.elements.retentionTimer.textContent = this.formatTime(elapsed);
     }, 100);
+  }
+  
+  // Señal distintiva para el inicio de la apnea
+  playRetentionStartSignal() {
+    // Sonido más grave y prolongado
+    this.playTone(150, 800);
+    
+    // Vibración prolongada en tres pulsos para distinguir del resto
+    if (navigator.vibrate) {
+      navigator.vibrate([200, 100, 200, 100, 400]);
+    }
   }
   
   endRetention() {
@@ -528,7 +587,7 @@ class BubbleBreathingApp {
       
       oscillator.type = 'sine';
       oscillator.frequency.value = frequency;
-      gainNode.gain.value = this.config.volume; // Usa el volumen configurado
+      gainNode.gain.value = this.config.volume;
       
       oscillator.connect(gainNode);
       gainNode.connect(this.audioCtx.destination);

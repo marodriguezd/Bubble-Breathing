@@ -1,0 +1,593 @@
+diff --git a/css/style.css b/css/style.css
+index 97157ed..16be405 100644
+--- a/css/style.css
++++ b/css/style.css
+@@ -22,15 +22,13 @@ body{
+   background:var(--color-bg);
+   color:var(--color-text);
+   -webkit-tap-highlight-color: transparent;
+-  /* Evitamos que el body tenga scroll, el control lo tiene el container */
+   overflow: hidden; 
+ }
+ 
+-/* --- CLAVE DEFINITIVA: El contenedor usa la altura dinámica del viewport --- */
+ .container{
+   background:var(--color-card);
+   width: 100vw;
+-  height: 100dvh; /* Dynamic Viewport Height: se ajusta a la UI del navegador en PC y Móvil */
++  height: 100dvh;
+   display:flex;
+   flex-direction:column;
+ }
+@@ -50,8 +48,129 @@ body{
+ #progressFill{height:100%;background:#fff;width:0;transition:width .3s}
+ .finish-btn{position:absolute;right:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.5rem 1rem;border-radius:1.25rem;font-size:0.9rem;cursor:pointer}
+ .finish-btn.hidden{display: none;}
+-.lang-container{position:absolute;left:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
+-.lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
++
++/* MEJORA: Selector de idioma con desplegable elegante */
++.lang-container{
++  position:absolute;
++  left:1rem;
++  top: calc(50% + env(safe-area-inset-top)/2);
++  transform:translateY(-50%);
++  display:flex;
++  flex-direction:column;
++  align-items:flex-start;
++}
++
++.lang-selector {
++  position: relative;
++  display: inline-block;
++}
++
++.lang-toggle{
++  background:rgba(255,255,255,.2);
++  border:none;
++  color:#fff;
++  padding:0.5rem 0.8rem;
++  border-radius:0.9375rem;
++  font-size:0.85rem;
++  cursor:pointer;
++  font-weight:600;
++  display:flex;
++  align-items:center;
++  gap:0.3rem;
++  min-width:3.5rem;
++  justify-content:center;
++  transition: all 0.2s ease;
++}
++
++.lang-toggle:hover {
++  background:rgba(255,255,255,.3);
++}
++
++.lang-toggle::after {
++  content: '▼';
++  font-size: 0.7rem;
++  opacity: 0.7;
++  transition: transform 0.2s ease;
++}
++
++.lang-toggle.open::after {
++  transform: rotate(180deg);
++}
++
++.lang-dropdown {
++  position: absolute;
++  top: 100%;
++  left: 0;
++  background: rgba(255,255,255,0.95);
++  backdrop-filter: blur(10px);
++  border-radius: 0.75rem;
++  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
++  margin-top: 0.25rem;
++  min-width: 120px;
++  opacity: 0;
++  transform: translateY(-10px);
++  pointer-events: none;
++  transition: all 0.2s ease;
++  z-index: 1000;
++}
++
++.lang-dropdown.open {
++  opacity: 1;
++  transform: translateY(0);
++  pointer-events: auto;
++}
++
++.lang-option {
++  display: flex;
++  align-items: center;
++  padding: 0.6rem 0.8rem;
++  color: var(--color-text);
++  cursor: pointer;
++  transition: background-color 0.2s ease;
++  font-size: 0.85rem;
++  font-weight: 500;
++  border: none;
++  background: none;
++  width: 100%;
++  text-align: left;
++  gap: 0.5rem;
++}
++
++.lang-option:first-child {
++  border-radius: 0.75rem 0.75rem 0 0;
++}
++
++.lang-option:last-child {
++  border-radius: 0 0 0.75rem 0.75rem;
++}
++
++.lang-option:hover {
++  background: rgba(44,95,93,0.1);
++}
++
++.lang-option.active {
++  background: rgba(44,95,93,0.15);
++  font-weight: 600;
++}
++
++.lang-flag {
++  font-size: 1rem;
++}
++
++/* Overlay para cerrar el dropdown al hacer clic fuera */
++.lang-overlay {
++  position: fixed;
++  top: 0;
++  left: 0;
++  right: 0;
++  bottom: 0;
++  z-index: 999;
++  display: none;
++}
++
++.lang-overlay.active {
++  display: block;
++}
+ 
+ .screen{
+   display: none;
+diff --git a/index.html b/index.html
+index 1743219..f463b96 100644
+--- a/index.html
++++ b/index.html
+@@ -2,12 +2,7 @@
+ <html lang="es">
+ <head>
+   <meta charset="UTF-8">
+-  
+-  <!-- ESTA ES LA LÍNEA MODIFICADA -->
+-  <!-- Se añade "viewport-fit=cover" para una experiencia inmersiva en móviles -->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+-  
+-  <!-- Título actualizado -->
+   <title>Bubble Breathing</title>
+   <meta name="theme-color" content="#2c5f5d">
+   <link rel="stylesheet" href="css/style.css">
+@@ -16,48 +11,68 @@
+   <div class="container">
+     <div class="header">
+       <div class="lang-container">
+-        <button class="lang-toggle" id="langToggle">EN</button>
+-        <div class="lang-indicator" id="langIndicator">Change language</div>
++        <div class="lang-selector">
++          <button class="lang-toggle" id="langToggle">
++            <span class="lang-flag" id="langFlag">🇬🇧</span>
++            <span id="langCode">EN</span>
++          </button>
++          <div class="lang-dropdown" id="langDropdown">
++            <button class="lang-option" data-lang="en">
++              <span class="lang-flag">🇬🇧</span>
++              <span>English</span>
++            </button>
++            <button class="lang-option" data-lang="es">
++              <span class="lang-flag">🇪🇸</span>
++              <span>Español</span>
++            </button>
++            <button class="lang-option" data-lang="fr">
++              <span class="lang-flag">🇫🇷</span>
++              <span>Français</span>
++            </button>
++          </div>
++        </div>
++        <div class="lang-overlay" id="langOverlay"></div>
+       </div>
+-      <!-- Título principal actualizado -->
+       <h1 id="headerTitle">Bubble Breathing</h1>
+       <div id="progressBar"><div id="progressFill"></div></div>
+       <button class="finish-btn hidden" id="finishBtn">Finish</button>
+     </div>
++    
+     <!-- CONFIG -->
+     <div id="configScreen" class="screen active">
+       <div class="hexagon-container">
+         <div class="hexagon phase-breathing" id="previewHexagon"><div class="breath-counter" id="previewCounter">1</div></div>
+       </div>
+-      <div class="preview-label">Breathing Preview</div>
++      <div class="preview-label" id="previewLabel">Breathing Preview</div>
+       <div class="speed-selector">
+-        <button class="speed-btn" data-speed="slow">Slow</button>
+-        <button class="speed-btn active" data-speed="standard">Standard</button>
+-        <button class="speed-btn" data-speed="fast">Fast</button>
++        <button class="speed-btn" data-speed="slow" id="speedSlow">Slow</button>
++        <button class="speed-btn active" data-speed="standard" id="speedStandard">Standard</button>
++        <button class="speed-btn" data-speed="fast" id="speedFast">Fast</button>
+       </div>
+       <div class="slider-group">
+         <label for="roundsSlider">
+-          <span class="slider-label">Rounds:</span>
++          <span class="slider-label" id="roundsLabel">Rounds:</span>
+           <span id="roundsValue">3</span>
+         </label>
+         <input type="range" id="roundsSlider" min="1" max="5" value="3" class="slider">
+       </div>
+       <div class="slider-group">
+         <label for="breathsSlider">
+-          <span class="slider-label">Breaths:</span>
++          <span class="slider-label" id="breathsLabel">Breaths:</span>
+           <span id="breathsValue">30</span>
+         </label>
+         <input type="range" id="breathsSlider" min="5" max="60" step="5" value="30" class="slider">
+       </div>
+       <div class="slider-group">
+         <label for="volumeSlider">
+-          <span class="slider-label">Volume:</span>
++          <span class="slider-label" id="volumeLabel">Volume:</span>
+           <span id="volumeValue">25</span>%
+         </label>
+         <input type="range" id="volumeSlider" min="0" max="0.5" step="0.05" value="0.25" class="slider">
+       </div>
+       <button class="start-button" id="startButton">Start</button>
+     </div>
++    
+     <!-- EJERCICIO Y RETENCIÓN -->
+     <div id="exerciseScreen" class="screen">
+       <div class="round-info" id="roundInfo">Round 1 / 3</div>
+@@ -69,6 +84,7 @@
+       <button class="skip-button" id="skipRecoveryBtn" style="display: none;">Skip recovery</button>
+       <div class="recovery-subtitle" id="recoverySubtitle" style="display: none;"></div>
+     </div>
++    
+     <div id="retentionScreen" class="screen">
+       <div class="round-info" id="retentionRoundInfo">Round 1 / 3</div>
+       <div class="instruction" id="retentionInstruction">Hold your breath</div>
+@@ -78,13 +94,17 @@
+       </div>
+       <div class="tap-instruction" id="retentionTapInstruction">Tap when you need to breathe</div>
+     </div>
++    
+     <!-- RESULTS -->
+     <div id="resultsScreen" class="screen">
+-      <div class="results-title">Session Results</div>
++      <div class="results-title" id="resultsTitle">Session Results</div>
+       <div id="resultsContent"></div>
+       <button class="start-button" id="newSessionBtn">New Session</button>
+     </div>
+   </div>
++  
++  <!-- Cargar traducciones ANTES que el script principal -->
++  <script src="js/translations.js"></script>
+   <script src="js/script.js" defer></script>
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/js/script.js b/js/script.js
+index dba246b..a3af694 100644
+--- a/js/script.js
++++ b/js/script.js
+@@ -1,66 +1,23 @@
+ // Aplicación de Respiración Bubble optimizada
+ class BubbleBreathingApp {
+   constructor() {
+-    this.translations = {
+-      es: {
+-        appTitle: "Bubble Breathing",
+-        finishBtn: "Finalizar",
+-        previewLabel: "Previsualización de respiración",
+-        speedSlow: "Lento",
+-        speedStandard: "Estándar",
+-        speedFast: "Rápido",
+-        roundsLabel: "Rondas:",
+-        breathsLabel: "Respiraciones:",
+-        volumeLabel: "Volumen:",
+-        startBtn: "Comenzar",
+-        roundInfo: "Ronda {current} / {total}",
+-        exerciseInstruction: "Toma {count} respiraciones profundas",
+-        skipToRetentionBtn: "Saltar a apnea",
+-        skipRecoveryBtn: "Saltar recuperación",
+-        retentionInstruction: "Contén la respiración",
+-        tapInstruction: "Toca cuando necesites respirar",
+-        resultsTitle: "Resultados de la sesión",
+-        roundLabel: "Ronda {round}",
+-        averageLabel: "Promedio",
+-        newSessionBtn: "Nueva sesión",
+-        inhaleInstruction: "Inhala",
+-        holdAirInstruction: "Retén el aire",
+-        releaseAirInstruction: "Suelta el aire",
+-        timeToInhale: "Tiempo para inhalar",
+-        timeToExhale: "Tiempo para exhalar",
+-        langIndicator: "Cambiar idioma"
+-      },
+-      en: {
+-        appTitle: "Bubble Breathing",
+-        finishBtn: "Finish",
+-        previewLabel: "Breathing Preview",
+-        speedSlow: "Slow",
+-        speedStandard: "Standard",
+-        speedFast: "Fast",
+-        roundsLabel: "Rounds:",
+-        breathsLabel: "Breaths:",
+-        volumeLabel: "Volume:",
+-        startBtn: "Start",
+-        roundInfo: "Round {current} / {total}",
+-        exerciseInstruction: "Take {count} deep breaths",
+-        skipToRetentionBtn: "Skip to breath hold",
+-        skipRecoveryBtn: "Skip recovery",
+-        retentionInstruction: "Hold your breath",
+-        tapInstruction: "Tap when you need to breathe",
+-        resultsTitle: "Session Results",
+-        roundLabel: "Round {round}",
+-        averageLabel: "Average",
+-        newSessionBtn: "New Session",
+-        inhaleInstruction: "Inhale",
+-        holdAirInstruction: "Hold the air",
+-        releaseAirInstruction: "Release the air",
+-        timeToInhale: "Time to inhale",
+-        timeToExhale: "Time to exhale",
+-        langIndicator: "Change language"
+-      }
+-    };
++    // Verificar que las traducciones estén cargadas
++    if (!window.translations) {
++      console.error('Translations not loaded! Make sure translations.js is loaded before script.js');
++      return;
++    }
+     
++    this.translations = window.translations;
++    
++    // Configuración mejorada de idiomas
+     this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
++    this.availableLanguages = ['en', 'es', 'fr'];
++    this.languageConfig = {
++      en: { flag: '🇬🇧', name: 'English' },
++      es: { flag: '🇪🇸', name: 'Español' },
++      fr: { flag: '🇫🇷', name: 'Français' }
++    };
++    
+     this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
+     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
+     this.speedSettings = {
+@@ -83,6 +40,7 @@ class BubbleBreathingApp {
+     this.initElements();
+     this.initEventListeners();
+     this.updateLanguage();
++    this.updateLanguageDisplay();
+     this.startPreviewAnimation();
+   }
+   
+@@ -98,25 +56,25 @@ class BubbleBreathingApp {
+     this.currentLanguage = lang;
+     localStorage.setItem('bubbleBreathingLanguage', lang);
+     this.updateLanguage();
++    this.updateLanguageDisplay();
++    this.closeLanguageDropdown();
+   }
+ 
+   updateLanguage() {
+     const elements = this.elements;
+     
+     // Header y navegación
+-    elements.langToggle.textContent = this.currentLanguage.toUpperCase();
+-    elements.langIndicator.textContent = this.t('langIndicator');
+     elements.headerTitle.textContent = this.t('appTitle');
+     elements.finishBtn.textContent = this.t('finishBtn');
+     
+     // Pantalla de configuración
+     elements.previewLabel.textContent = this.t('previewLabel');
+-    elements.speedBtns[0].textContent = this.t('speedSlow');
+-    elements.speedBtns[1].textContent = this.t('speedStandard');
+-    elements.speedBtns[2].textContent = this.t('speedFast');
+-    document.querySelector('#roundsSlider').parentElement.querySelector('.slider-label').textContent = this.t('roundsLabel');
+-    document.querySelector('#breathsSlider').parentElement.querySelector('.slider-label').textContent = this.t('breathsLabel');
+-    document.querySelector('#volumeSlider').parentElement.querySelector('.slider-label').textContent = this.t('volumeLabel');
++    elements.speedSlow.textContent = this.t('speedSlow');
++    elements.speedStandard.textContent = this.t('speedStandard');
++    elements.speedFast.textContent = this.t('speedFast');
++    elements.roundsLabel.textContent = this.t('roundsLabel');
++    elements.breathsLabel.textContent = this.t('breathsLabel');
++    elements.volumeLabel.textContent = this.t('volumeLabel');
+     elements.startButton.textContent = this.t('startBtn');
+     
+     // Pantalla de ejercicio
+@@ -130,13 +88,60 @@ class BubbleBreathingApp {
+     elements.retentionTapInstruction.textContent = this.t('tapInstruction');
+     
+     // Pantalla de resultados
+-    elements.resultsScreen.querySelector('.results-title').textContent = this.t('resultsTitle');
++    elements.resultsTitle.textContent = this.t('resultsTitle');
+     elements.newSessionBtn.textContent = this.t('newSessionBtn');
+     
+     if (elements.screens.results.classList.contains('active') && this.session.results.length > 0) {
+       this.updateResultsContent();
+     }
+   }
++
++  updateLanguageDisplay() {
++    const langFlag = document.getElementById('langFlag');
++    const langCode = document.getElementById('langCode');
++    const langOptions = document.querySelectorAll('.lang-option');
++    
++    // Actualizar el botón principal
++    const currentLang = this.languageConfig[this.currentLanguage];
++    if (langFlag && langCode) {
++      langFlag.textContent = currentLang.flag;
++      langCode.textContent = this.currentLanguage.toUpperCase();
++    }
++    
++    // Actualizar opciones activas en el dropdown
++    langOptions.forEach(option => {
++      const lang = option.dataset.lang;
++      option.classList.toggle('active', lang === this.currentLanguage);
++    });
++  }
++
++  toggleLanguageDropdown() {
++    const dropdown = document.getElementById('langDropdown');
++    const toggle = document.getElementById('langToggle');
++    const overlay = document.getElementById('langOverlay');
++    
++    if (!dropdown || !toggle || !overlay) return;
++    
++    const isOpen = dropdown.classList.contains('open');
++    
++    if (isOpen) {
++      this.closeLanguageDropdown();
++    } else {
++      dropdown.classList.add('open');
++      toggle.classList.add('open');
++      overlay.classList.add('active');
++    }
++  }
++
++  closeLanguageDropdown() {
++    const dropdown = document.getElementById('langDropdown');
++    const toggle = document.getElementById('langToggle');
++    const overlay = document.getElementById('langOverlay');
++    
++    if (dropdown) dropdown.classList.remove('open');
++    if (toggle) toggle.classList.remove('open');
++    if (overlay) overlay.classList.remove('active');
++  }
+   
+   updateRoundInfo() {
+     const current = this.session.currentRound;
+@@ -183,20 +188,24 @@ class BubbleBreathingApp {
+       headerTitle: document.getElementById('headerTitle'),
+       progressFill: document.getElementById('progressFill'),
+       finishBtn: document.getElementById('finishBtn'),
+-      langToggle: document.getElementById('langToggle'),
+-      langIndicator: document.getElementById('langIndicator'),
+       
+       // Config screen
+       previewHexagon: document.getElementById('previewHexagon'),
+       previewCounter: document.getElementById('previewCounter'),
+-      previewLabel: document.querySelector('.preview-label'),
++      previewLabel: document.getElementById('previewLabel'),
++      speedSlow: document.getElementById('speedSlow'),
++      speedStandard: document.getElementById('speedStandard'),
++      speedFast: document.getElementById('speedFast'),
+       speedBtns: document.querySelectorAll('.speed-btn'),
+       roundsSlider: document.getElementById('roundsSlider'),
+       roundsValue: document.getElementById('roundsValue'),
++      roundsLabel: document.getElementById('roundsLabel'),
+       breathsSlider: document.getElementById('breathsSlider'),
+       breathsValue: document.getElementById('breathsValue'),
++      breathsLabel: document.getElementById('breathsLabel'),
+       volumeSlider: document.getElementById('volumeSlider'),
+       volumeValue: document.getElementById('volumeValue'),
++      volumeLabel: document.getElementById('volumeLabel'),
+       startButton: document.getElementById('startButton'),
+       
+       // Exercise screen
+@@ -218,14 +227,47 @@ class BubbleBreathingApp {
+       // Results screen
+       resultsContent: document.getElementById('resultsContent'),
+       newSessionBtn: document.getElementById('newSessionBtn'),
+-      resultsScreen: document.getElementById('resultsScreen')
++      resultsTitle: document.getElementById('resultsTitle')
+     };
+   }
+   
+   initEventListeners() {
+-    // Idioma
+-    this.elements.langToggle.addEventListener('click', () => {
+-      this.setLanguage(this.currentLanguage === 'es' ? 'en' : 'es');
++    // Eventos de idioma mejorados
++    const langToggle = document.getElementById('langToggle');
++    const langOverlay = document.getElementById('langOverlay');
++    const langOptions = document.querySelectorAll('.lang-option');
++
++    // Toggle del dropdown
++    if (langToggle) {
++      langToggle.addEventListener('click', (e) => {
++        e.stopPropagation();
++        this.toggleLanguageDropdown();
++      });
++    }
++
++    // Cerrar dropdown al hacer clic en overlay
++    if (langOverlay) {
++      langOverlay.addEventListener('click', () => {
++        this.closeLanguageDropdown();
++      });
++    }
++
++    // Seleccionar idioma
++    langOptions.forEach(option => {
++      option.addEventListener('click', (e) => {
++        e.stopPropagation();
++        const lang = option.dataset.lang;
++        if (lang && this.availableLanguages.includes(lang)) {
++          this.setLanguage(lang);
++        }
++      });
++    });
++
++    // Cerrar dropdown con Escape
++    document.addEventListener('keydown', (e) => {
++      if (e.key === 'Escape') {
++        this.closeLanguageDropdown();
++      }
+     });
+     
+     // Configuración
+@@ -273,6 +315,9 @@ class BubbleBreathingApp {
+     const showFinish = name !== 'config' && name !== 'results';
+     this.elements.finishBtn.classList.toggle('hidden', !showFinish);
+     
++    // Cerrar dropdown de idioma al cambiar de pantalla
++    this.closeLanguageDropdown();
++    
+     // Manejar botones de skip
+     if (name === 'exercise') {
+       this.updateSkipButtons();
+@@ -401,12 +446,26 @@ class BubbleBreathingApp {
+     this.updateRoundInfo();
+     this.updateProgress();
+     
++    // Sonido y vibración prolongados para el inicio de la apnea
++    this.playRetentionStartSignal();
++    
+     this.retentionInterval = setInterval(() => {
+       const elapsed = Math.floor((Date.now() - this.session.retentionStart) / 1000);
+       this.elements.retentionTimer.textContent = this.formatTime(elapsed);
+     }, 100);
+   }
+   
++  // Señal distintiva para el inicio de la apnea
++  playRetentionStartSignal() {
++    // Sonido más grave y prolongado
++    this.playTone(150, 800);
++    
++    // Vibración prolongada en tres pulsos para distinguir del resto
++    if (navigator.vibrate) {
++      navigator.vibrate([200, 100, 200, 100, 400]);
++    }
++  }
++  
+   endRetention() {
+     clearInterval(this.retentionInterval);
+     const retentionTime = Math.floor((Date.now() - this.session.retentionStart) / 1000);
+@@ -528,7 +587,7 @@ class BubbleBreathingApp {
+       
+       oscillator.type = 'sine';
+       oscillator.frequency.value = frequency;
+-      gainNode.gain.value = this.config.volume; // Usa el volumen configurado
++      gainNode.gain.value = this.config.volume;
+       
+       oscillator.connect(gainNode);
+       gainNode.connect(this.audioCtx.destination);

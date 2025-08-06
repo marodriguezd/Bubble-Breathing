@@ -22,15 +22,13 @@ body{
   background:var(--color-bg);
   color:var(--color-text);
   -webkit-tap-highlight-color: transparent;
-  /* Evitamos que el body tenga scroll, el control lo tiene el container */
   overflow: hidden; 
 }
 
-/* --- CLAVE DEFINITIVA: El contenedor usa la altura dinámica del viewport --- */
 .container{
   background:var(--color-card);
   width: 100vw;
-  height: 100dvh; /* Dynamic Viewport Height: se ajusta a la UI del navegador en PC y Móvil */
+  height: 100dvh;
   display:flex;
   flex-direction:column;
 }
@@ -50,8 +48,129 @@ body{
 #progressFill{height:100%;background:#fff;width:0;transition:width .3s}
 .finish-btn{position:absolute;right:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.5rem 1rem;border-radius:1.25rem;font-size:0.9rem;cursor:pointer}
 .finish-btn.hidden{display: none;}
-.lang-container{position:absolute;left:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
-.lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
+
+/* MEJORA: Selector de idioma con desplegable elegante */
+.lang-container{
+  position:absolute;
+  left:1rem;
+  top: calc(50% + env(safe-area-inset-top)/2);
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+
+.lang-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-toggle{
+  background:rgba(255,255,255,.2);
+  border:none;
+  color:#fff;
+  padding:0.5rem 0.8rem;
+  border-radius:0.9375rem;
+  font-size:0.85rem;
+  cursor:pointer;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:0.3rem;
+  min-width:3.5rem;
+  justify-content:center;
+  transition: all 0.2s ease;
+}
+
+.lang-toggle:hover {
+  background:rgba(255,255,255,.3);
+}
+
+.lang-toggle::after {
+  content: '▼';
+  font-size: 0.7rem;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.lang-toggle.open::after {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-top: 0.25rem;
+  min-width: 120px;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.lang-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.lang-option:first-child {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.lang-option:last-child {
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.lang-option:hover {
+  background: rgba(44,95,93,0.1);
+}
+
+.lang-option.active {
+  background: rgba(44,95,93,0.15);
+  font-weight: 600;
+}
+
+.lang-flag {
+  font-size: 1rem;
+}
+
+/* Overlay para cerrar el dropdown al hacer clic fuera */
+.lang-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: none;
+}
+
+.lang-overlay.active {
+  display: block;
+}
 
 .screen{
   display: none;
