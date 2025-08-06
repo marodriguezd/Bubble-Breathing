@@ -13,7 +13,6 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* CLAVE 1: El motor de escalado. Si la pantalla es corta, todo se encoge. */
 html {
   font-size: clamp(11px, 2.5vmin, 16px);
 }
@@ -23,16 +22,15 @@ body{
   background:var(--color-bg);
   color:var(--color-text);
   -webkit-tap-highlight-color: transparent;
-  /* La siguiente línea es crucial para una sensación de app nativa */
+  /* Evitamos que el body tenga scroll, el control lo tiene el container */
   overflow: hidden; 
-  height: 100vh;
 }
 
-/* CLAVE 2: El contenedor maestro. Un flexbox columnar que ocupa toda la pantalla. */
+/* --- CLAVE DEFINITIVA: El contenedor usa la altura dinámica del viewport --- */
 .container{
   background:var(--color-card);
-  width: 100%;
-  height: 100%; /* Ocupa el 100% de su padre (body) */
+  width: 100vw;
+  height: 100dvh; /* Dynamic Viewport Height: se ajusta a la UI del navegador */
   display:flex;
   flex-direction:column;
 }
@@ -44,7 +42,7 @@ body{
   padding-top: calc(1.5rem + env(safe-area-inset-top));
   text-align:center;
   position:relative;
-  flex-shrink: 0; /* Evita que el header se encoja */
+  flex-shrink: 0;
 }
 
 .header h1{font-size:1.2rem;font-weight:500}
@@ -55,9 +53,8 @@ body{
 .lang-container{position:absolute;left:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
 .lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
 
-/* CLAVE 3: El 'fuelle' flexible. Crece para llenar el espacio y distribuye su contenido. */
 .screen{
-  display: none; /* Oculto por defecto */
+  display: none;
   flex-direction: column;
   width: 100%;
   max-width: 28rem;
@@ -69,8 +66,8 @@ body{
 
 .screen.active {
   display: flex;
-  flex-grow: 1; /* Le dice que crezca y ocupe el espacio sobrante */
-  justify-content: space-evenly; /* Reparte sus hijos de forma equitativa */
+  flex-grow: 1; 
+  justify-content: space-evenly; 
 }
 
 .hexagon-container{margin: 0 auto;width:9.375rem;height:9.375rem;position:relative}
@@ -91,7 +88,6 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
-/* El botón ya no necesita trucos. Es una 'tecla' más en el 'acordeón'. */
 .start-button{
   background:var(--color-primary);
   color:#fff;
