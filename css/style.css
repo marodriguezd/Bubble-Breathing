@@ -13,8 +13,9 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
+/* CLAVE 1: El motor de escalado. Si la pantalla es corta, todo se encoge. */
 html {
-  font-size: clamp(12px, 2.5vmin, 16px);
+  font-size: clamp(11px, 2.5vmin, 16px);
 }
 
 body{
@@ -22,27 +23,28 @@ body{
   background:var(--color-bg);
   color:var(--color-text);
   -webkit-tap-highlight-color: transparent;
+  /* La siguiente línea es crucial para una sensación de app nativa */
+  overflow: hidden; 
+  height: 100vh;
 }
 
-/* El contenedor ya no tiene altura fija. Se adapta a su contenido. */
+/* CLAVE 2: El contenedor maestro. Un flexbox columnar que ocupa toda la pantalla. */
 .container{
   background:var(--color-card);
   width: 100%;
-  min-height: 100vh; /* Asegura que al menos ocupe toda la pantalla */
+  height: 100%; /* Ocupa el 100% de su padre (body) */
   display:flex;
   flex-direction:column;
 }
 
-/* --- CLAVE 1: El Header se vuelve 'pegajoso' --- */
 .header{
   background:var(--color-primary);
   color:#fff;
   padding: 1.5rem 1rem 1rem;
   padding-top: calc(1.5rem + env(safe-area-inset-top));
   text-align:center;
-  position: sticky; /* Se pega arriba al hacer scroll */
-  top: 0;
-  z-index: 10; /* Asegura que esté por encima del contenido que se desplaza */
+  position:relative;
+  flex-shrink: 0; /* Evita que el header se encoja */
 }
 
 .header h1{font-size:1.2rem;font-weight:500}
@@ -53,24 +55,23 @@ body{
 .lang-container{position:absolute;left:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
 .lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
 
-/* --- CLAVE 2: El '.screen' es ahora un bloque de contenido normal y scrollable --- */
+/* CLAVE 3: El 'fuelle' flexible. Crece para llenar el espacio y distribuye su contenido. */
 .screen{
+  display: none; /* Oculto por defecto */
+  flex-direction: column;
   width: 100%;
   max-width: 28rem;
   margin: 0 auto;
-  padding: 2rem 1.5rem; /* Padding generoso */
-  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-  text-align:center;
-  display:none;
-  flex-direction:column;
-  
-  /* Un gap consistente para el espaciado interno */
-  gap: 2rem; 
-  
-  /* Se elimina CUALQUIER regla de alineación vertical o crecimiento */
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  text-align: center;
 }
 
-.screen.active{display:flex}
+.screen.active {
+  display: flex;
+  flex-grow: 1; /* Le dice que crezca y ocupe el espacio sobrante */
+  justify-content: space-evenly; /* Reparte sus hijos de forma equitativa */
+}
 
 .hexagon-container{margin: 0 auto;width:9.375rem;height:9.375rem;position:relative}
 .hexagon{width:9.375rem;height:8.125rem;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:transform .3s;will-change:transform}
@@ -90,14 +91,14 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
-/* --- CLAVE 3: El botón es simplemente el último elemento del flujo --- */
+/* El botón ya no necesita trucos. Es una 'tecla' más en el 'acordeón'. */
 .start-button{
   background:var(--color-primary);
   color:#fff;
   border:none;
   padding:1.1rem;
   width:100%;
-  margin: 1rem auto 0; /* Un pequeño margen superior para separarlo del último slider */
+  margin: 0 auto;
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
