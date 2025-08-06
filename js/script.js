@@ -61,7 +61,7 @@ class BubbleBreathingApp {
     };
     
     this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
-    this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.15 };
+    this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
