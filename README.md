@@ -9,7 +9,7 @@ This README is available in English and Spanish. / Este README está disponible 
 <a name="english-version"></a>
 ## 🇬🇧 English Version
 
-A simple and clean web application for guided rhythmic breathing exercises. This tool helps you maintain focus, control your pace, and track your progress through various rounds of breathing and retention, designed for both mobile and desktop use.
+An immersive, app-like web application for guided rhythmic breathing exercises. This tool helps you maintain focus and control your pace through a clean, full-screen interface designed to work flawlessly on any device, from desktop to mobile, without installation.
 
 ### ✨ [Live Demo Here](https://marodriguezd.github.io/Bubble-Breathing/)
 
@@ -25,7 +25,7 @@ A simple and clean web application for guided rhythmic breathing exercises. This
 - **Flexible Control:** Skip the main breathing phase or the recovery breath at any time with dedicated buttons, giving you full control over your session.
 - **Session Summary:** At the end of your session, review your retention times for each round and your overall average time.
 - **Bilingual Support:** Seamlessly switch between English and Spanish. Your language preference is saved in your browser for your next visit.
-- **Clean & Responsive Design:** A minimalist interface that works flawlessly on both mobile and desktop devices.
+- **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout intelligently scales and distributes itself to perfectly fit any screen size, from wide desktop monitors to tall mobile screens, completely avoiding scrollbars and common mobile viewport issues.
 
 ### 🚀 How to Use
 
@@ -43,8 +43,10 @@ As this is a pure (vanilla) HTML, CSS, and JavaScript project, no installation i
 
 ### 🛠️ Technologies Used
 
-- **HTML5:** For the semantic structure of the application.
-- **CSS3:** For styling, animations, and responsive design, using CSS variables for easy theming.
+- **HTML5:** For the semantic structure of the application, including `viewport-fit=cover` for edge-to-edge mobile experiences.
+- **CSS3:** For all styling, animations, and the fully adaptive layout.
+  - **Modern CSS Layouts:** Utilizes Flexbox, `clamp()` for fluid typography, and dynamic viewport units (`dvh`, `vmin`) to create a robust, full-screen interface that solves common mobile viewport challenges.
+  - **CSS Variables:** For easy theming and maintenance.
 - **JavaScript (ES6+):** For all application logic, state management, and user interactions, structured within an object-oriented `BubbleBreathingApp` class for clean, manageable code.
 
 ### 📄 License
@@ -58,7 +60,7 @@ This project is under the MIT License.
 <a name="version-en-espanol"></a>
 ## 🇪🇸 Versión en Español
 
-Una aplicación web simple y limpia para ejercicios de respiración rítmica guiada. Esta herramienta te ayuda a mantener la concentración, controlar tu ritmo y seguir tu progreso a través de varias rondas de respiración y retención, diseñada para su uso tanto en móviles como en ordenadores.
+Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rítmica guiada. Esta herramienta te ayuda a mantener la concentración y controlar tu ritmo a través de una interfaz limpia a pantalla completa, diseñada para funcionar perfectamente en cualquier dispositivo, desde ordenadores de escritorio a móviles, sin necesidad de instalación.
 
 ### ✨ [Demo en vivo aquí](https://marodriguezd.github.io/Bubble-Breathing/)
 
@@ -74,7 +76,7 @@ Una aplicación web simple y limpia para ejercicios de respiración rítmica gui
 - **Control Flexible:** Salta la fase principal de respiración o la respiración de recuperación en cualquier momento con botones dedicados, dándote control total sobre tu sesión.
 - **Resumen de la Sesión:** Al final de tu sesión, revisa tus tiempos de retención para cada ronda y tu tiempo promedio general.
 - **Soporte Bilingüe:** Cambia fácilmente entre inglés y español. Tu preferencia de idioma se guarda en tu navegador para tu próxima visita.
-- **Diseño Limpio y Responsivo:** Una interfaz minimalista que funciona perfectamente tanto en dispositivos móviles como de escritorio.
+- **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout se escala y distribuye de forma inteligente para ajustarse perfectamente a cualquier tamaño de pantalla, desde monitores anchos de escritorio hasta pantallas altas de móviles, evitando por completo las barras de scroll y los problemas comunes de los viewports móviles.
 
 ### 🚀 Cómo Usarlo
 
@@ -92,8 +94,10 @@ Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ning
 
 ### 🛠️ Tecnologías Utilizadas
 
-- **HTML5:** Para la estructura semántica de la aplicación.
-- **CSS3:** Para los estilos, animaciones y diseño responsivo, usando variables CSS para un fácil mantenimiento del tema.
+- **HTML5:** Para la estructura semántica de la aplicación, incluyendo `viewport-fit=cover` para una experiencia inmersiva de borde a borde en móviles.
+- **CSS3:** Para los estilos, animaciones y el diseño completamente adaptativo.
+  - **Layouts Modernos de CSS:** Utiliza Flexbox, `clamp()` para tipografía fluida y unidades de viewport dinámicas (`dvh`, `vmin`) para crear una interfaz robusta a pantalla completa que soluciona los desafíos habituales de los viewports móviles.
+  - **Variables CSS:** Para un fácil mantenimiento del tema.
 - **JavaScript (ES6+):** Para toda la lógica de la aplicación, manejo de estado e interacciones del usuario, estructurado en una clase `BubbleBreathingApp` orientada a objetos para un código limpio y manejable.
 
 ### 📄 License
