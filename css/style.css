@@ -13,39 +13,36 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* --- CLAVE 1: El tamaño de fuente base ahora es fluido --- */
-/* Se ajustará al ancho de la pantalla (2.2vw) pero nunca será menor de 12px ni mayor de 16px */
 html {
   font-size: clamp(12px, 2.2vw, 16px);
 }
 
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:var(--color-bg);
+  background:var(--color-bg); /* El fondo de la app ahora está en .container */
   min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   color:var(--color-text);
-  padding: 1rem; /* Mantiene un margen alrededor de la app */
+  /* Se elimina el padding y el centrado flex */
 }
 
-/* --- CLAVE 2: El contenedor se adapta a la altura disponible --- */
+/* --- CLAVE 1: El contenedor AHORA ES la pantalla completa --- */
 .container{
   background:var(--color-card);
-  border-radius: 1.25rem; /* 20px -> 1.25rem */
-  max-width: 25rem; /* 400px -> 25rem */
-  width: 100%;
-  box-shadow:0 0.625rem 1.875rem rgba(0,0,0,.1); /* 10px 30px -> rem */
+  width: 100%; /* Ocupa todo el ancho */
+  height: 100vh; /* Ocupa todo el alto */
   overflow:hidden;
   display:flex;
   flex-direction:column;
-  /* Ocupa casi toda la altura visible, restando el padding del body */
-  height: calc(100vh - 2rem); 
-  max-height: 50rem; /* 800px -> 50rem */
+  /* Se eliminan max-width, border-radius, box-shadow, etc. */
+
+  /* --- CLAVE 2: Padding para respetar las "Safe Areas" en móviles --- */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-.header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative}
+.header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative; flex-shrink: 0;}
 .header h1{font-size:1.2rem;font-weight:500}
 #progressBar{height:0.1875rem;background:rgba(255,255,255,.3);border-radius:0.1875rem;margin-top:1rem}
 #progressFill{height:100%;background:#fff;width:0;transition:width .3s}
@@ -56,16 +53,18 @@ body{
 .lang-toggle:hover{background:rgba(255,255,255,.3)}
 .lang-indicator{background:rgba(0,0,0,.7);color:#fff;padding:0.2rem 0.4rem;border-radius:0.5rem;font-size:0.65rem;white-space:nowrap}
 
-/* --- CLAVE 3: Flexbox distribuye los elementos verticalmente --- */
+/* --- CLAVE 3: El contenido interior se mantiene centrado y con ancho limitado --- */
 .screen{
-  padding: 0.5rem 1.5rem 1.5rem; /* Espaciado interno en rem */
+  width: 100%;
+  max-width: 25rem; /* El contenido no se estirará en pantallas anchas */
+  margin: 0 auto; /* Centra horizontalmente la columna de contenido */
+  padding: 0.5rem 1.5rem 1.5rem;
   text-align:center;
-  flex-grow: 1; /* Permite que esta area crezca para llenar el espacio */
+  flex-grow: 1;
   display:none;
   flex-direction:column;
-  /* Distribuye los elementos con espacio entre ellos. Se juntarán si hay poco espacio. */
   justify-content: space-around; 
-  overflow: hidden; /* No queremos scroll aquí */
+  overflow: hidden;
 }
 
 .screen.active{display:flex}
@@ -97,5 +96,3 @@ body{
 .recovery-subtitle{font-size:1.2rem;color:var(--color-primary);font-weight:600;margin-top:0.5rem;}
 .skip-button{background:var(--color-secondary);color:#fff;border:none;padding:0.8rem 1.5rem;margin-top:1rem;border-radius:1.25rem;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s;opacity:0.9;}
 .skip-button:hover{background:#2980b9;opacity:1;transform:translateY(-1px);}
-
-/* Las media queries ya no son necesarias para ajustar el tamaño. El diseño ahora es inherentemente fluido. */
