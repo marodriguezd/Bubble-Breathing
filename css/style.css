@@ -13,8 +13,11 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
+/* --- CLAVE DEFINITIVA: El tamaño base ahora escala con la dimensión más pequeña de la pantalla --- */
 html {
-  font-size: clamp(13px, 2.2vw, 16px);
+  /* clamp(MIN, IDEAL, MAX) -> El tamaño ideal es 2.5% de la dimensión más pequeña (vmin) */
+  /* Esto asegura que la UI se encoja en pantallas cortas, evitando el scroll */
+  font-size: clamp(10px, 2.5vmin, 16px);
 }
 
 body{
@@ -23,13 +26,15 @@ body{
   min-height:100vh;
   color:var(--color-text);
   -webkit-tap-highlight-color: transparent;
+  /* Evita que el usuario pueda "arrastrar" la UI en móvil, haciéndola más nativa */
+  overscroll-behavior: none;
 }
 
 .container{
   background:var(--color-card);
   width: 100%;
   height: 100vh;
-  overflow:hidden;
+  overflow:hidden; /* Esencial para prevenir cualquier tipo de scroll */
   display:flex;
   flex-direction:column;
   padding-top: env(safe-area-inset-top);
@@ -50,18 +55,16 @@ body{
 
 .screen{
   width: 100%;
-  max-width: 25rem;
+  max-width: 28rem; /* Un poco más de ancho en PC */
   margin: 0 auto;
-  padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+  padding: 1rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
   text-align:center;
   flex-grow: 1;
   display:none;
   flex-direction:column;
-  overflow: hidden;
-
-  /* --- CLAVE 1: Repartimos el espacio de forma equitativa --- */
+  
+  /* Se mantiene 'space-evenly' porque ahora el contenido SÍ cabe */
   justify-content: space-evenly;
-  /* --- CLAVE 2: Eliminamos 'gap' para que no interfiera con space-evenly --- */
 }
 
 .screen.active{display:flex}
@@ -84,7 +87,6 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
-/* --- CLAVE 3: Eliminamos 'margin-top: auto' para que el botón participe en la distribución --- */
 .start-button{
   background:var(--color-primary);
   color:#fff;
@@ -93,7 +95,6 @@ body{
   width:100%;
   margin-left: auto;
   margin-right: auto;
-  /* margin-top: auto; <-- ELIMINADO */
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
