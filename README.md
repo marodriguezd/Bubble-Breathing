@@ -24,7 +24,7 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 - **Structured Recovery Breath:** Following each breath-hold, the app guides you through a controlled 15-second recovery breath to help you normalize before the next round.
 - **Flexible Control:** Skip the main breathing phase or the recovery breath at any time with dedicated buttons, giving you full control over your session.
 - **Session Summary:** At the end of your session, review your retention times for each round and your overall average time.
-- **Bilingual Support:** Seamlessly switch between English and Spanish. Your language preference is saved in your browser for your next visit.
+- **Multilingual Support:** Seamlessly switch between English, Spanish, and French using an intuitive dropdown menu. Your language preference is saved for your next visit.
 - **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout intelligently scales and distributes itself to perfectly fit any screen size, from wide desktop monitors to tall mobile screens, completely avoiding scrollbars and common mobile viewport issues.
 
 ### 🚀 How to Use
@@ -75,7 +75,7 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 - **Respiración de Recuperación Estructurada:** Tras cada apnea, la aplicación te guía a través de una respiración de recuperación controlada de 15 segundos para ayudarte a normalizarte antes de la siguiente ronda.
 - **Control Flexible:** Salta la fase principal de respiración o la respiración de recuperación en cualquier momento con botones dedicados, dándote control total sobre tu sesión.
 - **Resumen de la Sesión:** Al final de tu sesión, revisa tus tiempos de retención para cada ronda y tu tiempo promedio general.
-- **Soporte Bilingüe:** Cambia fácilmente entre inglés y español. Tu preferencia de idioma se guarda en tu navegador para tu próxima visita.
+- **Soporte Multilingüe:** Cambia fácilmente entre inglés, español y francés usando un menú desplegable intuitivo. Tu preferencia de idioma se guarda para tu próxima visita.
 - **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout se escala y distribuye de forma inteligente para ajustarse perfectamente a cualquier tamaño de pantalla, desde monitores anchos de escritorio hasta pantallas altas de móviles, evitando por completo las barras de scroll y los problemas comunes de los viewports móviles.
 
 ### 🚀 Cómo Usarlo
