@@ -10,46 +10,92 @@
   --color-muted:#7f8c8d;
   --color-border:#e0e6ed;
 }
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--color-bg);min-height:100vh;display:flex;justify-content:center;align-items:center;color:var(--color-text)}
-.container{background:var(--color-card);border-radius:20px;max-width:400px;width:95%;box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;min-height:600px;display:flex;flex-direction:column}
+
+/* --- CLAVE 1: El tamaño de fuente base ahora es fluido --- */
+/* Se ajustará al ancho de la pantalla (2.2vw) pero nunca será menor de 12px ni mayor de 16px */
+html {
+  font-size: clamp(12px, 2.2vw, 16px);
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--color-bg);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--color-text);
+  padding: 1rem; /* Mantiene un margen alrededor de la app */
+}
+
+/* --- CLAVE 2: El contenedor se adapta a la altura disponible --- */
+.container{
+  background:var(--color-card);
+  border-radius: 1.25rem; /* 20px -> 1.25rem */
+  max-width: 25rem; /* 400px -> 25rem */
+  width: 100%;
+  box-shadow:0 0.625rem 1.875rem rgba(0,0,0,.1); /* 10px 30px -> rem */
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  /* Ocupa casi toda la altura visible, restando el padding del body */
+  height: calc(100vh - 2rem); 
+  max-height: 50rem; /* 800px -> 50rem */
+}
+
 .header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative}
 .header h1{font-size:1.2rem;font-weight:500}
-#progressBar{height:3px;background:rgba(255,255,255,.3);border-radius:3px;margin-top:1rem}
+#progressBar{height:0.1875rem;background:rgba(255,255,255,.3);border-radius:0.1875rem;margin-top:1rem}
 #progressFill{height:100%;background:#fff;width:0;transition:width .3s}
-.finish-btn{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:.5rem 1rem;border-radius:20px;font-size:.9rem;cursor:pointer}
+.finish-btn{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.5rem 1rem;border-radius:1.25rem;font-size:0.9rem;cursor:pointer}
 .finish-btn.hidden{display: none;}
 .lang-container{position:absolute;left:1rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
-.lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:.3rem .6rem;border-radius:15px;font-size:.8rem;cursor:pointer;font-weight:600;margin-bottom:2px}
+.lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
 .lang-toggle:hover{background:rgba(255,255,255,.3)}
-.lang-indicator{background:rgba(0,0,0,.7);color:#fff;padding:.2rem .4rem;border-radius:8px;font-size:.65rem;white-space:nowrap}
-.screen{padding:2rem;text-align:center;flex:1;display:none;flex-direction:column;justify-content:center}
+.lang-indicator{background:rgba(0,0,0,.7);color:#fff;padding:0.2rem 0.4rem;border-radius:0.5rem;font-size:0.65rem;white-space:nowrap}
+
+/* --- CLAVE 3: Flexbox distribuye los elementos verticalmente --- */
+.screen{
+  padding: 0.5rem 1.5rem 1.5rem; /* Espaciado interno en rem */
+  text-align:center;
+  flex-grow: 1; /* Permite que esta area crezca para llenar el espacio */
+  display:none;
+  flex-direction:column;
+  /* Distribuye los elementos con espacio entre ellos. Se juntarán si hay poco espacio. */
+  justify-content: space-around; 
+  overflow: hidden; /* No queremos scroll aquí */
+}
+
 .screen.active{display:flex}
-.hexagon-container{margin:2rem auto;width:150px;height:150px;position:relative}
-.hexagon{width:150px;height:130px;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:transform .3s;will-change:transform}
+.hexagon-container{margin:0 auto;width:9.375rem;height:9.375rem;position:relative}
+.hexagon{width:9.375rem;height:8.125rem;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:transform .3s;will-change:transform}
 .hexagon:active{transform:scale(.96)}
 .phase-breathing{background:linear-gradient(135deg,#ff9500,#ff6b00)}
 .phase-retention{background:linear-gradient(135deg,#e74c3c,#c0392b);cursor:pointer}
 .phase-recovery{background:linear-gradient(135deg,#27ae60,#2ecc71)}
-.breath-counter{font-size:3rem;font-weight:700;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.3)}
-.speed-selector{display:flex;justify-content:center;gap:1rem;margin:1.5rem 0}
-.speed-btn{flex:1;padding:.7rem;border:2px solid var(--color-border);border-radius:20px;background:transparent;cursor:pointer;font-weight:600;transition:all .3s}
+.breath-counter{font-size:3rem;font-weight:700;color:#fff;text-shadow:0 0.125rem 0.25rem rgba(0,0,0,.3)}
+.speed-selector{display:flex;justify-content:center;gap:1rem;margin:0}
+.speed-btn{flex:1;padding:0.7rem;border:0.125rem solid var(--color-border);border-radius:1.25rem;background:transparent;cursor:pointer;font-weight:600;transition:all .3s}
 .speed-btn.active{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
-.slider-group{margin:1.5rem 0;padding:0 1rem}
-.slider-group label{display:flex;justify-content:space-between;font-weight:600;margin-bottom:.5rem}
-.slider{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:var(--color-border);outline:none}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--color-primary);cursor:pointer}
-.slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
-.start-button{background:var(--color-primary);color:#fff;border:none;padding:1rem;width:calc(100% - 2rem);margin:1rem auto;border-radius:25px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all .3s}
+.slider-group{margin:0;padding:0 1rem}
+.slider-group label{display:flex;justify-content:space-between;font-weight:600;margin-bottom:0.5rem}
+.slider{-webkit-appearance:none;width:100%;height:0.375rem;border-radius:0.1875rem;background:var(--color-border);outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
+.slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
+.start-button{background:var(--color-primary);color:#fff;border:none;padding:1rem;width:calc(100% - 2rem);margin:0 auto;border-radius:1.5rem;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all .3s}
 .start-button:hover{background:#1e4240;transform:translateY(-1px)}
 .round-info{font-size:1.1rem;color:var(--color-muted)}
-.instruction{font-size:1.3rem;font-weight:600;margin-bottom:2rem}
-.retention-timer{font-size:4rem;font-weight:700;color:var(--color-primary);margin:2rem 0}
+.instruction{font-size:1.3rem;font-weight:600;margin-bottom:0}
+.retention-timer{font-size:4rem;font-weight:700;color:var(--color-primary);margin:0}
 .tap-instruction{color:var(--color-muted)}
-.result-item{display:flex;justify-content:space-between;padding:1rem;margin:.5rem 0;background:#f8f9fa;border-radius:10px}
-.result-item.highlight{background:#e8f5e8;border-left:4px solid var(--color-success)}
+.result-item{display:flex;justify-content:space-between;padding:1rem;margin:0.5rem 0;background:#f8f9fa;border-radius:0.625rem}
+.result-item.highlight{background:#e8f5e8;border-left:0.25rem solid var(--color-success)}
 .results-title{font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;}
-.preview-label{font-size:0.9rem;color:var(--color-muted);margin-top:0.5rem;}
+.preview-label{font-size:0.9rem;color:var(--color-muted);margin-top:0.25rem;}
 .recovery-subtitle{font-size:1.2rem;color:var(--color-primary);font-weight:600;margin-top:0.5rem;}
-.skip-button{background:var(--color-secondary);color:#fff;border:none;padding:0.8rem 1.5rem;margin-top:1rem;border-radius:20px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s;opacity:0.9;}
+.skip-button{background:var(--color-secondary);color:#fff;border:none;padding:0.8rem 1.5rem;margin-top:1rem;border-radius:1.25rem;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s;opacity:0.9;}
 .skip-button:hover{background:#2980b9;opacity:1;transform:translateY(-1px);}
+
+/* Las media queries ya no son necesarias para ajustar el tamaño. El diseño ahora es inherentemente fluido. */
