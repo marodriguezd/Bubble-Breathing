@@ -11,6 +11,7 @@ class BubbleBreathingApp {
         speedFast: "Rápido",
         roundsLabel: "Rondas:",
         breathsLabel: "Respiraciones:",
+        volumeLabel: "Volumen:",
         startBtn: "Comenzar",
         roundInfo: "Ronda {current} / {total}",
         exerciseInstruction: "Toma {count} respiraciones profundas",
@@ -38,6 +39,7 @@ class BubbleBreathingApp {
         speedFast: "Fast",
         roundsLabel: "Rounds:",
         breathsLabel: "Breaths:",
+        volumeLabel: "Volume:",
         startBtn: "Start",
         roundInfo: "Round {current} / {total}",
         exerciseInstruction: "Take {count} deep breaths",
@@ -59,7 +61,7 @@ class BubbleBreathingApp {
     };
     
     this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
-    this.config = { speed: 'standard', rounds: 3, breaths: 30 };
+    this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.15 };
     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
@@ -114,6 +116,7 @@ class BubbleBreathingApp {
     elements.speedBtns[2].textContent = this.t('speedFast');
     document.querySelector('#roundsSlider').parentElement.querySelector('.slider-label').textContent = this.t('roundsLabel');
     document.querySelector('#breathsSlider').parentElement.querySelector('.slider-label').textContent = this.t('breathsLabel');
+    document.querySelector('#volumeSlider').parentElement.querySelector('.slider-label').textContent = this.t('volumeLabel');
     elements.startButton.textContent = this.t('startBtn');
     
     // Pantalla de ejercicio
@@ -192,6 +195,8 @@ class BubbleBreathingApp {
       roundsValue: document.getElementById('roundsValue'),
       breathsSlider: document.getElementById('breathsSlider'),
       breathsValue: document.getElementById('breathsValue'),
+      volumeSlider: document.getElementById('volumeSlider'),
+      volumeValue: document.getElementById('volumeValue'),
       startButton: document.getElementById('startButton'),
       
       // Exercise screen
@@ -233,6 +238,13 @@ class BubbleBreathingApp {
       this.config.breaths = +e.target.value;
       this.elements.breathsValue.textContent = e.target.value;
       this.updateExerciseInstruction();
+    });
+    
+    this.elements.volumeSlider.addEventListener('input', e => {
+      this.config.volume = +e.target.value;
+      this.elements.volumeValue.textContent = Math.round(e.target.value * 100);
+      // Previsualización del sonido
+      this.playTone(220, 200);
     });
     
     this.elements.speedBtns.forEach(btn => btn.addEventListener('click', () => {
@@ -334,6 +346,11 @@ class BubbleBreathingApp {
     this.updateExerciseInstruction();
     this.elements.exerciseHexagon.className = 'hexagon phase-breathing';
     this.elements.recoverySubtitle.style.display = 'none';
+    
+    // Resetear la escala del hexágono para cada nueva ronda
+    this.elements.exerciseHexagon.style.transition = 'transform 0.3s';
+    this.elements.exerciseHexagon.style.transform = 'scale(1)';
+    
     this.updateProgress();
     setTimeout(() => this.breathingCycle(), 500);
   }
@@ -511,7 +528,7 @@ class BubbleBreathingApp {
       
       oscillator.type = 'sine';
       oscillator.frequency.value = frequency;
-      gainNode.gain.value = 0.05;
+      gainNode.gain.value = this.config.volume; // Usa el volumen configurado
       
       oscillator.connect(gainNode);
       gainNode.connect(this.audioCtx.destination);
