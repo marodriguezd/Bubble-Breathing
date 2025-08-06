@@ -22,7 +22,7 @@ body{
   background:var(--color-bg);
   min-height:100vh;
   color:var(--color-text);
-  -webkit-tap-highlight-color: transparent; /* Mejora la experiencia en móvil */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .container{
@@ -52,17 +52,16 @@ body{
   width: 100%;
   max-width: 25rem;
   margin: 0 auto;
-  padding: 1.5rem;
-  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); /* Añade padding inferior respetando la barra de gestos */
+  padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
   text-align:center;
   flex-grow: 1;
   display:none;
   flex-direction:column;
   overflow: hidden;
 
-  /* --- CLAVE: Centra el bloque de contenido y usa un espaciado dinámico --- */
-  justify-content: center;
-  gap: clamp(1rem, 4vh, 2.5rem); /* El espaciado ahora depende de la altura de la pantalla! */
+  /* --- CLAVE 1: Repartimos el espacio de forma equitativa --- */
+  justify-content: space-evenly;
+  /* --- CLAVE 2: Eliminamos 'gap' para que no interfiera con space-evenly --- */
 }
 
 .screen.active{display:flex}
@@ -85,6 +84,7 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
+/* --- CLAVE 3: Eliminamos 'margin-top: auto' para que el botón participe en la distribución --- */
 .start-button{
   background:var(--color-primary);
   color:#fff;
@@ -93,7 +93,7 @@ body{
   width:100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: auto; /* Esta regla sigue siendo clave para anclar el botón abajo */
+  /* margin-top: auto; <-- ELIMINADO */
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
