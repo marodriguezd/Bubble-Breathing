@@ -13,11 +13,9 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* --- CLAVE DEFINITIVA: El tamaño base ahora escala con la dimensión más pequeña de la pantalla --- */
 html {
-  /* clamp(MIN, IDEAL, MAX) -> El tamaño ideal es 2.5% de la dimensión más pequeña (vmin) */
-  /* Esto asegura que la UI se encoja en pantallas cortas, evitando el scroll */
-  font-size: clamp(10px, 2.5vmin, 16px);
+  /* Mantenemos vmin para que la UI se encoja si la pantalla es muy pequeña en alguna dimensión */
+  font-size: clamp(11px, 2.5vmin, 16px);
 }
 
 body{
@@ -26,45 +24,48 @@ body{
   min-height:100vh;
   color:var(--color-text);
   -webkit-tap-highlight-color: transparent;
-  /* Evita que el usuario pueda "arrastrar" la UI en móvil, haciéndola más nativa */
   overscroll-behavior: none;
 }
 
+/* --- CLAVE 1: El contenedor ahora es un flexbox que centra su contenido --- */
 .container{
   background:var(--color-card);
   width: 100%;
   height: 100vh;
-  overflow:hidden; /* Esencial para prevenir cualquier tipo de scroll */
+  overflow:hidden;
   display:flex;
-  flex-direction:column;
-  padding-top: env(safe-area-inset-top);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  flex-direction:column; /* Mantiene la estructura Header -> Screen */
+  
+  /* Se eliminan los paddings de Safe Area, se aplicarán al contenido (.screen) */
 }
 
-.header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative; flex-shrink: 0;}
+.header{background:var(--color-primary);color:#fff;padding:1.5rem 1rem 1rem;text-align:center;position:relative; flex-shrink: 0; padding-top: calc(1.5rem + env(safe-area-inset-top));}
 .header h1{font-size:1.2rem;font-weight:500}
 #progressBar{height:0.1875rem;background:rgba(255,255,255,.3);border-radius:0.1875rem;margin-top:1rem}
 #progressFill{height:100%;background:#fff;width:0;transition:width .3s}
-.finish-btn{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.5rem 1rem;border-radius:1.25rem;font-size:0.9rem;cursor:pointer}
+.finish-btn{position:absolute;right:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.5rem 1rem;border-radius:1.25rem;font-size:0.9rem;cursor:pointer}
 .finish-btn.hidden{display: none;}
-.lang-container{position:absolute;left:1rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
+.lang-container{position:absolute;left:1rem;top: calc(50% + env(safe-area-inset-top)/2);transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
 .lang-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:0.3rem 0.6rem;border-radius:0.9375rem;font-size:0.8rem;cursor:pointer;font-weight:600;margin-bottom:0.125rem}
 .lang-toggle:hover{background:rgba(255,255,255,.3)}
 .lang-indicator{background:rgba(0,0,0,.7);color:#fff;padding:0.2rem 0.4rem;border-radius:0.5rem;font-size:0.65rem;white-space:nowrap}
 
+/* --- CLAVE 2: '.screen' es ahora un bloque de contenido cohesivo y centrado --- */
 .screen{
   width: 100%;
-  max-width: 28rem; /* Un poco más de ancho en PC */
-  margin: 0 auto;
-  padding: 1rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+  max-width: 28rem;
+  margin: auto; /* Centra el bloque verticalmente y horizontalmente */
+  padding: 2rem 1.5rem; /* Padding interno generoso */
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom)); /* Respeta la barra de gestos */
+  
   text-align:center;
-  flex-grow: 1;
   display:none;
   flex-direction:column;
   
-  /* Se mantiene 'space-evenly' porque ahora el contenido SÍ cabe */
-  justify-content: space-evenly;
+  /* Ya no necesita crecer, tiene su propio tamaño implícito */
+  
+  /* Usamos un gap consistente para el espaciado interno */
+  gap: 2rem;
 }
 
 .screen.active{display:flex}
@@ -87,14 +88,14 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
+/* --- CLAVE 3: El botón vuelve a ser un elemento normal del flujo --- */
 .start-button{
   background:var(--color-primary);
   color:#fff;
   border:none;
-  padding:1rem;
+  padding:1.1rem; /* Un poco más de padding para que se vea importante */
   width:100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto; /* Se centra solo horizontalmente */
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
