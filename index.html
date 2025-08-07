@@ -1,110 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Bubble Breathing</title>
-  <meta name="theme-color" content="#2c5f5d">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="lang-container">
-        <div class="lang-selector">
-          <button class="lang-toggle" id="langToggle">
-            <span class="lang-flag" id="langFlag">🇬🇧</span>
-            <span id="langCode">EN</span>
-          </button>
-          <div class="lang-dropdown" id="langDropdown">
-            <button class="lang-option" data-lang="en">
-              <span class="lang-flag">🇬🇧</span>
-              <span>English</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Bubble Breathing</title>
+    <meta name="theme-color" content="#2c5f5d" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="lang-container">
+          <div class="lang-selector">
+            <button class="lang-toggle" id="langToggle">
+              <span class="lang-flag" id="langFlag">🇬🇧</span>
+              <span id="langCode">EN</span>
             </button>
-            <button class="lang-option" data-lang="es">
-              <span class="lang-flag">🇪🇸</span>
-              <span>Español</span>
-            </button>
-            <button class="lang-option" data-lang="fr">
-              <span class="lang-flag">🇫🇷</span>
-              <span>Français</span>
-            </button>
+            <div class="lang-dropdown" id="langDropdown">
+              <button class="lang-option" data-lang="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span>English</span>
+              </button>
+              <button class="lang-option" data-lang="es">
+                <span class="lang-flag">🇪🇸</span>
+                <span>Español</span>
+              </button>
+              <button class="lang-option" data-lang="fr">
+                <span class="lang-flag">🇫🇷</span>
+                <span>Français</span>
+              </button>
+              <button class="lang-option" data-lang="it">
+                <span class="lang-flag">🇮🇹</span>
+                <span>Italiano</span>
+              </button>
+              <button class="lang-option" data-lang="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span>Deutsch</span>
+              </button>
+              <button class="lang-option" data-lang="pt">
+                <span class="lang-flag">🇵🇹</span>
+                <span>Português</span>
+              </button>
+              <button class="lang-option" data-lang="zh">
+                <span class="lang-flag">🇨🇳</span>
+                <span>简体中文</span>
+              </button>
+            </div>
+          </div>
+          <div class="lang-overlay" id="langOverlay"></div>
+        </div>
+        <h1 id="headerTitle">Bubble Breathing</h1>
+        <div id="progressBar"><div id="progressFill"></div></div>
+        <button class="finish-btn hidden" id="finishBtn">Finish</button>
+      </div>
+
+      <!-- CONFIG -->
+      <div id="configScreen" class="screen active">
+        <div class="hexagon-container">
+          <div class="hexagon phase-breathing" id="previewHexagon">
+            <div class="breath-counter" id="previewCounter">1</div>
           </div>
         </div>
-        <div class="lang-overlay" id="langOverlay"></div>
+        <div class="preview-label" id="previewLabel">Breathing Preview</div>
+        <div class="speed-selector">
+          <button class="speed-btn" data-speed="slow" id="speedSlow">
+            Slow
+          </button>
+          <button
+            class="speed-btn active"
+            data-speed="standard"
+            id="speedStandard"
+          >
+            Standard
+          </button>
+          <button class="speed-btn" data-speed="fast" id="speedFast">
+            Fast
+          </button>
+        </div>
+        <div class="slider-group">
+          <label for="roundsSlider">
+            <span class="slider-label" id="roundsLabel">Rounds:</span>
+            <span id="roundsValue">3</span>
+          </label>
+          <input
+            type="range"
+            id="roundsSlider"
+            min="1"
+            max="5"
+            value="3"
+            class="slider"
+          />
+        </div>
+        <div class="slider-group">
+          <label for="breathsSlider">
+            <span class="slider-label" id="breathsLabel">Breaths:</span>
+            <span id="breathsValue">30</span>
+          </label>
+          <input
+            type="range"
+            id="breathsSlider"
+            min="5"
+            max="60"
+            step="5"
+            value="30"
+            class="slider"
+          />
+        </div>
+        <div class="slider-group">
+          <label for="volumeSlider">
+            <span class="slider-label" id="volumeLabel">Volume:</span>
+            <span id="volumeValue">25</span>%
+          </label>
+          <input
+            type="range"
+            id="volumeSlider"
+            min="0"
+            max="0.5"
+            step="0.05"
+            value="0.25"
+            class="slider"
+          />
+        </div>
+        <button class="start-button" id="startButton">Start</button>
       </div>
-      <h1 id="headerTitle">Bubble Breathing</h1>
-      <div id="progressBar"><div id="progressFill"></div></div>
-      <button class="finish-btn hidden" id="finishBtn">Finish</button>
+
+      <!-- EJERCICIO Y RETENCIÓN -->
+      <div id="exerciseScreen" class="screen">
+        <div class="round-info" id="roundInfo">Round 1 / 3</div>
+        <div class="instruction" id="exerciseInstruction">
+          Take 30 deep breaths
+        </div>
+        <div class="hexagon-container">
+          <div class="hexagon phase-breathing" id="exerciseHexagon">
+            <div class="breath-counter" id="breathCounter">1</div>
+          </div>
+        </div>
+        <button class="skip-button" id="skipToRetentionBtn">
+          Skip to breath hold
+        </button>
+        <button class="skip-button" id="skipRecoveryBtn" style="display: none">
+          Skip recovery
+        </button>
+        <div
+          class="recovery-subtitle"
+          id="recoverySubtitle"
+          style="display: none"
+        ></div>
+      </div>
+
+      <div id="retentionScreen" class="screen">
+        <div class="round-info" id="retentionRoundInfo">Round 1 / 3</div>
+        <div class="instruction" id="retentionInstruction">
+          Hold your breath
+        </div>
+        <div class="retention-timer" id="retentionTimer">00:00</div>
+        <div class="hexagon-container">
+          <div class="hexagon phase-retention" id="retentionHexagon">
+            <div class="breath-counter">■</div>
+          </div>
+        </div>
+        <div class="tap-instruction" id="retentionTapInstruction">
+          Tap when you need to breathe
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="resultsScreen" class="screen">
+        <div class="results-title" id="resultsTitle">Session Results</div>
+        <div id="resultsContent"></div>
+        <button class="start-button" id="newSessionBtn">New Session</button>
+      </div>
     </div>
-    
-    <!-- CONFIG -->
-    <div id="configScreen" class="screen active">
-      <div class="hexagon-container">
-        <div class="hexagon phase-breathing" id="previewHexagon"><div class="breath-counter" id="previewCounter">1</div></div>
-      </div>
-      <div class="preview-label" id="previewLabel">Breathing Preview</div>
-      <div class="speed-selector">
-        <button class="speed-btn" data-speed="slow" id="speedSlow">Slow</button>
-        <button class="speed-btn active" data-speed="standard" id="speedStandard">Standard</button>
-        <button class="speed-btn" data-speed="fast" id="speedFast">Fast</button>
-      </div>
-      <div class="slider-group">
-        <label for="roundsSlider">
-          <span class="slider-label" id="roundsLabel">Rounds:</span>
-          <span id="roundsValue">3</span>
-        </label>
-        <input type="range" id="roundsSlider" min="1" max="5" value="3" class="slider">
-      </div>
-      <div class="slider-group">
-        <label for="breathsSlider">
-          <span class="slider-label" id="breathsLabel">Breaths:</span>
-          <span id="breathsValue">30</span>
-        </label>
-        <input type="range" id="breathsSlider" min="5" max="60" step="5" value="30" class="slider">
-      </div>
-      <div class="slider-group">
-        <label for="volumeSlider">
-          <span class="slider-label" id="volumeLabel">Volume:</span>
-          <span id="volumeValue">25</span>%
-        </label>
-        <input type="range" id="volumeSlider" min="0" max="0.5" step="0.05" value="0.25" class="slider">
-      </div>
-      <button class="start-button" id="startButton">Start</button>
-    </div>
-    
-    <!-- EJERCICIO Y RETENCIÓN -->
-    <div id="exerciseScreen" class="screen">
-      <div class="round-info" id="roundInfo">Round 1 / 3</div>
-      <div class="instruction" id="exerciseInstruction">Take 30 deep breaths</div>
-      <div class="hexagon-container">
-        <div class="hexagon phase-breathing" id="exerciseHexagon"><div class="breath-counter" id="breathCounter">1</div></div>
-      </div>
-      <button class="skip-button" id="skipToRetentionBtn">Skip to breath hold</button>
-      <button class="skip-button" id="skipRecoveryBtn" style="display: none;">Skip recovery</button>
-      <div class="recovery-subtitle" id="recoverySubtitle" style="display: none;"></div>
-    </div>
-    
-    <div id="retentionScreen" class="screen">
-      <div class="round-info" id="retentionRoundInfo">Round 1 / 3</div>
-      <div class="instruction" id="retentionInstruction">Hold your breath</div>
-      <div class="retention-timer" id="retentionTimer">00:00</div>
-      <div class="hexagon-container">
-        <div class="hexagon phase-retention" id="retentionHexagon"><div class="breath-counter">■</div></div>
-      </div>
-      <div class="tap-instruction" id="retentionTapInstruction">Tap when you need to breathe</div>
-    </div>
-    
-    <!-- RESULTS -->
-    <div id="resultsScreen" class="screen">
-      <div class="results-title" id="resultsTitle">Session Results</div>
-      <div id="resultsContent"></div>
-      <button class="start-button" id="newSessionBtn">New Session</button>
-    </div>
-  </div>
-  
-  <!-- Cargar traducciones ANTES que el script principal -->
-  <script src="js/translations.js"></script>
-  <script src="js/script.js" defer></script>
-</body>
+
+    <!-- Cargar traducciones ANTES que el script principal -->
+    <script src="js/translations.js"></script>
+    <script src="js/script.js" defer></script>
+  </body>
 </html>

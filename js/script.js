@@ -11,11 +11,15 @@ class BubbleBreathingApp {
     
     // Configuración mejorada de idiomas
     this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
-    this.availableLanguages = ['en', 'es', 'fr'];
+    this.availableLanguages = ['en', 'es', 'fr', 'it', 'de', 'pt', 'zh'];
     this.languageConfig = {
       en: { flag: '🇬🇧', name: 'English' },
       es: { flag: '🇪🇸', name: 'Español' },
-      fr: { flag: '🇫🇷', name: 'Français' }
+      fr: { flag: '🇫🇷', name: 'Français' },
+      it: { flag: '🇮🇹', name: 'Italiano' },      
+      de: { flag: '🇩🇪', name: 'Deutsch' },       
+      pt: { flag: '🇵🇹', name: 'Português' },     
+      zh: { flag: '🇨🇳', name: '简体中文' }       
     };
     
     this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };

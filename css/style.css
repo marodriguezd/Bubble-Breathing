@@ -107,11 +107,32 @@ body{
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   margin-top: 0.25rem;
   min-width: 120px;
+  max-height: 200px; /* Altura máxima para mostrar unos 4 idiomas */
+  overflow-y: auto;  /* Añadir scroll vertical cuando sea necesario */
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
   transition: all 0.2s ease;
   z-index: 1000;
+}
+
+/* Personalizar el scroll para que coincida con el diseño */
+.lang-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lang-dropdown::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(44,95,93,0.5);
+  border-radius: 3px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(44,95,93,0.8);
 }
 
 .lang-dropdown.open {
