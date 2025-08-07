@@ -22,6 +22,7 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 
 - **Guided Breathing Cycles:** A visual "breathing bubble" and optional audio cues guide you through each inhalation and exhalation.
 - **Customizable Sessions:** Fully tailor your exercise by choosing the number of rounds, breaths per round, and the volume of the audio cues.
+- **Persistent Settings:** Your session configuration (speed, rounds, breaths, and volume) is automatically saved in your browser, so you can pick up right where you left off on your next visit.
 - **Adjustable Speed & Live Preview:** Select between Slow, Standard, and Fast speeds. A live preview on the setup screen demonstrates the selected pace before you begin.
 - **Automatic Breath-Hold Timer:** After the breathing cycles, the app automatically times your breath-hold (retention) phase.
 - **Structured Recovery Breath:** Following each breath-hold, the app guides you through a controlled 15-second recovery breath to help you normalize before the next round.
@@ -30,7 +31,7 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 - **Multilingual Support:** Seamlessly switch between English, Spanish, French, Italian, German, Portuguese and Simplified Chinese using an intuitive dropdown menu. Your language preference is saved for your next visit.
 - **Zoom Persistence on Installation:** When installing the app as a web app (via "Add to Home Screen"), the zoom level set in your browser at the time of installation will be preserved for the installed app.
 - **Zoom-Responsive Width:** The app's width adjusts dynamically with your browser's zoom level, allowing you to customize the viewing experience to your preference. [See zoom examples 📸](#zoom-examples)
-- **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout intelligently scales and distributes itself to perfectly fit any screen size, from wide desktop monitors to tall mobile screens, completely avoiding scrollbars and common mobile viewport issues.
+- **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout uses modern CSS techniques to intelligently scale and distribute content, ensuring components fit perfectly on any screen size—from wide desktops to tall mobile displays—without scrollbars or viewport issues.
 
 ### 📱 How to Install as a Web App
 
@@ -93,6 +94,7 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 
 - **Ciclos de Respiración Guiados:** Una "burbuja de respiración" visual y señales auditivas opcionales te guían en cada inhalación y exhalación.
 - **Sesiones Personalizables:** Adapta completamente tu ejercicio eligiendo el número de rondas, la cantidad de respiraciones por ronda y el volumen de las guías auditivas.
+- **Configuración Persistente:** Los ajustes de tu sesión (velocidad, rondas, respiraciones y volumen) se guardan automáticamente en tu navegador, para que puedas continuar justo donde lo dejaste en tu próxima visita.
 - **Velocidad Ajustable y Previsualización en Vivo:** Selecciona entre velocidades Lenta, Estándar y Rápida. Una previsualización en la pantalla de configuración te muestra el ritmo seleccionado antes de empezar.
 - **Temporizador Automático de Apnea:** Después de los ciclos de respiración, la aplicación cronometra automáticamente tu fase de apnea (retención de la respiración).
 - **Respiración de Recuperación Estructurada:** Tras cada apnea, la aplicación te guía a través de una respiración de recuperación controlada de 15 segundos para ayudarte a normalizarte antes de la siguiente ronda.
@@ -101,7 +103,7 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 - **Soporte Multilingüe:** Cambia fácilmente entre inglés, español, francés, italiano, alemán, portugués y chino simplificado usando un menú desplegable intuitivo. Tu preferencia de idioma se guarda para tu próxima visita.
 - **Persistencia del Zoom al Instalar:** Al instalar la aplicación como web app (mediante "Añadir a pantalla de inicio"), el nivel de zoom configurado en el navegador en el momento de la instalación se mantendrá en la aplicación instalada.
 - **Ancho Adaptable con Zoom:** El ancho de la aplicación se ajusta dinámicamente con el nivel de zoom del navegador, permitiéndote personalizar la experiencia de visualización a tu gusto. [Ver ejemplos de zoom 📸](#zoom-examples)
-- **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout se escala y distribuye de forma inteligente para ajustarse perfectamente a cualquier tamaño de pantalla, desde monitores anchos de escritorio hasta pantallas altas de móviles, evitando por completo las barras de scroll y los problemas comunes de los viewports móviles.
+- **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout utiliza técnicas modernas de CSS para escalar y distribuir el contenido de forma inteligente, asegurando que los componentes se ajusten perfectamente a cualquier tamaño de pantalla —desde monitores anchos de escritorio hasta pantallas altas de móviles— sin barras de scroll ni problemas de viewport.
 
 ### 📱 Cómo Instalar como Web App
 
