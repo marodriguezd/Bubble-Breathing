@@ -14,7 +14,7 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 
 ### ✨ [Live Demo Here](https://marodriguezd.github.io/Bubble-Breathing/)
 
-![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot.png)
+![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png)
 
 ### ✨ Features
 
@@ -27,8 +27,22 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 - **Session Summary:** At the end of your session, review your retention times for each round and your overall average time.
 - **Multilingual Support:** Seamlessly switch between English, Spanish, French, Italian, German, Portuguese and Simplified Chinese
   using an intuitive dropdown menu. Your language preference is saved for your next visit.
+- **Zoom Persistence on Installation:** When installing the app as a web app (via "Add to Home Screen"), the zoom level set in your browser at the time of installation will be preserved for the installed app.
 - **Zoom-Responsive Width:** The app's width adjusts dynamically with your browser's zoom level, allowing you to customize the viewing experience to your preference. [See zoom examples 📸](#zoom-examples)
 - **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout intelligently scales and distributes itself to perfectly fit any screen size, from wide desktop monitors to tall mobile screens, completely avoiding scrollbars and common mobile viewport issues.
+
+### 📱 How to Install as a Web App
+
+You can install Bubble Breathing directly on your device for quick access, just like a native app. Follow these simple steps:
+
+1. Open the app in your browser (Chrome recommended for Android, Safari for iOS)
+2. Tap the menu button (⋮) on Android or the share button (⎙) on iOS
+3. Select "Add to Home Screen" or "Install app"
+4. Confirm the installation
+
+The app will appear on your home screen with the custom icon and can be used offline!
+
+![Bubble Breathing Installation](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif)
 
 ### 🚀 How to Use
 
@@ -68,7 +82,7 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 
 ### ✨ [Demo en vivo aquí](https://marodriguezd.github.io/Bubble-Breathing/)
 
-![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/demo-screenshot_es.png)
+![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot_es.png)
 
 ### ✨ Características
 
@@ -80,8 +94,22 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 - **Control Flexible:** Salta la fase principal de respiración o la respiración de recuperación en cualquier momento con botones dedicados, dándote control total sobre tu sesión.
 - **Resumen de la Sesión:** Al final de tu sesión, revisa tus tiempos de retención para cada ronda y tu tiempo promedio general.
 - **Soporte Multilingüe:** Cambia fácilmente entre inglés, español, francés, italiano, alemán, portugués y chino simplificado usando un menú desplegable intuitivo. Tu preferencia de idioma se guarda para tu próxima visita.
+- **Persistencia del Zoom al Instalar:** Al instalar la aplicación como web app (mediante "Añadir a pantalla de inicio"), el nivel de zoom configurado en el navegador en el momento de la instalación se mantendrá en la aplicación instalada.
 - **Ancho Adaptable con Zoom:** El ancho de la aplicación se ajusta dinámicamente con el nivel de zoom del navegador, permitiéndote personalizar la experiencia de visualización a tu gusto. [Ver ejemplos de zoom 📸](#zoom-examples)
 - **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout se escala y distribuye de forma inteligente para ajustarse perfectamente a cualquier tamaño de pantalla, desde monitores anchos de escritorio hasta pantallas altas de móviles, evitando por completo las barras de scroll y los problemas comunes de los viewports móviles.
+
+### 📱 Cómo Instalar como Web App
+
+Puedes instalar Bubble Breathing directamente en tu dispositivo para un acceso rápido, igual que una aplicación nativa. Sigue estos sencillos pasos:
+
+1. Abre la aplicación en tu navegador (se recomienda Chrome para Android, Safari para iOS)
+2. Toca el botón de menú (⋮) en Android o el botón de compartir (⎙) en iOS
+3. Selecciona "Añadir a pantalla de inicio" o "Instalar aplicación"
+4. Confirma la instalación
+
+¡La aplicación aparecerá en tu pantalla de inicio con el icono personalizado y podrás usarla sin conexión!
+
+![Bubble Breathing Installation](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif)
 
 ### 🚀 Cómo Usarlo
 
@@ -106,13 +134,14 @@ Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ning
 - **JavaScript (ES6+):** Para toda la lógica de la aplicación, manejo de estado e interacciones del usuario, estructurado en una clase `BubbleBreathingApp` orientada a objetos para un código limpio y manejable.
 
 <a name="zoom-examples"></a>
+
 ## 📸 Zoom Adaptability Examples / Ejemplos de Adaptabilidad al Zoom
 
 **Normal Zoom (100%) / Zoom Normal (100%)**
-![Normal Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/normal-zoom-example.png)
+![Normal Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/normal-zoom-example.png)
 
 **Increased Zoom (150%) / Zoom Aumentado (150%)**
-![Increased Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/increased-zoom-example.png)
+![Increased Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/increased-zoom-example.png)
 
 [Back to English version 🇬🇧](#english-version)   •   [Volver a la versión en español 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
 
