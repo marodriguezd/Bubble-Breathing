@@ -22,7 +22,12 @@ class BubbleBreathingApp {
       zh: { flag: '🇨🇳', name: '简体中文' }       
     };
     
-    this.config = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
+    // Configuración por defecto
+    this.defaultConfig = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
+    
+    // Cargar configuración guardada o usar por defecto
+    this.config = this.loadConfig();
+    
     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
@@ -40,11 +45,66 @@ class BubbleBreathingApp {
     this.init();
   }
   
+  // Métodos para memoria de configuración
+  loadConfig() {
+    try {
+      const savedConfig = localStorage.getItem('bubbleBreathingConfig');
+      if (savedConfig) {
+        const parsed = JSON.parse(savedConfig);
+        // Validar que la configuración guardada sea válida
+        return {
+          speed: ['slow', 'standard', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
+          rounds: (parsed.rounds >= 1 && parsed.rounds <= 5) ? parsed.rounds : this.defaultConfig.rounds,
+          breaths: (parsed.breaths >= 5 && parsed.breaths <= 60) ? parsed.breaths : this.defaultConfig.breaths,
+          volume: (parsed.volume >= 0 && parsed.volume <= 0.5) ? parsed.volume : this.defaultConfig.volume
+        };
+      }
+    } catch (e) {
+      console.warn('Error loading saved config:', e);
+    }
+    return { ...this.defaultConfig };
+  }
+  
+  saveConfig() {
+    try {
+      localStorage.setItem('bubbleBreathingConfig', JSON.stringify(this.config));
+    } catch (e) {
+      console.warn('Error saving config:', e);
+    }
+  }
+  
+  resetConfig() {
+    this.config = { ...this.defaultConfig };
+    this.saveConfig();
+    this.updateConfigUI();
+    // Reiniciar preview con nueva configuración
+    this.restartPreviewAnimation();
+  }
+  
+  updateConfigUI() {
+    // Actualizar sliders
+    this.elements.roundsSlider.value = this.config.rounds;
+    this.elements.roundsValue.textContent = this.config.rounds;
+    this.elements.breathsSlider.value = this.config.breaths;
+    this.elements.breathsValue.textContent = this.config.breaths;
+    this.elements.volumeSlider.value = this.config.volume;
+    this.elements.volumeValue.textContent = Math.round(this.config.volume * 100);
+    
+    // Actualizar botones de velocidad
+    this.elements.speedBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.speed === this.config.speed);
+    });
+    
+    // Actualizar instrucción del ejercicio
+    this.updateExerciseInstruction();
+  }
+  
   init() {
     this.initElements();
     this.initEventListeners();
     this.updateLanguage();
     this.updateLanguageDisplay();
+    this.updateConfigUI(); // Aplicar configuración guardada a la UI
     this.startPreviewAnimation();
   }
   
@@ -80,6 +140,7 @@ class BubbleBreathingApp {
     elements.breathsLabel.textContent = this.t('breathsLabel');
     elements.volumeLabel.textContent = this.t('volumeLabel');
     elements.startButton.textContent = this.t('startBtn');
+    elements.resetConfigBtn.textContent = this.t('resetConfigBtn');
     
     // Pantalla de ejercicio
     this.updateRoundInfo();
@@ -211,6 +272,7 @@ class BubbleBreathingApp {
       volumeValue: document.getElementById('volumeValue'),
       volumeLabel: document.getElementById('volumeLabel'),
       startButton: document.getElementById('startButton'),
+      resetConfigBtn: document.getElementById('resetConfigBtn'),
       
       // Exercise screen
       roundInfo: document.getElementById('roundInfo'),
@@ -274,16 +336,18 @@ class BubbleBreathingApp {
       }
     });
     
-    // Configuración
+    // Configuración con guardado automático
     this.elements.roundsSlider.addEventListener('input', e => {
       this.config.rounds = +e.target.value;
       this.elements.roundsValue.textContent = e.target.value;
+      this.saveConfig();
     });
     
     this.elements.breathsSlider.addEventListener('input', e => {
       this.config.breaths = +e.target.value;
       this.elements.breathsValue.textContent = e.target.value;
       this.updateExerciseInstruction();
+      this.saveConfig();
     });
     
     this.elements.volumeSlider.addEventListener('input', e => {
@@ -291,14 +355,23 @@ class BubbleBreathingApp {
       this.elements.volumeValue.textContent = Math.round(e.target.value * 100);
       // Previsualización del sonido
       this.playTone(220, 200);
+      this.saveConfig();
     });
     
     this.elements.speedBtns.forEach(btn => btn.addEventListener('click', () => {
       this.elements.speedBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       this.config.speed = btn.dataset.speed;
+      this.saveConfig();
       this.restartPreviewAnimation();
     }));
+    
+    // Botón reset de configuración
+    if (this.elements.resetConfigBtn) {
+      this.elements.resetConfigBtn.addEventListener('click', () => {
+        this.resetConfig();
+      });
+    }
     
     // Navegación
     this.elements.startButton.addEventListener('click', () => this.startSession());
@@ -415,7 +488,9 @@ class BubbleBreathingApp {
     this.updateProgress();
     
     const { inhale, exhale } = this.speedSettings[this.config.speed];
-    this.playTone(220, 200);
+    
+    // Audio y vibración para cada respiración
+    this.playBreathTone();
     this.vibrate();
     
     // Animación de inhalación
@@ -440,6 +515,10 @@ class BubbleBreathingApp {
     this.session.currentBreath = this.config.breaths;
     this.elements.breathCounter.textContent = this.session.currentBreath;
     this.updateProgress();
+    
+    // Audio y vibración antes de entrar en retención
+    this.playRetentionStartSignal();
+    
     setTimeout(() => this.startRetentionPhase(), 500);
   }
   
@@ -459,13 +538,22 @@ class BubbleBreathingApp {
     }, 100);
   }
   
+  // Métodos de audio y vibración mejorados
+  playBreathTone() {
+    if (this.config.volume > 0) {
+      this.playTone(220, 200);
+    }
+  }
+  
   // Señal distintiva para el inicio de la apnea
   playRetentionStartSignal() {
-    // Sonido más grave y prolongado
-    this.playTone(150, 800);
+    if (this.config.volume > 0) {
+      // Sonido más grave y prolongado
+      this.playTone(150, 800);
+    }
     
-    // Vibración prolongada en tres pulsos para distinguir del resto
-    if (navigator.vibrate) {
+    // Vibración solo si hay volumen (coherencia audio-haptic)
+    if (this.config.volume > 0 && navigator.vibrate) {
       navigator.vibrate([200, 100, 200, 100, 400]);
     }
   }
@@ -490,6 +578,10 @@ class BubbleBreathingApp {
     this.elements.recoverySubtitle.textContent = this.t('timeToInhale');
     this.updateProgress();
     
+    // Audio y vibración para el inicio de la recuperación
+    this.playBreathTone();
+    this.vibrate();
+    
     this.startCountdown(3, () => this.startRecoveryPhase());
   }
   
@@ -508,6 +600,10 @@ class BubbleBreathingApp {
     this.elements.recoverySubtitle.style.display = 'block';
     this.elements.recoverySubtitle.textContent = this.t('timeToExhale');
     this.updateProgress();
+    
+    // Audio y vibración para el inicio de la exhalación
+    this.playBreathTone();
+    this.vibrate();
     
     this.startCountdown(3, () => {
       this.elements.recoverySubtitle.style.display = 'none';
@@ -585,6 +681,8 @@ class BubbleBreathingApp {
   }
   
   playTone(frequency, duration) {
+    if (this.config.volume === 0) return; // No reproducir sonido si está en silencio
+    
     try {
       const oscillator = this.audioCtx.createOscillator();
       const gainNode = this.audioCtx.createGain();
@@ -604,7 +702,10 @@ class BubbleBreathingApp {
   }
   
   vibrate(duration = 30) {
-    if (navigator.vibrate) navigator.vibrate(duration);
+    // Solo vibrar si hay volumen configurado (coherencia audio-haptic)
+    if (this.config.volume > 0 && navigator.vibrate) {
+      navigator.vibrate(duration);
+    }
   }
   
   formatTime(seconds) {

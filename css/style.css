@@ -228,13 +228,39 @@ body{
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer}
 .slider::-moz-range-thumb{width:1.375rem;height:1.375rem;border-radius:50%;background:var(--color-primary);cursor:pointer;border:none}
 
+/* Estilos para los botones de configuración */
+.config-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.reset-config-btn {
+  background: var(--color-muted);
+  color: #fff;
+  border: none;
+  padding: 1.1rem;
+  flex: 1;
+  max-width: 8rem;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.reset-config-btn:hover {
+  background: #6c7b7d;
+  transform: translateY(-1px);
+}
+
 .start-button{
   background:var(--color-primary);
   color:#fff;
   border:none;
   padding:1.1rem;
-  width:100%;
-  margin: 0 auto;
+  flex: 1;
   border-radius:1.5rem;
   font-size:1.1rem;
   font-weight:600;
@@ -242,7 +268,14 @@ body{
   transition:all .3s
 }
 
-.start-button:hover{background:#1e4240;transform:translateY(-1px)}
+/* Corrección para el botón de Nueva Sesión en la pantalla de resultados */
+#resultsScreen .start-button {
+  flex: none; /* Evita que el botón se estire */
+  align-self: center; /* Lo centra horizontalmente en el contenedor de columna */
+  width: auto; /* El ancho se ajusta al contenido y al padding */
+  padding: 1.1rem 3rem; /* Más padding horizontal para una forma de cápsula más bonita */
+}
+
 .round-info{font-size:1.1rem;color:var(--color-muted)}
 .instruction{font-size:1.3rem;font-weight:600;}
 .retention-timer{font-size:4rem;font-weight:700;color:var(--color-primary);}
