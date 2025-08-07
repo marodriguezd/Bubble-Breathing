@@ -14,7 +14,9 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 
 ### ✨ [Live Demo Here](https://marodriguezd.github.io/Bubble-Breathing/)
 
-![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png" alt="Bubble Breathing Screenshot" width="350">
+</p>
 
 ### ✨ Features
 
@@ -25,8 +27,7 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 - **Structured Recovery Breath:** Following each breath-hold, the app guides you through a controlled 15-second recovery breath to help you normalize before the next round.
 - **Flexible Control:** Skip the main breathing phase or the recovery breath at any time with dedicated buttons, giving you full control over your session.
 - **Session Summary:** At the end of your session, review your retention times for each round and your overall average time.
-- **Multilingual Support:** Seamlessly switch between English, Spanish, French, Italian, German, Portuguese and Simplified Chinese
-  using an intuitive dropdown menu. Your language preference is saved for your next visit.
+- **Multilingual Support:** Seamlessly switch between English, Spanish, French, Italian, German, Portuguese and Simplified Chinese using an intuitive dropdown menu. Your language preference is saved for your next visit.
 - **Zoom Persistence on Installation:** When installing the app as a web app (via "Add to Home Screen"), the zoom level set in your browser at the time of installation will be preserved for the installed app.
 - **Zoom-Responsive Width:** The app's width adjusts dynamically with your browser's zoom level, allowing you to customize the viewing experience to your preference. [See zoom examples 📸](#zoom-examples)
 - **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout intelligently scales and distributes itself to perfectly fit any screen size, from wide desktop monitors to tall mobile screens, completely avoiding scrollbars and common mobile viewport issues.
@@ -42,7 +43,9 @@ You can install Bubble Breathing directly on your device for quick access, just 
 
 The app will appear on your home screen with the custom icon and can be used offline!
 
-![Bubble Breathing Installation](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
+</p>
 
 ### 🚀 How to Use
 
@@ -82,7 +85,9 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 
 ### ✨ [Demo en vivo aquí](https://marodriguezd.github.io/Bubble-Breathing/)
 
-![Bubble Breathing Screenshot](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot_es.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot_es.png" alt="Bubble Breathing Screenshot" width="350">
+</p>
 
 ### ✨ Características
 
@@ -109,7 +114,9 @@ Puedes instalar Bubble Breathing directamente en tu dispositivo para un acceso r
 
 ¡La aplicación aparecerá en tu pantalla de inicio con el icono personalizado y podrás usarla sin conexión!
 
-![Bubble Breathing Installation](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
+</p>
 
 ### 🚀 Cómo Usarlo
 
@@ -137,16 +144,23 @@ Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ning
 
 ## 📸 Zoom Adaptability Examples / Ejemplos de Adaptabilidad al Zoom
 
-**Normal Zoom (100%) / Zoom Normal (100%)**
-![Normal Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/normal-zoom-example.png)
-
-**Increased Zoom (150%) / Zoom Aumentado (150%)**
-![Increased Zoom Example](https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/increased-zoom-example.png)
+<table align="center">
+  <thead>
+    <tr>
+      <th align="center">Normal Zoom (100%) / Zoom Normal (100%)</th>
+      <th align="center">Increased Zoom (150%) / Zoom Aumentado (150%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/normal-zoom-example.png" alt="Normal Zoom Example" width="420"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/increased-zoom-example.png" alt="Increased Zoom Example" width="420"></td>
+    </tr>
+  </tbody>
+</table>
 
 [Back to English version 🇬🇧](#english-version)   •   [Volver a la versión en español 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
 
 ### 📄 License
 
 This project is under the MIT License.
-
-[Ir a la versión en Inglés 🇬🇧](#english-version)   •   [Volver arriba ⬆️](#bubble-breathing)
