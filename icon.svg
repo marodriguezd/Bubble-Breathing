@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Círculo de fondo con el color principal de la app -->
+  <circle cx="256" cy="256" r="240" fill="#2c5f5d"/>
+  
+  <!-- Burbuja grande arriba a la derecha -->
+  <circle cx="320" cy="200" r="70" fill="white" opacity="0.9"/>
+  
+  <!-- Burbuja pequeña abajo a la izquierda -->
+  <circle cx="180" cy="300" r="45" fill="white" opacity="0.9"/>
+</svg>

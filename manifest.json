@@ -1,0 +1,16 @@
+{
+  "name": "Bubble Breathing",
+  "short_name": "BubbleBreath",
+  "description": "An immersive, app-like web application for guided rhythmic breathing exercises.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#2c5f5d",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
