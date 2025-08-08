@@ -162,7 +162,3 @@ Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ning
 </table>
 
 [Back to English version 🇬🇧](#english-version)   •   [Volver a la versión en español 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
-
-### 📄 License
-
-This project is under the MIT License.
