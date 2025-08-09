@@ -86,8 +86,9 @@ body {
   padding: 1.5rem 1rem 1rem;
   padding-top: calc(1.5rem + env(safe-area-inset-top));
   text-align: center;
-  position: relative;
+  position: relative; /* <-- CAMBIO #1: AÑADIDO */
   flex-shrink: 0;
+  z-index: 10; /* <-- CAMBIO #1: AÑADIDO (Eleva toda la cabecera) */
 }
 
 .header h1 {
@@ -185,11 +186,11 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  background: var(--color-dropdown-bg); /* <-- CAMBIO */
+  background: var(--color-dropdown-bg);
   backdrop-filter: blur(10px);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 20px var(--color-dropdown-shadow); /* <-- CAMBIO */
-  margin-top: 0.25rem;
+  box-shadow: 0 4px 20px var(--color-dropdown-shadow);
+  margin-top: 0.5rem; /* <-- CAMBIO #2: Aumentada la separación */
   min-width: 120px;
   max-height: 200px; 
   overflow-y: auto; 
@@ -206,17 +207,17 @@ body {
 }
 
 .lang-dropdown::-webkit-scrollbar-track {
-  background: var(--color-dropdown-scrollbar-track); /* <-- CAMBIO */
+  background: var(--color-dropdown-scrollbar-track);
   border-radius: 3px;
 }
 
 .lang-dropdown::-webkit-scrollbar-thumb {
-  background: var(--color-dropdown-scrollbar-thumb); /* <-- CAMBIO */
+  background: var(--color-dropdown-scrollbar-thumb);
   border-radius: 3px;
 }
 
 .lang-dropdown::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dropdown-scrollbar-thumb-hover); /* <-- CAMBIO */
+  background: var(--color-dropdown-scrollbar-thumb-hover);
 }
 
 .lang-dropdown.open {
@@ -229,7 +230,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0.6rem 0.8rem;
-  color: var(--color-text); /* <-- USA LA VARIABLE GLOBAL */
+  color: var(--color-text);
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 0.85rem;
@@ -250,11 +251,11 @@ body {
 }
 
 .lang-option:hover {
-  background: var(--color-dropdown-option-hover); /* <-- CAMBIO */
+  background: var(--color-dropdown-option-hover);
 }
 
 .lang-option.active {
-  background: var(--color-dropdown-option-active); /* <-- CAMBIO */
+  background: var(--color-dropdown-option-active);
   font-weight: 600;
 }
 
