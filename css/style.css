@@ -14,13 +14,22 @@
   --color-result-highlight: #e8f5e8;
   --color-reset-btn: #7f8c8d;
   --color-reset-btn-hover: #6c7b7d;
+
+  /* --- NUEVAS VARIABLES PARA EL DROPDOWN DE IDIOMA --- */
+  --color-dropdown-bg: rgba(255, 255, 255, 0.95);
+  --color-dropdown-shadow: rgba(0, 0, 0, 0.15);
+  --color-dropdown-option-hover: rgba(44, 95, 93, 0.1);
+  --color-dropdown-option-active: rgba(44, 95, 93, 0.15);
+  --color-dropdown-scrollbar-track: rgba(0, 0, 0, 0.1);
+  --color-dropdown-scrollbar-thumb: rgba(44, 95, 93, 0.5);
+  --color-dropdown-scrollbar-thumb-hover: rgba(44, 95, 93, 0.8);
 }
 
 /* Tema Oscuro */
 html[data-theme="dark"] {
   --color-bg: #121212;
   --color-card: #1e1e1e;
-  --color-primary: #2c5f5d; /* Mantenemos el primario para consistencia de marca */
+  --color-primary: #2c5f5d;
   --color-accent: #ff9500;
   --color-secondary: #3498db;
   --color-success: #27ae60;
@@ -32,6 +41,15 @@ html[data-theme="dark"] {
   --color-result-highlight: #2a3b32;
   --color-reset-btn: #555555;
   --color-reset-btn-hover: #666666;
+
+  /* --- DEFINICIÓN PARA TEMA OSCURO --- */
+  --color-dropdown-bg: rgba(42, 42, 42, 0.9);
+  --color-dropdown-shadow: rgba(0, 0, 0, 0.3);
+  --color-dropdown-option-hover: rgba(255, 255, 255, 0.08);
+  --color-dropdown-option-active: rgba(255, 255, 255, 0.12);
+  --color-dropdown-scrollbar-track: rgba(255, 255, 255, 0.1);
+  --color-dropdown-scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --color-dropdown-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
 }
 
 * {
@@ -167,14 +185,14 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--color-dropdown-bg); /* <-- CAMBIO */
   backdrop-filter: blur(10px);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px var(--color-dropdown-shadow); /* <-- CAMBIO */
   margin-top: 0.25rem;
   min-width: 120px;
-  max-height: 200px; /* Altura máxima para mostrar unos 4 idiomas */
-  overflow-y: auto; /* Añadir scroll vertical cuando sea necesario */
+  max-height: 200px; 
+  overflow-y: auto; 
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
@@ -188,17 +206,17 @@ body {
 }
 
 .lang-dropdown::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--color-dropdown-scrollbar-track); /* <-- CAMBIO */
   border-radius: 3px;
 }
 
 .lang-dropdown::-webkit-scrollbar-thumb {
-  background: rgba(44, 95, 93, 0.5);
+  background: var(--color-dropdown-scrollbar-thumb); /* <-- CAMBIO */
   border-radius: 3px;
 }
 
 .lang-dropdown::-webkit-scrollbar-thumb:hover {
-  background: rgba(44, 95, 93, 0.8);
+  background: var(--color-dropdown-scrollbar-thumb-hover); /* <-- CAMBIO */
 }
 
 .lang-dropdown.open {
@@ -211,7 +229,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0.6rem 0.8rem;
-  color: var(--color-text);
+  color: var(--color-text); /* <-- USA LA VARIABLE GLOBAL */
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 0.85rem;
@@ -232,11 +250,11 @@ body {
 }
 
 .lang-option:hover {
-  background: rgba(44, 95, 93, 0.1);
+  background: var(--color-dropdown-option-hover); /* <-- CAMBIO */
 }
 
 .lang-option.active {
-  background: rgba(44, 95, 93, 0.15);
+  background: var(--color-dropdown-option-active); /* <-- CAMBIO */
   font-weight: 600;
 }
 
