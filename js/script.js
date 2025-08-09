@@ -101,6 +101,7 @@ class BubbleBreathingApp {
   
   init() {
     this.initElements();
+    this.applyInitialTheme(); // <<< AÑADIDO: Aplicar tema al iniciar
     this.initEventListeners();
     this.updateLanguage();
     this.updateLanguageDisplay();
@@ -253,6 +254,7 @@ class BubbleBreathingApp {
       headerTitle: document.getElementById('headerTitle'),
       progressFill: document.getElementById('progressFill'),
       finishBtn: document.getElementById('finishBtn'),
+      themeToggleBtn: document.getElementById('themeToggleBtn'), // <<< AÑADIDO
       
       // Config screen
       previewHexagon: document.getElementById('previewHexagon'),
@@ -298,6 +300,9 @@ class BubbleBreathingApp {
   }
   
   initEventListeners() {
+    // <<< AÑADIDO: Event listener para el botón de tema
+    this.elements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+
     // Eventos de idioma mejorados
     const langToggle = document.getElementById('langToggle');
     const langOverlay = document.getElementById('langOverlay');
@@ -383,14 +388,39 @@ class BubbleBreathingApp {
     this.elements.skipToRetentionBtn.addEventListener('click', () => this.skipToRetention());
     this.elements.skipRecoveryBtn.addEventListener('click', () => this.skipRecovery());
   }
+
+  // <<< MÉTODOS DE TEMA AÑADIDOS >>>
+  applyInitialTheme() {
+    const savedTheme = localStorage.getItem('bubbleBreathingTheme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    this.updateThemeButtonIcon(savedTheme);
+  }
+
+  toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('bubbleBreathingTheme', newTheme);
+    this.updateThemeButtonIcon(newTheme);
+  }
   
+  updateThemeButtonIcon(theme) {
+    if (this.elements.themeToggleBtn) {
+        this.elements.themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        this.elements.themeToggleBtn.title = theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+    }
+  }
+
   showScreen(name) {
     Object.values(this.elements.screens).forEach(s => s.classList.remove('active'));
     this.elements.screens[name].classList.add('active');
     
-    // Mostrar/ocultar botón finish
-    const showFinish = name !== 'config' && name !== 'results';
+    // <<< LÓGICA DE VISIBILIDAD DE BOTONES MODIFICADA >>>
+    const isConfigScreen = name === 'config';
+    const showFinish = !isConfigScreen && name !== 'results';
+    
     this.elements.finishBtn.classList.toggle('hidden', !showFinish);
+    this.elements.themeToggleBtn.classList.toggle('hidden', !isConfigScreen);
     
     // Cerrar dropdown de idioma al cambiar de pantalla
     this.closeLanguageDropdown();
