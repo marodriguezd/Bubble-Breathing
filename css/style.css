@@ -1,4 +1,4 @@
-/* Tema Claro (por defecto) */
+/* Light Theme (Default) */
 :root {
   --color-bg: #f5f7fa;
   --color-card: #ffffff;
@@ -15,7 +15,7 @@
   --color-reset-btn: #7f8c8d;
   --color-reset-btn-hover: #6c7b7d;
 
-  /* --- NUEVAS VARIABLES PARA EL DROPDOWN DE IDIOMA --- */
+  /* --- NEW VARIABLES FOR THE LANGUAGE DROPDOWN --- */
   --color-dropdown-bg: rgba(255, 255, 255, 0.95);
   --color-dropdown-shadow: rgba(0, 0, 0, 0.15);
   --color-dropdown-option-hover: rgba(44, 95, 93, 0.1);
@@ -25,7 +25,7 @@
   --color-dropdown-scrollbar-thumb-hover: rgba(44, 95, 93, 0.8);
 }
 
-/* Tema Oscuro */
+/* Dark Theme */
 html[data-theme="dark"] {
   --color-bg: #121212;
   --color-card: #1e1e1e;
@@ -42,7 +42,7 @@ html[data-theme="dark"] {
   --color-reset-btn: #555555;
   --color-reset-btn-hover: #666666;
 
-  /* --- DEFINICIÓN PARA TEMA OSCURO --- */
+  /* --- DEFINITION FOR DARK THEME --- */
   --color-dropdown-bg: rgba(42, 42, 42, 0.9);
   --color-dropdown-shadow: rgba(0, 0, 0, 0.3);
   --color-dropdown-option-hover: rgba(255, 255, 255, 0.08);
@@ -86,9 +86,9 @@ body {
   padding: 1.5rem 1rem 1rem;
   padding-top: calc(1.5rem + env(safe-area-inset-top));
   text-align: center;
-  position: relative; /* <-- CAMBIO #1: AÑADIDO */
+  position: relative; /* <-- CHANGE #1: ADDED */
   flex-shrink: 0;
-  z-index: 10; /* <-- CAMBIO #1: AÑADIDO (Eleva toda la cabecera) */
+  z-index: 10; /* <-- CHANGE #1: ADDED (Elevates the entire header) */
 }
 
 .header h1 {
@@ -108,7 +108,7 @@ body {
   transition: width 0.3s;
 }
 
-/* Estilos para los botones de la cabecera */
+/* Styles for header buttons */
 .finish-btn, .theme-toggle-btn {
   position: absolute;
   right: 1rem;
@@ -121,12 +121,12 @@ body {
   border-radius: 1.25rem;
   font-size: 0.9rem;
   cursor: pointer;
-  width: 5.5rem; /* Ancho fijo para evitar saltos */
+  width: 5.5rem; /* Fixed width to avoid jumps */
   text-align: center;
 }
 
 .theme-toggle-btn {
-  font-size: 1.2rem; /* Icono más grande */
+  font-size: 1.2rem; /* Larger icon */
   padding: 0.3rem 1rem;
 }
 
@@ -134,7 +134,7 @@ body {
   display: none;
 }
 
-/* MEJORA: Selector de idioma con desplegable elegante */
+/* IMPROVEMENT: Elegant language selector with dropdown */
 .lang-container {
   position: absolute;
   left: 1rem;
@@ -190,7 +190,7 @@ body {
   backdrop-filter: blur(10px);
   border-radius: 0.75rem;
   box-shadow: 0 4px 20px var(--color-dropdown-shadow);
-  margin-top: 0.5rem; /* <-- CAMBIO #2: Aumentada la separación */
+  margin-top: 0.5rem; /* <-- CHANGE #2: Increased separation */
   min-width: 120px;
   max-height: 200px; 
   overflow-y: auto; 
@@ -201,7 +201,7 @@ body {
   z-index: 1000;
 }
 
-/* Personalizar el scroll para que coincida con el diseño */
+/* Customize the scrollbar to match the design */
 .lang-dropdown::-webkit-scrollbar {
   width: 6px;
 }
@@ -263,7 +263,7 @@ body {
   font-size: 1rem;
 }
 
-/* Overlay para cerrar el dropdown al hacer clic fuera */
+/* Overlay to close the dropdown when clicking outside */
 .lang-overlay {
   position: fixed;
   top: 0;
@@ -396,7 +396,7 @@ body {
   color: var(--color-muted);
 }
 
-/* Estilos para los botones de configuración */
+/* Styles for configuration buttons */
 .config-buttons {
   display: flex;
   gap: 1rem;
@@ -436,12 +436,12 @@ body {
   transition: all 0.3s;
 }
 
-/* Corrección para el botón de Nueva Sesión en la pantalla de resultados */
+/* Correction for the New Session button on the results screen */
 #resultsScreen .start-button {
-  flex: none; /* Evita que el botón se estire */
-  align-self: center; /* Lo centra horizontalmente en el contenedor de columna */
-  width: auto; /* El ancho se ajusta al contenido y al padding */
-  padding: 1.1rem 3rem; /* Más padding horizontal para una forma de cápsula más bonita */
+  flex: none; /* Prevents the button from stretching */
+  align-self: center; /* Centers it horizontally in the column container */
+  width: auto; /* The width adjusts to the content and padding */
+  padding: 1.1rem 3rem; /* More horizontal padding for a nicer capsule shape */
 }
 
 .round-info {

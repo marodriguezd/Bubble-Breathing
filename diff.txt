@@ -1,0 +1,843 @@
+diff --git a/css/style.css b/css/style.css
+index 2f8390f..e2b6e68 100644
+--- a/css/style.css
++++ b/css/style.css
+@@ -1,4 +1,4 @@
+-/* Tema Claro (por defecto) */
++/* Light Theme (Default) */
+ :root {
+   --color-bg: #f5f7fa;
+   --color-card: #ffffff;
+@@ -15,7 +15,7 @@
+   --color-reset-btn: #7f8c8d;
+   --color-reset-btn-hover: #6c7b7d;
+ 
+-  /* --- NUEVAS VARIABLES PARA EL DROPDOWN DE IDIOMA --- */
++  /* --- NEW VARIABLES FOR THE LANGUAGE DROPDOWN --- */
+   --color-dropdown-bg: rgba(255, 255, 255, 0.95);
+   --color-dropdown-shadow: rgba(0, 0, 0, 0.15);
+   --color-dropdown-option-hover: rgba(44, 95, 93, 0.1);
+@@ -25,7 +25,7 @@
+   --color-dropdown-scrollbar-thumb-hover: rgba(44, 95, 93, 0.8);
+ }
+ 
+-/* Tema Oscuro */
++/* Dark Theme */
+ html[data-theme="dark"] {
+   --color-bg: #121212;
+   --color-card: #1e1e1e;
+@@ -42,7 +42,7 @@ html[data-theme="dark"] {
+   --color-reset-btn: #555555;
+   --color-reset-btn-hover: #666666;
+ 
+-  /* --- DEFINICIÓN PARA TEMA OSCURO --- */
++  /* --- DEFINITION FOR DARK THEME --- */
+   --color-dropdown-bg: rgba(42, 42, 42, 0.9);
+   --color-dropdown-shadow: rgba(0, 0, 0, 0.3);
+   --color-dropdown-option-hover: rgba(255, 255, 255, 0.08);
+@@ -86,9 +86,9 @@ body {
+   padding: 1.5rem 1rem 1rem;
+   padding-top: calc(1.5rem + env(safe-area-inset-top));
+   text-align: center;
+-  position: relative; /* <-- CAMBIO #1: AÑADIDO */
++  position: relative; /* <-- CHANGE #1: ADDED */
+   flex-shrink: 0;
+-  z-index: 10; /* <-- CAMBIO #1: AÑADIDO (Eleva toda la cabecera) */
++  z-index: 10; /* <-- CHANGE #1: ADDED (Elevates the entire header) */
+ }
+ 
+ .header h1 {
+@@ -108,7 +108,7 @@ body {
+   transition: width 0.3s;
+ }
+ 
+-/* Estilos para los botones de la cabecera */
++/* Styles for header buttons */
+ .finish-btn, .theme-toggle-btn {
+   position: absolute;
+   right: 1rem;
+@@ -121,12 +121,12 @@ body {
+   border-radius: 1.25rem;
+   font-size: 0.9rem;
+   cursor: pointer;
+-  width: 5.5rem; /* Ancho fijo para evitar saltos */
++  width: 5.5rem; /* Fixed width to avoid jumps */
+   text-align: center;
+ }
+ 
+ .theme-toggle-btn {
+-  font-size: 1.2rem; /* Icono más grande */
++  font-size: 1.2rem; /* Larger icon */
+   padding: 0.3rem 1rem;
+ }
+ 
+@@ -134,7 +134,7 @@ body {
+   display: none;
+ }
+ 
+-/* MEJORA: Selector de idioma con desplegable elegante */
++/* IMPROVEMENT: Elegant language selector with dropdown */
+ .lang-container {
+   position: absolute;
+   left: 1rem;
+@@ -190,7 +190,7 @@ body {
+   backdrop-filter: blur(10px);
+   border-radius: 0.75rem;
+   box-shadow: 0 4px 20px var(--color-dropdown-shadow);
+-  margin-top: 0.5rem; /* <-- CAMBIO #2: Aumentada la separación */
++  margin-top: 0.5rem; /* <-- CHANGE #2: Increased separation */
+   min-width: 120px;
+   max-height: 200px; 
+   overflow-y: auto; 
+@@ -201,7 +201,7 @@ body {
+   z-index: 1000;
+ }
+ 
+-/* Personalizar el scroll para que coincida con el diseño */
++/* Customize the scrollbar to match the design */
+ .lang-dropdown::-webkit-scrollbar {
+   width: 6px;
+ }
+@@ -263,7 +263,7 @@ body {
+   font-size: 1rem;
+ }
+ 
+-/* Overlay para cerrar el dropdown al hacer clic fuera */
++/* Overlay to close the dropdown when clicking outside */
+ .lang-overlay {
+   position: fixed;
+   top: 0;
+@@ -396,7 +396,7 @@ body {
+   color: var(--color-muted);
+ }
+ 
+-/* Estilos para los botones de configuración */
++/* Styles for configuration buttons */
+ .config-buttons {
+   display: flex;
+   gap: 1rem;
+@@ -436,12 +436,12 @@ body {
+   transition: all 0.3s;
+ }
+ 
+-/* Corrección para el botón de Nueva Sesión en la pantalla de resultados */
++/* Correction for the New Session button on the results screen */
+ #resultsScreen .start-button {
+-  flex: none; /* Evita que el botón se estire */
+-  align-self: center; /* Lo centra horizontalmente en el contenedor de columna */
+-  width: auto; /* El ancho se ajusta al contenido y al padding */
+-  padding: 1.1rem 3rem; /* Más padding horizontal para una forma de cápsula más bonita */
++  flex: none; /* Prevents the button from stretching */
++  align-self: center; /* Centers it horizontally in the column container */
++  width: auto; /* The width adjusts to the content and padding */
++  padding: 1.1rem 3rem; /* More horizontal padding for a nicer capsule shape */
+ }
+ 
+ .round-info {
+@@ -506,4 +506,4 @@ body {
+   background: #2980b9;
+   opacity: 1;
+   transform: translateY(-1px);
+-}
+\ No newline at end of file
++}
+diff --git a/index.html b/index.html
+index a31c234..99301b6 100644
+--- a/index.html
++++ b/index.html
+@@ -1,5 +1,5 @@
+ <!DOCTYPE html>
+-<html lang="es" data-theme="light"> <!-- Atributo para controlar el tema -->
++<html lang="en" data-theme="light"> <!-- Attribute to control the theme -->
+   <head>
+     <meta charset="UTF-8" />
+     <meta
+@@ -9,11 +9,11 @@
+     <title>Bubble Breathing</title>
+     <meta name="theme-color" content="#2c5f5d" />
+     
+-    <!-- Icono SVG -->
++    <!-- SVG Icon -->
+     <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+     <link rel="apple-touch-icon" href="assets/icon.svg">
+     
+-    <!-- Configuración para PWA -->
++    <!-- PWA Configuration -->
+     <link rel="manifest" href="manifest.json">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+@@ -67,12 +67,12 @@
+         </div>
+         <h1 id="headerTitle">Bubble Breathing</h1>
+         <div id="progressBar"><div id="progressFill"></div></div>
+-        <!-- BOTÓN DE TEMA AÑADIDO -->
++        <!-- ADDED THEME BUTTON -->
+         <button class="theme-toggle-btn" id="themeToggleBtn" title="Change theme">🌙</button>
+         <button class="finish-btn hidden" id="finishBtn">Finish</button>
+       </div>
+ 
+-      <!-- CONFIG -->
++      <!-- CONFIGURATION SCREEN -->
+       <div id="configScreen" class="screen active">
+         <div class="hexagon-container">
+           <div class="hexagon phase-breathing" id="previewHexagon">
+@@ -148,7 +148,7 @@
+         </div>
+       </div>
+ 
+-      <!-- EJERCICIO Y RETENCIÓN -->
++      <!-- EXERCISE AND RETENTION SCREEN -->
+       <div id="exerciseScreen" class="screen">
+         <div class="round-info" id="roundInfo">Round 1 / 3</div>
+         <div class="instruction" id="exerciseInstruction">
+@@ -188,7 +188,7 @@
+         </div>
+       </div>
+ 
+-      <!-- RESULTS -->
++      <!-- RESULTS SCREEN -->
+       <div id="resultsScreen" class="screen">
+         <div class="results-title" id="resultsTitle">Session Results</div>
+         <div id="resultsContent"></div>
+@@ -196,8 +196,8 @@
+       </div>
+     </div>
+ 
+-    <!-- Cargar traducciones ANTES que el script principal -->
++    <!-- Load translations BEFORE the main script -->
+     <script src="js/translations.js"></script>
+     <script src="js/script.js" defer></script>
+   </body>
+-</html>
+\ No newline at end of file
++</html>
+diff --git a/js/script.js b/js/script.js
+index 9af031f..e121901 100644
+--- a/js/script.js
++++ b/js/script.js
+@@ -1,7 +1,10 @@
+-// Aplicación de Respiración Bubble optimizada
++/**
++ * Optimized Bubble Breathing Application
++ * @class BubbleBreathingApp
++ */
+ class BubbleBreathingApp {
+   constructor() {
+-    // Verificar que las traducciones estén cargadas
++    // Verify that translations are loaded
+     if (!window.translations) {
+       console.error('Translations not loaded! Make sure translations.js is loaded before script.js');
+       return;
+@@ -9,7 +12,7 @@ class BubbleBreathingApp {
+     
+     this.translations = window.translations;
+     
+-    // Configuración mejorada de idiomas
++    // Improved language configuration
+     this.currentLanguage = localStorage.getItem('bubbleBreathingLanguage') || 'en';
+     this.availableLanguages = ['en', 'es', 'fr', 'it', 'de', 'pt', 'zh'];
+     this.languageConfig = {
+@@ -22,10 +25,10 @@ class BubbleBreathingApp {
+       zh: { flag: '🇨🇳', name: '简体中文' }       
+     };
+     
+-    // Configuración por defecto
++    // Default configuration
+     this.defaultConfig = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
+     
+-    // Cargar configuración guardada o usar por defecto
++    // Load saved configuration or use default
+     this.config = this.loadConfig();
+     
+     this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
+@@ -45,13 +48,16 @@ class BubbleBreathingApp {
+     this.init();
+   }
+   
+-  // Métodos para memoria de configuración
++  /**
++   * Loads the configuration from localStorage.
++   * @returns {object} The loaded or default configuration.
++   */
+   loadConfig() {
+     try {
+       const savedConfig = localStorage.getItem('bubbleBreathingConfig');
+       if (savedConfig) {
+         const parsed = JSON.parse(savedConfig);
+-        // Validar que la configuración guardada sea válida
++        // Validate that the saved configuration is valid
+         return {
+           speed: ['slow', 'standard', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
+           rounds: (parsed.rounds >= 1 && parsed.rounds <= 5) ? parsed.rounds : this.defaultConfig.rounds,
+@@ -65,6 +71,9 @@ class BubbleBreathingApp {
+     return { ...this.defaultConfig };
+   }
+   
++  /**
++   * Saves the current configuration to localStorage.
++   */
+   saveConfig() {
+     try {
+       localStorage.setItem('bubbleBreathingConfig', JSON.stringify(this.config));
+@@ -73,17 +82,23 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Resets the configuration to the default values.
++   */
+   resetConfig() {
+     this.config = { ...this.defaultConfig };
+     this.saveConfig();
+     this.updateConfigUI();
+     this.updateEstimatedTime();
+-    // Reiniciar preview con nueva configuración
++    // Restart preview with new configuration
+     this.restartPreviewAnimation();
+   }
+   
++  /**
++   * Updates the configuration UI elements.
++   */
+   updateConfigUI() {
+-    // Actualizar sliders
++    // Update sliders
+     this.elements.roundsSlider.value = this.config.rounds;
+     this.elements.roundsValue.textContent = this.config.rounds;
+     this.elements.breathsSlider.value = this.config.breaths;
+@@ -91,26 +106,35 @@ class BubbleBreathingApp {
+     this.elements.volumeSlider.value = this.config.volume;
+     this.elements.volumeValue.textContent = Math.round(this.config.volume * 100);
+     
+-    // Actualizar botones de velocidad
++    // Update speed buttons
+     this.elements.speedBtns.forEach(btn => {
+       btn.classList.toggle('active', btn.dataset.speed === this.config.speed);
+     });
+     
+-    // Actualizar instrucción del ejercicio
++    // Update exercise instruction
+     this.updateExerciseInstruction();
+   }
+   
++  /**
++   * Initializes the application.
++   */
+   init() {
+     this.initElements();
+-    this.applyInitialTheme(); // <<< AÑADIDO: Aplicar tema al iniciar
++    this.applyInitialTheme(); // <<< ADDED: Apply theme on startup
+     this.initEventListeners();
+     this.updateLanguage();
+     this.updateLanguageDisplay();
+-    this.updateConfigUI(); // Aplicar configuración guardada a la UI
++    this.updateConfigUI(); // Apply saved configuration to the UI
+     this.startPreviewAnimation();
+-    this.updateEstimatedTime(); // <<< AÑADIDO: Calcular tiempo estimado inicial
++    this.updateEstimatedTime(); // <<< ADDED: Calculate initial estimated time
+   }
+   
++  /**
++   * Gets a translation string by key.
++   * @param {string} key - The translation key.
++   * @param {object} params - The parameters to replace in the string.
++   * @returns {string} The translated string.
++   */
+   t(key, params = {}) {
+     let text = this.translations[this.currentLanguage][key] || key;
+     Object.keys(params).forEach(param => {
+@@ -119,6 +143,10 @@ class BubbleBreathingApp {
+     return text;
+   }
+   
++  /**
++   * Sets the application language.
++   * @param {string} lang - The language code.
++   */
+   setLanguage(lang) {
+     this.currentLanguage = lang;
+     localStorage.setItem('bubbleBreathingLanguage', lang);
+@@ -127,14 +155,17 @@ class BubbleBreathingApp {
+     this.closeLanguageDropdown();
+   }
+ 
++  /**
++   * Updates the text of the elements with the current language.
++   */
+   updateLanguage() {
+     const elements = this.elements;
+     
+-    // Header y navegación
++    // Header and navigation
+     elements.headerTitle.textContent = this.t('appTitle');
+     elements.finishBtn.textContent = this.t('finishBtn');
+     
+-    // Pantalla de configuración
++    // Configuration screen
+     elements.previewLabel.textContent = this.t('previewLabel');
+     elements.speedSlow.textContent = this.t('speedSlow');
+     elements.speedStandard.textContent = this.t('speedStandard');
+@@ -146,17 +177,17 @@ class BubbleBreathingApp {
+     elements.resetConfigBtn.textContent = this.t('resetConfigBtn');
+     elements.estimatedTimeLabel.textContent = this.t('estimated_time');
+     
+-    // Pantalla de ejercicio
++    // Exercise screen
+     this.updateRoundInfo();
+     this.updateExerciseInstruction();
+     elements.skipToRetentionBtn.textContent = this.t('skipToRetentionBtn');
+     elements.skipRecoveryBtn.textContent = this.t('skipRecoveryBtn');
+     
+-    // Pantalla de retención
++    // Retention screen
+     elements.retentionInstruction.textContent = this.t('retentionInstruction');
+     elements.retentionTapInstruction.textContent = this.t('tapInstruction');
+     
+-    // Pantalla de resultados
++    // Results screen
+     elements.resultsTitle.textContent = this.t('resultsTitle');
+     elements.newSessionBtn.textContent = this.t('newSessionBtn');
+     
+@@ -165,25 +196,31 @@ class BubbleBreathingApp {
+     }
+   }
+ 
++  /**
++   * Updates the language display in the header.
++   */
+   updateLanguageDisplay() {
+     const langFlag = document.getElementById('langFlag');
+     const langCode = document.getElementById('langCode');
+     const langOptions = document.querySelectorAll('.lang-option');
+     
+-    // Actualizar el botón principal
++    // Update the main button
+     const currentLang = this.languageConfig[this.currentLanguage];
+     if (langFlag && langCode) {
+       langFlag.textContent = currentLang.flag;
+       langCode.textContent = this.currentLanguage.toUpperCase();
+     }
+     
+-    // Actualizar opciones activas en el dropdown
++    // Update active options in the dropdown
+     langOptions.forEach(option => {
+       const lang = option.dataset.lang;
+       option.classList.toggle('active', lang === this.currentLanguage);
+     });
+   }
+ 
++  /**
++   * Toggles the language dropdown menu.
++   */
+   toggleLanguageDropdown() {
+     const dropdown = document.getElementById('langDropdown');
+     const toggle = document.getElementById('langToggle');
+@@ -202,6 +239,9 @@ class BubbleBreathingApp {
+     }
+   }
+ 
++  /**
++   * Closes the language dropdown menu.
++   */
+   closeLanguageDropdown() {
+     const dropdown = document.getElementById('langDropdown');
+     const toggle = document.getElementById('langToggle');
+@@ -212,6 +252,9 @@ class BubbleBreathingApp {
+     if (overlay) overlay.classList.remove('active');
+   }
+   
++  /**
++   * Updates the round information text.
++   */
+   updateRoundInfo() {
+     const current = this.session.currentRound;
+     const total = this.config.rounds;
+@@ -221,12 +264,18 @@ class BubbleBreathingApp {
+     if (this.elements.retentionRoundInfo) this.elements.retentionRoundInfo.textContent = text;
+   }
+   
++  /**
++   * Updates the exercise instruction text.
++   */
+   updateExerciseInstruction() {
+     if (this.elements.exerciseInstruction) {
+       this.elements.exerciseInstruction.textContent = this.t('exerciseInstruction', { count: this.config.breaths });
+     }
+   }
+   
++  /**
++   * Updates the results content on the results screen.
++   */
+   updateResultsContent() {
+     if (this.session.results.length === 0) return;
+     
+@@ -246,6 +295,9 @@ class BubbleBreathingApp {
+     this.elements.resultsContent.innerHTML = resultsHTML + avgHTML;
+   }
+ 
++  /**
++   * Updates the estimated time display.
++   */
+   updateEstimatedTime() {
+     const { rounds, breaths, speed } = this.config;
+     const speedSetting = this.speedSettings[speed];
+@@ -265,6 +317,9 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Initializes the DOM elements.
++   */
+   initElements() {
+     this.elements = {
+       screens: {
+@@ -323,6 +378,9 @@ class BubbleBreathingApp {
+     };
+   }
+   
++  /**
++   * Initializes the event listeners.
++   */
+   initEventListeners() {
+     this.elements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+ 
+@@ -405,12 +463,18 @@ class BubbleBreathingApp {
+     this.elements.skipRecoveryBtn.addEventListener('click', () => this.skipRecovery());
+   }
+ 
++  /**
++   * Applies the initial theme.
++   */
+   applyInitialTheme() {
+     const savedTheme = localStorage.getItem('bubbleBreathingTheme') || 'light';
+     document.documentElement.setAttribute('data-theme', savedTheme);
+     this.updateThemeButtonIcon(savedTheme);
+   }
+ 
++  /**
++   * Toggles the theme.
++   */
+   toggleTheme() {
+     const currentTheme = document.documentElement.getAttribute('data-theme');
+     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+@@ -419,6 +483,10 @@ class BubbleBreathingApp {
+     this.updateThemeButtonIcon(newTheme);
+   }
+   
++  /**
++   * Updates the theme button icon.
++   * @param {string} theme - The current theme.
++   */
+   updateThemeButtonIcon(theme) {
+     if (this.elements.themeToggleBtn) {
+         this.elements.themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+@@ -426,6 +494,10 @@ class BubbleBreathingApp {
+     }
+   }
+ 
++  /**
++   * Shows a screen by name.
++   * @param {string} name - The name of the screen to show.
++   */
+   showScreen(name) {
+     Object.values(this.elements.screens).forEach(s => s.classList.remove('active'));
+     this.elements.screens[name].classList.add('active');
+@@ -452,6 +524,9 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Updates the skip buttons visibility.
++   */
+   updateSkipButtons() {
+     const phase = this.session.phase;
+     this.elements.skipToRetentionBtn.style.display = phase === 'breathing' ? 'block' : 'none';
+@@ -459,6 +534,9 @@ class BubbleBreathingApp {
+       ['inhaling', 'recovery', 'exhaling'].includes(phase) ? 'block' : 'none';
+   }
+   
++  /**
++   * Updates the progress bar.
++   */
+   updateProgress() {
+     const total = this.config.rounds * (this.config.breaths + 2);
+     let step = (this.session.currentRound - 1) * (this.config.breaths + 2);
+@@ -486,6 +564,9 @@ class BubbleBreathingApp {
+     this.elements.progressFill.style.width = `${Math.min(100, (step / total) * 100)}%`;
+   }
+   
++  /**
++   * Starts a new session.
++   */
+   startSession() {
+     this.session = {
+       currentRound: 1,
+@@ -500,6 +581,9 @@ class BubbleBreathingApp {
+     this.startBreathingPhase();
+   }
+   
++  /**
++   * Starts the breathing phase.
++   */
+   startBreathingPhase() {
+     this.session.phase = 'breathing';
+     this.session.currentBreath = 0;
+@@ -516,6 +600,9 @@ class BubbleBreathingApp {
+     setTimeout(() => this.breathingCycle(), 500);
+   }
+   
++  /**
++   * Starts the breathing cycle.
++   */
+   breathingCycle() {
+     if (!this.session.isRunning || this.session.currentBreath >= this.config.breaths) {
+       if (this.session.isRunning) this.startRetentionPhase();
+@@ -545,6 +632,9 @@ class BubbleBreathingApp {
+     this.session.timers.push(inhaleTimer);
+   }
+   
++  /**
++   * Skips to the retention phase.
++   */
+   skipToRetention() {
+     if (!this.session.isRunning || this.session.phase !== 'breathing') return;
+     this.clearTimers();
+@@ -557,6 +647,9 @@ class BubbleBreathingApp {
+     setTimeout(() => this.startRetentionPhase(), 500);
+   }
+   
++  /**
++   * Starts the retention phase.
++   */
+   startRetentionPhase() {
+     this.session.phase = 'retention';
+     this.session.retentionStart = Date.now();
+@@ -572,12 +665,18 @@ class BubbleBreathingApp {
+     }, 100);
+   }
+   
++  /**
++   * Plays the breath tone.
++   */
+   playBreathTone() {
+     if (this.config.volume > 0) {
+       this.playTone(220, 200);
+     }
+   }
+   
++  /**
++   * Plays the retention start signal.
++   */
+   playRetentionStartSignal() {
+     if (this.config.volume > 0) {
+       this.playTone(150, 800);
+@@ -588,6 +687,9 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Ends the retention phase.
++   */
+   endRetention() {
+     clearInterval(this.retentionInterval);
+     const retentionTime = Math.floor((Date.now() - this.session.retentionStart) / 1000);
+@@ -595,10 +697,16 @@ class BubbleBreathingApp {
+     this.startRecoverySequence();
+   }
+   
++  /**
++   * Starts the recovery sequence.
++   */
+   startRecoverySequence() {
+     this.startInhalingPhase();
+   }
+   
++  /**
++   * Starts the inhaling phase.
++   */
+   startInhalingPhase() {
+     this.session.phase = 'inhaling';
+     this.showScreen('exercise');
+@@ -614,6 +722,9 @@ class BubbleBreathingApp {
+     this.startCountdown(3, () => this.startRecoveryPhase());
+   }
+   
++  /**
++   * Starts the recovery phase.
++   */
+   startRecoveryPhase() {
+     this.session.phase = 'recovery';
+     this.elements.exerciseInstruction.textContent = this.t('holdAirInstruction');
+@@ -623,6 +734,9 @@ class BubbleBreathingApp {
+     this.startCountdown(15, () => this.startExhalingPhase());
+   }
+   
++  /**
++   * Starts the exhaling phase.
++   */
+   startExhalingPhase() {
+     this.session.phase = 'exhaling';
+     this.elements.exerciseInstruction.textContent = this.t('releaseAirInstruction');
+@@ -639,6 +753,11 @@ class BubbleBreathingApp {
+     });
+   }
+   
++  /**
++   * Starts a countdown.
++   * @param {number} seconds - The countdown duration in seconds.
++   * @param {function} onComplete - The callback function to execute when the countdown is complete.
++   */
+   startCountdown(seconds, onComplete) {
+     this.elements.breathCounter.textContent = seconds;
+     let countdown = seconds;
+@@ -655,6 +774,9 @@ class BubbleBreathingApp {
+     this.session.timers.push(interval);
+   }
+   
++  /**
++   * Skips the recovery phase.
++   */
+   skipRecovery() {
+     if (!this.session.isRunning || !['inhaling', 'recovery', 'exhaling'].includes(this.session.phase)) return;
+     this.clearTimers();
+@@ -663,6 +785,9 @@ class BubbleBreathingApp {
+     this.completeRound();
+   }
+   
++  /**
++   * Completes the current round.
++   */
+   completeRound() {
+     if (this.session.currentRound >= this.config.rounds) {
+       this.showResults();
+@@ -672,18 +797,27 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Shows the results screen.
++   */
+   showResults() {
+     this.session.isRunning = false;
+     this.showScreen('results');
+     this.updateResultsContent();
+   }
+   
++  /**
++   * Finishes the session.
++   */
+   finishSession() {
+     this.session.isRunning = false;
+     this.clearTimers();
+     this.session.results.length ? this.showResults() : this.resetToConfig();
+   }
+   
++  /**
++   * Resets to the configuration screen.
++   */
+   resetToConfig() {
+     this.session = {
+       currentRound: 1,
+@@ -698,6 +832,9 @@ class BubbleBreathingApp {
+     this.elements.progressFill.style.width = '0%';
+   }
+   
++  /**
++   * Clears all timers.
++   */
+   clearTimers() {
+     if (this.retentionInterval) clearInterval(this.retentionInterval);
+     this.session.timers.forEach(timer => {
+@@ -707,6 +844,11 @@ class BubbleBreathingApp {
+     this.session.timers = [];
+   }
+   
++  /**
++   * Plays a tone.
++   * @param {number} frequency - The frequency of the tone.
++   * @param {number} duration - The duration of the tone in milliseconds.
++   */
+   playTone(frequency, duration) {
+     if (this.config.volume === 0) return;
+     
+@@ -728,18 +870,30 @@ class BubbleBreathingApp {
+     }
+   }
+   
++  /**
++   * Vibrates the device.
++   * @param {number} duration - The duration of the vibration in milliseconds.
++   */
+   vibrate(duration = 30) {
+     if (this.config.volume > 0 && navigator.vibrate) {
+       navigator.vibrate(duration);
+     }
+   }
+   
++  /**
++   * Formats time in seconds to mm:ss format.
++   * @param {number} seconds - The time in seconds.
++   * @returns {string} The formatted time.
++   */
+   formatTime(seconds) {
+     const minutes = Math.floor(seconds / 60);
+     const secs = seconds % 60;
+     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+   }
+   
++  /**
++   * Starts the preview animation.
++   */
+   startPreviewAnimation() {
+     if (this.previewActive) return;
+     
+@@ -777,6 +931,9 @@ class BubbleBreathingApp {
+     this.previewAnimation = setTimeout(animate, 500);
+   }
+   
++  /**
++   * Stops the preview animation.
++   */
+   stopPreviewAnimation() {
+     this.previewActive = false;
+     
+@@ -794,10 +951,13 @@ class BubbleBreathingApp {
+     this.elements.previewHexagon.style.transform = 'scale(1)';
+   }
+   
++  /**
++   * Restarts the preview animation.
++   */
+   restartPreviewAnimation() {
+     this.stopPreviewAnimation();
+     setTimeout(() => this.startPreviewAnimation(), 100);
+   }
+ }
+ 
+-new BubbleBreathingApp();
+\ No newline at end of file
++new BubbleBreathingApp();
+diff --git a/js/translations.js b/js/translations.js
+index 9c4e690..ac33fdc 100644
+--- a/js/translations.js
++++ b/js/translations.js
+@@ -1,4 +1,4 @@
+-// Traducciones para la aplicación Bubble Breathing
++// Translations for the Bubble Breathing app
+ window.translations = {
+   es: {
+     appTitle: "Bubble Breathing",
+@@ -210,4 +210,10 @@ window.translations = {
+     langIndicator: "更改语言",
+     estimated_time: "预计时间"
+   }
+-};
+\ No newline at end of file
++};
++
++// NOTE: If you add a new language, make sure to:
++// 1. Add the language code to the `availableLanguages` array in `script.js`.
++// 2. Add the flag and name to the `languageConfig` object in `script.js`.
++// 3. Add the corresponding button in the `lang-dropdown` in `index.html`.
++// 4. Add the complete translation object here.
+\ No newline at end of file

@@ -1,4 +1,4 @@
-// Traducciones para la aplicación Bubble Breathing
+// Translations for the Bubble Breathing app
 window.translations = {
   es: {
     appTitle: "Bubble Breathing",
@@ -211,3 +211,9 @@ window.translations = {
     estimated_time: "预计时间"
   }
 };
+
+// NOTE: If you add a new language, make sure to:
+// 1. Add the language code to the `availableLanguages` array in `script.js`.
+// 2. Add the flag and name to the `languageConfig` object in `script.js`.
+// 3. Add the corresponding button in the `lang-dropdown` in `index.html`.
+// 4. Add the complete translation object here.
