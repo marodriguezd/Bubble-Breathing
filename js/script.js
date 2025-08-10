@@ -77,6 +77,7 @@ class BubbleBreathingApp {
     this.config = { ...this.defaultConfig };
     this.saveConfig();
     this.updateConfigUI();
+    this.updateEstimatedTime();
     // Reiniciar preview con nueva configuración
     this.restartPreviewAnimation();
   }
@@ -106,8 +107,8 @@ class BubbleBreathingApp {
     this.updateLanguage();
     this.updateLanguageDisplay();
     this.updateConfigUI(); // Aplicar configuración guardada a la UI
-    this.updateEstimatedTime(); // <<< AÑADIDO: Calcular tiempo estimado inicial
     this.startPreviewAnimation();
+    this.updateEstimatedTime(); // <<< AÑADIDO: Calcular tiempo estimado inicial
   }
   
   t(key, params = {}) {
@@ -143,7 +144,7 @@ class BubbleBreathingApp {
     elements.volumeLabel.textContent = this.t('volumeLabel');
     elements.startButton.textContent = this.t('startBtn');
     elements.resetConfigBtn.textContent = this.t('resetConfigBtn');
-    elements.estimatedTimeLabel.textContent = this.t('estimated_time') + ':';
+    elements.estimatedTimeLabel.textContent = this.t('estimated_time');
     
     // Pantalla de ejercicio
     this.updateRoundInfo();
