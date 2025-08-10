@@ -106,6 +106,7 @@ class BubbleBreathingApp {
     this.updateLanguage();
     this.updateLanguageDisplay();
     this.updateConfigUI(); // Aplicar configuración guardada a la UI
+    this.updateEstimatedTime(); // <<< AÑADIDO: Calcular tiempo estimado inicial
     this.startPreviewAnimation();
   }
   
@@ -142,6 +143,7 @@ class BubbleBreathingApp {
     elements.volumeLabel.textContent = this.t('volumeLabel');
     elements.startButton.textContent = this.t('startBtn');
     elements.resetConfigBtn.textContent = this.t('resetConfigBtn');
+    elements.estimatedTimeLabel.textContent = this.t('estimated_time') + ':';
     
     // Pantalla de ejercicio
     this.updateRoundInfo();
@@ -242,6 +244,25 @@ class BubbleBreathingApp {
     
     this.elements.resultsContent.innerHTML = resultsHTML + avgHTML;
   }
+
+  updateEstimatedTime() {
+    const { rounds, breaths, speed } = this.config;
+    const speedSetting = this.speedSettings[speed];
+    const breathDuration = (speedSetting.inhale + speedSetting.exhale) / 1000;
+    
+    // Estimated apnea time based on user's example.
+    // This is a simplified model and doesn't include the post-apnea recovery breath.
+    const estimatedApnea = 90; 
+    
+    const totalSeconds = rounds * (breaths * breathDuration + estimatedApnea);
+    
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = Math.round(totalSeconds % 60);
+    
+    if (this.elements.estimatedTime) {
+        this.elements.estimatedTime.textContent = `~${minutes}m ${seconds}s`;
+    }
+  }
   
   initElements() {
     this.elements = {
@@ -254,7 +275,7 @@ class BubbleBreathingApp {
       headerTitle: document.getElementById('headerTitle'),
       progressFill: document.getElementById('progressFill'),
       finishBtn: document.getElementById('finishBtn'),
-      themeToggleBtn: document.getElementById('themeToggleBtn'), // <<< AÑADIDO
+      themeToggleBtn: document.getElementById('themeToggleBtn'),
       
       // Config screen
       previewHexagon: document.getElementById('previewHexagon'),
@@ -275,6 +296,8 @@ class BubbleBreathingApp {
       volumeLabel: document.getElementById('volumeLabel'),
       startButton: document.getElementById('startButton'),
       resetConfigBtn: document.getElementById('resetConfigBtn'),
+      estimatedTime: document.getElementById('estimated-time'),
+      estimatedTimeLabel: document.querySelector('[data-translate="estimated_time"]'),
       
       // Exercise screen
       roundInfo: document.getElementById('roundInfo'),
@@ -300,15 +323,12 @@ class BubbleBreathingApp {
   }
   
   initEventListeners() {
-    // <<< AÑADIDO: Event listener para el botón de tema
     this.elements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
 
-    // Eventos de idioma mejorados
     const langToggle = document.getElementById('langToggle');
     const langOverlay = document.getElementById('langOverlay');
     const langOptions = document.querySelectorAll('.lang-option');
 
-    // Toggle del dropdown
     if (langToggle) {
       langToggle.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -316,14 +336,12 @@ class BubbleBreathingApp {
       });
     }
 
-    // Cerrar dropdown al hacer clic en overlay
     if (langOverlay) {
       langOverlay.addEventListener('click', () => {
         this.closeLanguageDropdown();
       });
     }
 
-    // Seleccionar idioma
     langOptions.forEach(option => {
       option.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -334,18 +352,17 @@ class BubbleBreathingApp {
       });
     });
 
-    // Cerrar dropdown con Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.closeLanguageDropdown();
       }
     });
     
-    // Configuración con guardado automático
     this.elements.roundsSlider.addEventListener('input', e => {
       this.config.rounds = +e.target.value;
       this.elements.roundsValue.textContent = e.target.value;
       this.saveConfig();
+      this.updateEstimatedTime();
     });
     
     this.elements.breathsSlider.addEventListener('input', e => {
@@ -353,12 +370,12 @@ class BubbleBreathingApp {
       this.elements.breathsValue.textContent = e.target.value;
       this.updateExerciseInstruction();
       this.saveConfig();
+      this.updateEstimatedTime();
     });
     
     this.elements.volumeSlider.addEventListener('input', e => {
       this.config.volume = +e.target.value;
       this.elements.volumeValue.textContent = Math.round(e.target.value * 100);
-      // Previsualización del sonido
       this.playTone(220, 200);
       this.saveConfig();
     });
@@ -369,27 +386,24 @@ class BubbleBreathingApp {
       this.config.speed = btn.dataset.speed;
       this.saveConfig();
       this.restartPreviewAnimation();
+      this.updateEstimatedTime();
     }));
     
-    // Botón reset de configuración
     if (this.elements.resetConfigBtn) {
       this.elements.resetConfigBtn.addEventListener('click', () => {
         this.resetConfig();
       });
     }
     
-    // Navegación
     this.elements.startButton.addEventListener('click', () => this.startSession());
     this.elements.finishBtn.addEventListener('click', () => this.finishSession());
     this.elements.newSessionBtn.addEventListener('click', () => this.resetToConfig());
     
-    // Ejercicio
     this.elements.retentionHexagon.addEventListener('click', () => this.endRetention());
     this.elements.skipToRetentionBtn.addEventListener('click', () => this.skipToRetention());
     this.elements.skipRecoveryBtn.addEventListener('click', () => this.skipRecovery());
   }
 
-  // <<< MÉTODOS DE TEMA AÑADIDOS >>>
   applyInitialTheme() {
     const savedTheme = localStorage.getItem('bubbleBreathingTheme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -415,17 +429,14 @@ class BubbleBreathingApp {
     Object.values(this.elements.screens).forEach(s => s.classList.remove('active'));
     this.elements.screens[name].classList.add('active');
     
-    // <<< LÓGICA DE VISIBILIDAD DE BOTONES MODIFICADA >>>
     const isConfigScreen = name === 'config';
     const showFinish = !isConfigScreen && name !== 'results';
     
     this.elements.finishBtn.classList.toggle('hidden', !showFinish);
     this.elements.themeToggleBtn.classList.toggle('hidden', !isConfigScreen);
     
-    // Cerrar dropdown de idioma al cambiar de pantalla
     this.closeLanguageDropdown();
     
-    // Manejar botones de skip
     if (name === 'exercise') {
       this.updateSkipButtons();
     } else {
@@ -433,7 +444,6 @@ class BubbleBreathingApp {
       this.elements.skipRecoveryBtn.style.display = 'none';
     }
     
-    // Manejar animación de preview
     if (name === 'config') {
       this.startPreviewAnimation();
     } else {
@@ -475,7 +485,6 @@ class BubbleBreathingApp {
     this.elements.progressFill.style.width = `${Math.min(100, (step / total) * 100)}%`;
   }
   
-  // Métodos de sesión
   startSession() {
     this.session = {
       currentRound: 1,
@@ -499,7 +508,6 @@ class BubbleBreathingApp {
     this.elements.exerciseHexagon.className = 'hexagon phase-breathing';
     this.elements.recoverySubtitle.style.display = 'none';
     
-    // Resetear la escala del hexágono para cada nueva ronda
     this.elements.exerciseHexagon.style.transition = 'transform 0.3s';
     this.elements.exerciseHexagon.style.transform = 'scale(1)';
     
@@ -519,16 +527,13 @@ class BubbleBreathingApp {
     
     const { inhale, exhale } = this.speedSettings[this.config.speed];
     
-    // Audio y vibración para cada respiración
     this.playBreathTone();
     this.vibrate();
     
-    // Animación de inhalación
     this.elements.exerciseHexagon.style.transition = `transform ${inhale}ms ease-in-out`;
     this.elements.exerciseHexagon.style.transform = 'scale(1.3)';
     
     const inhaleTimer = setTimeout(() => {
-      // Animación de exhalación
       this.elements.exerciseHexagon.style.transition = `transform ${exhale}ms ease-in-out`;
       this.elements.exerciseHexagon.style.transform = 'scale(0.9)';
       
@@ -546,7 +551,6 @@ class BubbleBreathingApp {
     this.elements.breathCounter.textContent = this.session.currentBreath;
     this.updateProgress();
     
-    // Audio y vibración antes de entrar en retención
     this.playRetentionStartSignal();
     
     setTimeout(() => this.startRetentionPhase(), 500);
@@ -559,7 +563,6 @@ class BubbleBreathingApp {
     this.updateRoundInfo();
     this.updateProgress();
     
-    // Sonido y vibración prolongados para el inicio de la apnea
     this.playRetentionStartSignal();
     
     this.retentionInterval = setInterval(() => {
@@ -568,21 +571,17 @@ class BubbleBreathingApp {
     }, 100);
   }
   
-  // Métodos de audio y vibración mejorados
   playBreathTone() {
     if (this.config.volume > 0) {
       this.playTone(220, 200);
     }
   }
   
-  // Señal distintiva para el inicio de la apnea
   playRetentionStartSignal() {
     if (this.config.volume > 0) {
-      // Sonido más grave y prolongado
       this.playTone(150, 800);
     }
     
-    // Vibración solo si hay volumen (coherencia audio-haptic)
     if (this.config.volume > 0 && navigator.vibrate) {
       navigator.vibrate([200, 100, 200, 100, 400]);
     }
@@ -608,7 +607,6 @@ class BubbleBreathingApp {
     this.elements.recoverySubtitle.textContent = this.t('timeToInhale');
     this.updateProgress();
     
-    // Audio y vibración para el inicio de la recuperación
     this.playBreathTone();
     this.vibrate();
     
@@ -631,7 +629,6 @@ class BubbleBreathingApp {
     this.elements.recoverySubtitle.textContent = this.t('timeToExhale');
     this.updateProgress();
     
-    // Audio y vibración para el inicio de la exhalación
     this.playBreathTone();
     this.vibrate();
     
@@ -700,7 +697,6 @@ class BubbleBreathingApp {
     this.elements.progressFill.style.width = '0%';
   }
   
-  // Métodos de utilidad
   clearTimers() {
     if (this.retentionInterval) clearInterval(this.retentionInterval);
     this.session.timers.forEach(timer => {
@@ -711,7 +707,7 @@ class BubbleBreathingApp {
   }
   
   playTone(frequency, duration) {
-    if (this.config.volume === 0) return; // No reproducir sonido si está en silencio
+    if (this.config.volume === 0) return;
     
     try {
       const oscillator = this.audioCtx.createOscillator();
@@ -732,7 +728,6 @@ class BubbleBreathingApp {
   }
   
   vibrate(duration = 30) {
-    // Solo vibrar si hay volumen configurado (coherencia audio-haptic)
     if (this.config.volume > 0 && navigator.vibrate) {
       navigator.vibrate(duration);
     }
@@ -744,7 +739,6 @@ class BubbleBreathingApp {
     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
   
-  // Animación de preview
   startPreviewAnimation() {
     if (this.previewActive) return;
     
@@ -768,12 +762,10 @@ class BubbleBreathingApp {
       }
       this.previewFirstCycle = false;
       
-      // Inhalación
       this.elements.previewHexagon.style.transition = `transform ${inhale}ms ease-in-out`;
       this.elements.previewHexagon.style.transform = 'scale(1.3)';
       
       this.previewTimers.inhale = setTimeout(() => {
-        // Exhalación
         this.elements.previewHexagon.style.transition = `transform ${exhale}ms ease-in-out`;
         this.elements.previewHexagon.style.transform = 'scale(0.9)';
         
@@ -807,5 +799,4 @@ class BubbleBreathingApp {
   }
 }
 
-// Inicializar la aplicación
 new BubbleBreathingApp();

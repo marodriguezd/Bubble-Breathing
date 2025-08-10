@@ -27,7 +27,8 @@ window.translations = {
     releaseAirInstruction: "Suelta el aire",
     timeToInhale: "Tiempo para inhalar",
     timeToExhale: "Tiempo para exhalar",
-    langIndicator: "Cambiar idioma"
+    langIndicator: "Cambiar idioma",
+    estimated_time: "Tiempo estimado"
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -56,7 +57,8 @@ window.translations = {
     releaseAirInstruction: "Release the air",
     timeToInhale: "Time to inhale",
     timeToExhale: "Time to exhale",
-    langIndicator: "Change language"
+    langIndicator: "Change language",
+    estimated_time: "Estimated time"
   },
   fr: {
     appTitle: "Bubble Breathing",
@@ -85,7 +87,8 @@ window.translations = {
     releaseAirInstruction: "Relâchez l'air",
     timeToInhale: "Temps d'inspiration",
     timeToExhale: "Temps d'expiration",
-    langIndicator: "Changer de langue"
+    langIndicator: "Changer de langue",
+    estimated_time: "Temps estimé"
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -114,7 +117,8 @@ window.translations = {
     releaseAirInstruction: "Rilascia l'aria",
     timeToInhale: "Tempo per inspirare",
     timeToExhale: "Tempo per espirare",
-    langIndicator: "Cambia lingua"
+    langIndicator: "Cambia lingua",
+    estimated_time: "Tempo stimato"
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -143,7 +147,8 @@ window.translations = {
     releaseAirInstruction: "Luft ablassen",
     timeToInhale: "Zeit zum Einatmen",
     timeToExhale: "Zeit zum Ausatmen",
-    langIndicator: "Sprache ändern"
+    langIndicator: "Sprache ändern",
+    estimated_time: "Geschätzte Zeit"
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -172,7 +177,8 @@ window.translations = {
     releaseAirInstruction: "Solte o ar",
     timeToInhale: "Tempo para inspirar",
     timeToExhale: "Tempo para expirar",
-    langIndicator: "Mudar idioma"
+    langIndicator: "Mudar idioma",
+    estimated_time: "Tempo estimado"
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -201,6 +207,7 @@ window.translations = {
     releaseAirInstruction: "呼出空气",
     timeToInhale: "吸气时间",
     timeToExhale: "呼气时间",
-    langIndicator: "更改语言"
+    langIndicator: "更改语言",
+    estimated_time: "预计时间"
   }
 };
