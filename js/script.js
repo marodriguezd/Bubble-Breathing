@@ -789,7 +789,10 @@ class BubbleBreathingApp {
       this.elements.breathCounter.textContent = countdown;
       if (countdown === 0) {
         clearInterval(interval);
-        onComplete();
+        // Introduce a small delay before calling onComplete
+        setTimeout(() => {
+          onComplete();
+        }, 500); // 500ms delay to show '0'
       }
     }, 1000);
     
