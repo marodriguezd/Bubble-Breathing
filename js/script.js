@@ -818,7 +818,7 @@ class BubbleBreathingApp {
       this.showResults();
     } else {
       this.session.currentRound++;
-      setTimeout(() => this.startBreathingPhase(), 1000);
+      setTimeout(() => this.startBreathingPhase(), 0);
     }
   }
   
