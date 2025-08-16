@@ -460,6 +460,11 @@ body {
 .tap-instruction {
   color: var(--color-muted);
 }
+#resultsContent {
+  max-height: 300px; /* Adjust this value as needed */
+  overflow-y: auto;
+  padding-right: 10px; /* To avoid content overlapping with the scrollbar */
+}
 .result-item {
   display: flex;
   justify-content: space-between;

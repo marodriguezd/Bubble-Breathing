@@ -57,10 +57,11 @@ class BubbleBreathingApp {
       const savedConfig = localStorage.getItem('bubbleBreathingConfig');
       if (savedConfig) {
         const parsed = JSON.parse(savedConfig);
+        const rounds = parsed.rounds === 11 ? Infinity : (parsed.rounds >= 1 && parsed.rounds <= 10) ? parsed.rounds : this.defaultConfig.rounds;
         // Validate that the saved configuration is valid
         return {
           speed: ['slow', 'standard', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
-          rounds: (parsed.rounds >= 1 && parsed.rounds <= 5) ? parsed.rounds : this.defaultConfig.rounds,
+          rounds: rounds,
           breaths: (parsed.breaths >= 5 && parsed.breaths <= 60) ? parsed.breaths : this.defaultConfig.breaths,
           volume: (parsed.volume >= 0 && parsed.volume <= 0.5) ? parsed.volume : this.defaultConfig.volume
         };
@@ -76,7 +77,11 @@ class BubbleBreathingApp {
    */
   saveConfig() {
     try {
-      localStorage.setItem('bubbleBreathingConfig', JSON.stringify(this.config));
+      const configToSave = { ...this.config };
+      if (configToSave.rounds === Infinity) {
+        configToSave.rounds = 11;
+      }
+      localStorage.setItem('bubbleBreathingConfig', JSON.stringify(configToSave));
     } catch (e) {
       console.warn('Error saving config:', e);
     }
@@ -90,7 +95,6 @@ class BubbleBreathingApp {
     this.saveConfig();
     this.updateConfigUI();
     this.updateEstimatedTime();
-    // Restart preview with new configuration
     this.restartPreviewAnimation();
   }
   
@@ -99,8 +103,9 @@ class BubbleBreathingApp {
    */
   updateConfigUI() {
     // Update sliders
-    this.elements.roundsSlider.value = this.config.rounds;
-    this.elements.roundsValue.textContent = this.config.rounds;
+    const isInfinite = this.config.rounds === Infinity;
+    this.elements.roundsSlider.value = isInfinite ? 11 : this.config.rounds;
+    this.elements.roundsValue.textContent = isInfinite ? '∞' : this.config.rounds;
     this.elements.breathsSlider.value = this.config.breaths;
     this.elements.breathsValue.textContent = this.config.breaths;
     this.elements.volumeSlider.value = this.config.volume;
@@ -120,13 +125,13 @@ class BubbleBreathingApp {
    */
   init() {
     this.initElements();
-    this.applyInitialTheme(); // <<< ADDED: Apply theme on startup
+    this.applyInitialTheme();
     this.initEventListeners();
     this.updateLanguage();
     this.updateLanguageDisplay();
-    this.updateConfigUI(); // Apply saved configuration to the UI
+    this.updateConfigUI();
     this.startPreviewAnimation();
-    this.updateEstimatedTime(); // <<< ADDED: Calculate initial estimated time
+    this.updateEstimatedTime();
   }
   
   /**
@@ -258,7 +263,7 @@ class BubbleBreathingApp {
   updateRoundInfo() {
     const current = this.session.currentRound;
     const total = this.config.rounds;
-    const text = this.t('roundInfo', { current, total });
+    const text = this.t('roundInfo', { current, total: total === Infinity ? '∞' : total });
     
     if (this.elements.roundInfo) this.elements.roundInfo.textContent = text;
     if (this.elements.retentionRoundInfo) this.elements.retentionRoundInfo.textContent = text;
@@ -299,6 +304,10 @@ class BubbleBreathingApp {
    * Updates the estimated time display.
    */
   updateEstimatedTime() {
+    if (this.config.rounds === Infinity) {
+      this.elements.estimatedTime.textContent = '∞';
+      return;
+    }
     const { rounds, breaths, speed } = this.config;
     const speedSetting = this.speedSettings[speed];
     const breathDuration = (speedSetting.inhale + speedSetting.exhale) / 1000;
@@ -418,8 +427,14 @@ class BubbleBreathingApp {
     });
     
     this.elements.roundsSlider.addEventListener('input', e => {
-      this.config.rounds = +e.target.value;
-      this.elements.roundsValue.textContent = e.target.value;
+      const value = +e.target.value;
+      if (value === 11) {
+        this.config.rounds = Infinity;
+        this.elements.roundsValue.textContent = '∞';
+      } else {
+        this.config.rounds = value;
+        this.elements.roundsValue.textContent = value;
+      }
       this.saveConfig();
       this.updateEstimatedTime();
     });
@@ -538,30 +553,34 @@ class BubbleBreathingApp {
    * Updates the progress bar.
    */
   updateProgress() {
-    const total = this.config.rounds * (this.config.breaths + 2);
-    let step = (this.session.currentRound - 1) * (this.config.breaths + 2);
+    if (this.config.rounds === Infinity) {
+      this.elements.progressFill.style.width = '100%';
+      return;
+    }
+    const totalSteps = this.config.rounds * (this.config.breaths + 2);
+    let currentStep = (this.session.currentRound - 1) * (this.config.breaths + 2);
     
     switch (this.session.phase) {
       case 'breathing':
-        step += this.session.currentBreath;
+        currentStep += this.session.currentBreath;
         break;
       case 'retention':
-        step += this.config.breaths + 1;
+        currentStep += this.config.breaths + 1;
         break;
       case 'inhaling':
-        step += this.config.breaths + 1.25;
+        currentStep += this.config.breaths + 1.25;
         break;
       case 'recovery':
-        step += this.config.breaths + 1.5;
+        currentStep += this.config.breaths + 1.5;
         break;
       case 'exhaling':
-        step += this.config.breaths + 1.75;
+        currentStep += this.config.breaths + 1.75;
         break;
       default:
-        step += this.config.breaths + 2;
+        currentStep += this.config.breaths + 2;
     }
     
-    this.elements.progressFill.style.width = `${Math.min(100, (step / total) * 100)}%`;
+    this.elements.progressFill.style.width = `${Math.min(100, (currentStep / totalSteps) * 100)}%`;
   }
   
   /**
@@ -789,7 +808,7 @@ class BubbleBreathingApp {
    * Completes the current round.
    */
   completeRound() {
-    if (this.session.currentRound >= this.config.rounds) {
+    if (this.session.currentRound >= this.config.rounds && this.config.rounds !== Infinity) {
       this.showResults();
     } else {
       this.session.currentRound++;
