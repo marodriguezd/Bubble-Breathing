@@ -2,6 +2,15 @@
 
 This README is available in English and Spanish. / Este README está disponible en Inglés y Español.
 
+Available languages in the web app:
+- English
+- Spanish
+- French
+- Italian
+- German
+- Portuguese
+- Simplified Chinese
+
 **[🇬🇧 English](#english-version)   •   [🇪🇸 Español](#version-en-espanol)**
 
 ---
