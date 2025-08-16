@@ -59,20 +59,6 @@ The app will appear on your home screen with the custom icon and can be used off
   <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
 </p>
 
-### 🚀 How to Use
-
-As this is a pure (vanilla) HTML, CSS, and JavaScript project, no installation is needed.
-
-1.  Clone this repository:
-    ```bash
-    git clone https://github.com/marodriguezd/Bubble-Breathing.git
-    ```
-2.  Navigate to the project folder:
-    ```bash
-    cd Bubble-Breathing
-    ```
-3.  Open the `index.html` file in your web browser. That's it!
-
 ### 🛠️ Technologies Used
 
 - **HTML5:** For the semantic structure of the application, including `viewport-fit=cover` for edge-to-edge mobile experiences.
@@ -132,20 +118,6 @@ Puedes instalar Bubble Breathing directamente en tu dispositivo para un acceso r
 <p align="center">
   <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
 </p>
-
-### 🚀 Cómo Usarlo
-
-Como es un proyecto de HTML, CSS y JavaScript puros (vanilla), no necesitas ninguna instalación.
-
-1.  Clona este repositorio:
-    ```bash
-    git clone https://github.com/marodriguezd/Bubble-Breathing.git
-    ```
-2.  Navega a la carpeta del proyecto:
-    ```bash
-    cd Bubble-Breathing
-    ```
-3.  Abre el fichero `index.html` en tu navegador web. ¡Y listo!
 
 ### 🛠️ Tecnologías Utilizadas
 
