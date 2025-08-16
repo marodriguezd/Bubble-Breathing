@@ -29,20 +29,20 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 
 ### ✨ Features
 
-- **Guided Breathing Cycles:** A visual "breathing bubble" and optional audio cues guide you through each inhalation and exhalation.
-- **Customizable Sessions:** Fully tailor your exercise by choosing the number of rounds (1-10 or infinite), breaths per round, and the volume of the audio cues.
-- **Infinite Mode:** For continuous, uninterrupted sessions, an "infinite" mode allows the exercise to run for as long as you like.
-- **Scrollable Results:** If your session has more than five rounds, the results screen will feature a vertical scrollbar, allowing you to review all your retention times.
-- **Persistent Settings:** Your session configuration (speed, rounds, breaths, and volume) is automatically saved in your browser, so you can pick up right where you left off on your next visit.
-- **Adjustable Speed & Live Preview:** Select between Slow, Standard, and Fast speeds. A live preview on the setup screen demonstrates the selected pace before you begin.
-- **Automatic Breath-Hold Timer:** After the breathing cycles, the app automatically times your breath-hold (retention) phase.
-- **Structured Recovery Breath:** Following each breath-hold, the app guides you through a controlled 15-second recovery breath to help you normalize before the next round.
-- **Flexible Control:** Skip the main breathing phase or the recovery breath at any time with dedicated buttons, giving you full control over your session.
-- **Session Summary:** At the end of your session, review your retention times for each round and your overall average time.
-- **Multilingual Support:** Seamlessly switch between English, Spanish, French, Italian, German, Portuguese and Simplified Chinese using an intuitive dropdown menu. Your language preference is saved for your next visit.
-- **Zoom Persistence on Installation:** When installing the app as a web app (via "Add to Home Screen"), the zoom level set in your browser at the time of installation will be preserved for the installed app.
-- **Zoom-Responsive Width:** The app's width adjusts dynamically with your browser's zoom level, allowing you to customize the viewing experience to your preference. [See zoom examples 📸](#zoom-examples)
-- **Immersive, App-Like Interface:** A fully fluid and adaptive design that provides a native app feel. The layout uses modern CSS techniques to intelligently scale and distribute content, ensuring components fit perfectly on any screen size—from wide desktops to tall mobile displays—without scrollbars or viewport issues.
+- **Personalized Breathing Experience:**
+    - **Guided Cycles:** Visual "breathing bubble" and optional audio cues guide your inhalation and exhalation.
+    - **Full Customization:** Tailor sessions with adjustable rounds (1-10 or infinite), breaths per round, and audio volume.
+    - **Flexible Pace:** Choose between Slow, Standard, and Fast speeds with a live preview to demonstrate the rhythm.
+
+- **Intelligent Session Management:**
+    - **Automated Timers:** Automatically tracks breath-hold (retention) and guides you through a structured recovery breath.
+    - **Dynamic Control:** Skip breathing or recovery phases at any time for full session control.
+    - **Comprehensive Summary:** Review retention times for each round and your overall average at the session's end.
+
+- **Seamless User Experience:**
+    - **Persistent Settings:** Your preferences are automatically saved for future visits.
+    - **Multilingual Support:** Easily switch between English, Spanish, French, Italian, German, Portuguese, and Simplified Chinese.
+    - **Adaptive Design:** Immersive, app-like interface that scales perfectly across all devices and maintains zoom levels when installed as a web app.
 
 ### 📱 How to Install as a Web App
 
@@ -103,20 +103,20 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 
 ### ✨ Características
 
-- **Ciclos de Respiración Guiados:** Una "burbuja de respiración" visual y señales auditivas opcionales te guían en cada inhalación y exhalación.
-- **Sesiones Personalizables:** Adapta completamente tu ejercicio eligiendo el número de rondas (de 1 a 10 o infinito), la cantidad de respiraciones por ronda y el volumen de las guías auditivas.
-- **Modo Infinito:** Para sesiones continuas y sin interrupciones, un modo "infinito" permite que el ejercicio se ejecute durante todo el tiempo que desees.
-- **Resultados con Desplazamiento:** Si tu sesión tiene más de cinco rondas, la pantalla de resultados contará con una barra de desplazamiento vertical, permitiéndote revisar todos tus tiempos de retención.
-- **Configuración Persistente:** Los ajustes de tu sesión (velocidad, rondas, respiraciones y volumen) se guardan automáticamente en tu navegador, para que puedas continuar justo donde lo dejaste en tu próxima visita.
-- **Velocidad Ajustable y Previsualización en Vivo:** Selecciona entre velocidades Lenta, Estándar y Rápida. Una previsualización en la pantalla de configuración te muestra el ritmo seleccionado antes de empezar.
-- **Temporizador Automático de Apnea:** Después de los ciclos de respiración, la aplicación cronometra automáticamente tu fase de apnea (retención de la respiración).
-- **Respiración de Recuperación Estructurada:** Tras cada apnea, la aplicación te guía a través de una respiración de recuperación controlada de 15 segundos para ayudarte a normalizarte antes de la siguiente ronda.
-- **Control Flexible:** Salta la fase principal de respiración o la respiración de recuperación en cualquier momento con botones dedicados, dándote control total sobre tu sesión.
-- **Resumen de la Sesión:** Al final de tu sesión, revisa tus tiempos de retención para cada ronda y tu tiempo promedio general.
-- **Soporte Multilingüe:** Cambia fácilmente entre inglés, español, francés, italiano, alemán, portugués y chino simplificado usando un menú desplegable intuitivo. Tu preferencia de idioma se guarda para tu próxima visita.
-- **Persistencia del Zoom al Instalar:** Al instalar la aplicación como web app (mediante "Añadir a pantalla de inicio"), el nivel de zoom configurado en el navegador en el momento de la instalación se mantendrá en la aplicación instalada.
-- **Ancho Adaptable con Zoom:** El ancho de la aplicación se ajusta dinámicamente con el nivel de zoom del navegador, permitiéndote personalizar la experiencia de visualización a tu gusto. [Ver ejemplos de zoom 📸](#zoom-examples)
-- **Interfaz Inmersiva tipo App:** Un diseño totalmente fluido y adaptativo que proporciona una sensación de aplicación nativa. El layout utiliza técnicas modernas de CSS para escalar y distribuir el contenido de forma inteligente, asegurando que los componentes se ajusten perfectamente a cualquier tamaño de pantalla —desde monitores anchos de escritorio hasta pantallas altas de móviles— sin barras de scroll ni problemas de viewport.
+- **Experiencia de Respiración Personalizada:**
+    - **Ciclos Guiados:** Una "burbuja de respiración" visual y señales auditivas opcionales te guían en cada inhalación y exhalación.
+    - **Personalización Completa:** Adapta las sesiones con rondas ajustables (de 1 a 10 o infinito), respiraciones por ronda y volumen de audio.
+    - **Ritmo Flexible:** Elige entre velocidades Lenta, Estándar y Rápida con una previsualización en vivo para demostrar el ritmo.
+
+- **Gestión Inteligente de Sesiones:**
+    - **Temporizadores Automatizados:** Registra automáticamente la apnea (retención) y te guía a través de una respiración de recuperación estructurada.
+    - **Control Dinámico:** Salta las fases de respiración o recuperación en cualquier momento para un control total de la sesión.
+    - **Resumen Completo:** Revisa los tiempos de retención de cada ronda y tu promedio general al final de la sesión.
+
+- **Experiencia de Usuario Fluida:**
+    - **Configuración Persistente:** Tus preferencias se guardan automáticamente para futuras visitas.
+    - **Soporte Multilingüe:** Cambia fácilmente entre inglés, español, francés, italiano, alemán, portugués y chino simplificado.
+    - **Diseño Adaptativo:** Interfaz inmersiva tipo aplicación que se adapta perfectamente a todos los dispositivos y mantiene los niveles de zoom al instalarse como web app.
 
 ### 📱 Cómo Instalar como Web App
 
