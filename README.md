@@ -21,7 +21,9 @@ An immersive, app-like web application for guided rhythmic breathing exercises. 
 ### ✨ Features
 
 - **Guided Breathing Cycles:** A visual "breathing bubble" and optional audio cues guide you through each inhalation and exhalation.
-- **Customizable Sessions:** Fully tailor your exercise by choosing the number of rounds, breaths per round, and the volume of the audio cues.
+- **Customizable Sessions:** Fully tailor your exercise by choosing the number of rounds (1-10 or infinite), breaths per round, and the volume of the audio cues.
+- **Infinite Mode:** For continuous, uninterrupted sessions, an "infinite" mode allows the exercise to run for as long as you like.
+- **Scrollable Results:** If your session has more than five rounds, the results screen will feature a vertical scrollbar, allowing you to review all your retention times.
 - **Persistent Settings:** Your session configuration (speed, rounds, breaths, and volume) is automatically saved in your browser, so you can pick up right where you left off on your next visit.
 - **Adjustable Speed & Live Preview:** Select between Slow, Standard, and Fast speeds. A live preview on the setup screen demonstrates the selected pace before you begin.
 - **Automatic Breath-Hold Timer:** After the breathing cycles, the app automatically times your breath-hold (retention) phase.
@@ -93,7 +95,9 @@ Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rí
 ### ✨ Características
 
 - **Ciclos de Respiración Guiados:** Una "burbuja de respiración" visual y señales auditivas opcionales te guían en cada inhalación y exhalación.
-- **Sesiones Personalizables:** Adapta completamente tu ejercicio eligiendo el número de rondas, la cantidad de respiraciones por ronda y el volumen de las guías auditivas.
+- **Sesiones Personalizables:** Adapta completamente tu ejercicio eligiendo el número de rondas (de 1 a 10 o infinito), la cantidad de respiraciones por ronda y el volumen de las guías auditivas.
+- **Modo Infinito:** Para sesiones continuas y sin interrupciones, un modo "infinito" permite que el ejercicio se ejecute durante todo el tiempo que desees.
+- **Resultados con Desplazamiento:** Si tu sesión tiene más de cinco rondas, la pantalla de resultados contará con una barra de desplazamiento vertical, permitiéndote revisar todos tus tiempos de retención.
 - **Configuración Persistente:** Los ajustes de tu sesión (velocidad, rondas, respiraciones y volumen) se guardan automáticamente en tu navegador, para que puedas continuar justo donde lo dejaste en tu próxima visita.
 - **Velocidad Ajustable y Previsualización en Vivo:** Selecciona entre velocidades Lenta, Estándar y Rápida. Una previsualización en la pantalla de configuración te muestra el ritmo seleccionado antes de empezar.
 - **Temporizador Automático de Apnea:** Después de los ciclos de respiración, la aplicación cronometra automáticamente tu fase de apnea (retención de la respiración).
