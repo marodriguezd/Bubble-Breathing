@@ -4,12 +4,12 @@ This README is available in English and Spanish. / Este README está disponible 
 
 Available languages in the web app:
 - English
-- Spanish
-- French
-- Italian
-- German
-- Portuguese
-- Simplified Chinese
+- Español
+- Français
+- Italiano
+- Deutsch
+- Português
+- 简体中文
 
 **[🇬🇧 English](#english-version)   •   [🇪🇸 Español](#version-en-espanol)**
 
