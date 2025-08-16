@@ -783,8 +783,11 @@ class BubbleBreathingApp {
     
     const interval = setInterval(() => {
       countdown--;
+      if (countdown < 0) { // Ensure it doesn't go below 0
+        countdown = 0;
+      }
       this.elements.breathCounter.textContent = countdown;
-      if (countdown <= 0) {
+      if (countdown === 0) {
         clearInterval(interval);
         onComplete();
       }
