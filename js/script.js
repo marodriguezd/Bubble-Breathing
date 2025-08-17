@@ -94,6 +94,14 @@ class BubbleBreathingApp {
    * Resets the configuration to the default values.
    */
   resetConfig() {
+    // Prevent multiple clicks while resetting
+    if (this.isResetting) return;
+    this.isResetting = true;
+
+    const btn = this.elements.resetConfigBtn;
+    btn.classList.add('is-resetting');
+    btn.textContent = this.t('resetting'); // Change text to "Resetting..."
+
     this.config = { ...this.defaultConfig };
     this.saveConfig();
     this.updateConfigUI();
@@ -103,6 +111,13 @@ class BubbleBreathingApp {
     // Hide the secret mode and remove the unlocked flag
     this.elements.speedMidFast.classList.add('hidden-mode');
     localStorage.removeItem('midFastUnlocked');
+
+    // Revert button state after a short delay
+    setTimeout(() => {
+      btn.classList.remove('is-resetting');
+      btn.textContent = this.t('resetConfigBtn'); // Revert text to "Reset"
+      this.isResetting = false;
+    }, 1000); // 1 second feedback
   }
   
   /**
@@ -495,6 +510,8 @@ class BubbleBreathingApp {
   initSecretMode() {
     if (localStorage.getItem('midFastUnlocked')) {
       this.elements.speedMidFast.classList.remove('hidden-mode');
+    } else {
+      this.elements.speedMidFast.classList.add('hidden-mode');
     }
 
     this.elements.container.addEventListener('click', () => {
@@ -506,7 +523,7 @@ class BubbleBreathingApp {
       }
       this.lastTap = time;
 
-      if (this.tapCount === 3) {
+      if (this.tapCount === 7) {
         this.elements.speedMidFast.classList.remove('hidden-mode');
         localStorage.setItem('midFastUnlocked', 'true');
       }

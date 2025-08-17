@@ -29,7 +29,8 @@ window.translations = {
     timeToInhale: "Tiempo para inhalar",
     timeToExhale: "Tiempo para exhalar",
     langIndicator: "Cambiar idioma",
-    estimated_time: "Tiempo estimado"
+    estimated_time: "Tiempo estimado",
+    resetting: "Reseteando..."
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -60,7 +61,8 @@ window.translations = {
     timeToInhale: "Time to inhale",
     timeToExhale: "Time to exhale",
     langIndicator: "Change language",
-    estimated_time: "Estimated time"
+    estimated_time: "Estimated time",
+    resetting: "Resetting..."
   },
   fr: {
     appTitle: "Bubble Breathing",
@@ -91,7 +93,8 @@ window.translations = {
     timeToInhale: "Temps d'inspiration",
     timeToExhale: "Temps d'expiration",
     langIndicator: "Changer de langue",
-    estimated_time: "Temps estimé"
+    estimated_time: "Temps estimé",
+    resetting: "Réinitialisation..."
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -122,7 +125,8 @@ window.translations = {
     timeToInhale: "Tempo per inspirare",
     timeToExhale: "Tempo per espirare",
     langIndicator: "Cambia lingua",
-    estimated_time: "Tempo stimato"
+    estimated_time: "Tempo stimato",
+    resetting: "Ripristino..."
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -153,7 +157,8 @@ window.translations = {
     timeToInhale: "Zeit zum Einatmen",
     timeToExhale: "Zeit zum Ausatmen",
     langIndicator: "Sprache ändern",
-    estimated_time: "Geschätzte Zeit"
+    estimated_time: "Geschätzte Zeit",
+    resetting: "Zurücksetzen..."
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -184,7 +189,8 @@ window.translations = {
     timeToInhale: "Tempo para inspirar",
     timeToExhale: "Tempo para expirar",
     langIndicator: "Mudar idioma",
-    estimated_time: "Tempo estimado"
+    estimated_time: "Tempo estimado",
+    resetting: "Redefinindo..."
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -215,7 +221,8 @@ window.translations = {
     timeToInhale: "吸气时间",
     timeToExhale: "呼气时间",
     langIndicator: "更改语言",
-    estimated_time: "预计时间"
+    estimated_time: "预计时间",
+    resetting: "正在重置..."
   }
 };
 

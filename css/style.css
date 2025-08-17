@@ -423,6 +423,12 @@ body {
   transform: translateY(-1px);
 }
 
+.reset-config-btn.is-resetting {
+  background: var(--color-success);
+  transform: translateY(-1px);
+  pointer-events: none; /* Prevent multiple clicks */
+}
+
 .start-button {
   background: var(--color-primary);
   color: #fff;
