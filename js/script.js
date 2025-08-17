@@ -99,6 +99,10 @@ class BubbleBreathingApp {
     this.updateConfigUI();
     this.updateEstimatedTime();
     this.restartPreviewAnimation();
+  
+    // Hide the secret mode and remove the unlocked flag
+    this.elements.speedMidFast.classList.add('hidden-mode');
+    localStorage.removeItem('midFastUnlocked');
   }
   
   /**
