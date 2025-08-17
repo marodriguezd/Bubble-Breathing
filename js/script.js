@@ -35,6 +35,7 @@ class BubbleBreathingApp {
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
       standard: { inhale: 2000, exhale: 1000 },
+      'mid-fast': { inhale: 1500, exhale: 1000 },
       fast: { inhale: 1000, exhale: 1000 }
     };
     
@@ -44,6 +45,8 @@ class BubbleBreathingApp {
     this.previewBreathCount = 1;
     this.previewActive = false;
     this.previewFirstCycle = true;
+    this.tapCount = 0;
+    this.lastTap = 0;
     
     this.init();
   }
@@ -60,7 +63,7 @@ class BubbleBreathingApp {
         const rounds = parsed.rounds === 11 ? Infinity : (parsed.rounds >= 1 && parsed.rounds <= 10) ? parsed.rounds : this.defaultConfig.rounds;
         // Validate that the saved configuration is valid
         return {
-          speed: ['slow', 'standard', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
+          speed: ['slow', 'standard', 'mid-fast', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
           rounds: rounds,
           breaths: (parsed.breaths >= 5 && parsed.breaths <= 60) ? parsed.breaths : this.defaultConfig.breaths,
           volume: (parsed.volume >= 0 && parsed.volume <= 0.5) ? parsed.volume : this.defaultConfig.volume
@@ -127,6 +130,7 @@ class BubbleBreathingApp {
     this.initElements();
     this.applyInitialTheme();
     this.initEventListeners();
+    this.initSecretMode();
     this.updateLanguage();
     this.updateLanguageDisplay();
     this.updateConfigUI();
@@ -174,6 +178,7 @@ class BubbleBreathingApp {
     elements.previewLabel.textContent = this.t('previewLabel');
     elements.speedSlow.textContent = this.t('speedSlow');
     elements.speedStandard.textContent = this.t('speedStandard');
+    elements.speedMidFast.textContent = this.t('speedMidFast');
     elements.speedFast.textContent = this.t('speedFast');
     elements.roundsLabel.textContent = this.t('roundsLabel');
     elements.breathsLabel.textContent = this.t('breathsLabel');
@@ -331,6 +336,7 @@ class BubbleBreathingApp {
    */
   initElements() {
     this.elements = {
+      container: document.querySelector('.container'),
       screens: {
         config: document.getElementById('configScreen'),
         exercise: document.getElementById('exerciseScreen'),
@@ -348,6 +354,7 @@ class BubbleBreathingApp {
       previewLabel: document.getElementById('previewLabel'),
       speedSlow: document.getElementById('speedSlow'),
       speedStandard: document.getElementById('speedStandard'),
+      speedMidFast: document.getElementById('speedMidFast'),
       speedFast: document.getElementById('speedFast'),
       speedBtns: document.querySelectorAll('.speed-btn'),
       roundsSlider: document.getElementById('roundsSlider'),
@@ -476,6 +483,30 @@ class BubbleBreathingApp {
     this.elements.retentionHexagon.addEventListener('click', () => this.endRetention());
     this.elements.skipToRetentionBtn.addEventListener('click', () => this.skipToRetention());
     this.elements.skipRecoveryBtn.addEventListener('click', () => this.skipRecovery());
+  }
+
+  /**
+   * Initializes the secret mode.
+   */
+  initSecretMode() {
+    if (localStorage.getItem('midFastUnlocked')) {
+      this.elements.speedMidFast.classList.remove('hidden-mode');
+    }
+
+    this.elements.container.addEventListener('click', () => {
+      const time = new Date().getTime();
+      if (time - this.lastTap < 300) {
+        this.tapCount++;
+      } else {
+        this.tapCount = 1;
+      }
+      this.lastTap = time;
+
+      if (this.tapCount === 3) {
+        this.elements.speedMidFast.classList.remove('hidden-mode');
+        localStorage.setItem('midFastUnlocked', 'true');
+      }
+    });
   }
 
   /**

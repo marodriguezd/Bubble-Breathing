@@ -512,3 +512,7 @@ body {
   opacity: 1;
   transform: translateY(-1px);
 }
+
+.hidden-mode {
+  display: none;
+}
