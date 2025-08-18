@@ -1,5 +1,9 @@
 # Bubble Breathing
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Bubble-Breathing/)
+[![Made With](https://img.shields.io/badge/Made%20With-HTML%2FCSS%2FJS-EF7620)](https://developer.mozilla.org)
+
 This README is available in English and Spanish. / Este README está disponible en Inglés y Español.
 
 Available languages in the web app:
