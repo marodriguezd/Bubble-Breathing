@@ -1,153 +1,73 @@
 # Bubble Breathing
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Bubble-Breathing/)
-[![Made With](https://img.shields.io/badge/Made%20With-HTML%2FCSS%2FJS-EF7620)](https://developer.mozilla.org)
+<div align="center">
+  <img src="assets/icon.svg" alt="Bubble Breathing Logo" width="128" height="128">
+  <h3>Immersive Guided Breathing App</h3>
 
-This README is available in English and Spanish. / Este README está disponible en Inglés y Español.
+  [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Bubble-Breathing/)
+  [![Made With](https://img.shields.io/badge/Made%20With-HTML%2FCSS%2FJS-EF7620)](https://developer.mozilla.org)
 
-Available languages in the web app:
-- English
-- Español
-- Français
-- Italiano
-- Deutsch
-- Português
-- 简体中文
-
-**[🇬🇧 English](#english-version)   •   [🇪🇸 Español](#version-en-espanol)**
+  [Features](#-features) • [Installation](#-how-to-install) • [Tech Stack](#-technologies) • [License](#-license)
+  
+  **[🇪🇸 Leer en Español](README.es.md)**
+</div>
 
 ---
 
-<a name="english-version"></a>
+## 🌟 Overview
 
-## 🇬🇧 English Version
-
-An immersive, app-like web application for guided rhythmic breathing exercises. This tool helps you maintain focus and control your pace through a clean, full-screen interface designed to work flawlessly on any device, from desktop to mobile, without installation.
-
-### ✨ [Live Demo Here](https://marodriguezd.github.io/Bubble-Breathing/)
+**Bubble Breathing** is an immersive, app-like web application designed for guided rhythmic breathing exercises. It helps you maintain focus and control your pace through a clean, full-screen interface that works flawlessly on any device—without installation.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png" alt="Bubble Breathing Screenshot" width="350">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png" alt="Bubble Breathing Screenshot" width="400">
 </p>
 
-### ✨ Features
+## ✨ Features
 
-- **Personalized Breathing Experience:**
-    - **Guided Cycles:** Visual "breathing bubble" and optional audio cues guide your inhalation and exhalation.
-    - **Full Customization:** Tailor sessions with adjustable rounds (1-10 or infinite), breaths per round, and audio volume.
-    - **Flexible Pace:** Choose between Slow, Standard, and Fast speeds with a live preview to demonstrate the rhythm.
+- **Personalized Breathing Experience**
+    - **Visual Guidance:** A dynamic "breathing bubble" synchronizes with your breath.
+    - **Audio Cues:** Optional sounds to guide inhalation/exhalation without looking at the screen.
+    - **Custom Cycles:** Adjustable rounds, breaths per round, and audio volume.
+    - **Variable Pace:** Slow, Standard, and Fast speeds with live previews.
 
-- **Intelligent Session Management:**
-    - **Automated Timers:** Automatically tracks breath-hold (retention) and guides you through a structured recovery breath.
-    - **Dynamic Control:** Skip breathing or recovery phases at any time for full session control.
-    - **Comprehensive Summary:** Review retention times for each round and your overall average at the session's end.
+- **Intelligent Session Management**
+    - **Automated Timers:** Tracks breath-hold (retention) and recovery phases automatically.
+    - **Dynamic Control:** Skip any phase at any time.
+    - **Session Summary:** Review retention times and averages at the end of each session.
 
-- **Seamless User Experience:**
-    - **Persistent Settings:** Your preferences are automatically saved for future visits.
-    - **Multilingual Support:** Easily switch between English, Spanish, French, Italian, German, Portuguese, and Simplified Chinese.
-    - **Adaptive Design:** Immersive, app-like interface that scales perfectly across all devices and maintains zoom levels when installed as a web app.
+- **Premium User Experience**
+    - **PWA Ready:** Install it on your home screen for an offline, app-like experience.
+    - **Persistence:** Your settings are automatically saved for future sessions.
+    - **Multilingual Support:** Available in English, Spanish, French, Italian, German, Portuguese, and Simplified Chinese.
+    - **Edge-to-Edge Design:** Fully responsive layout optimized for mobile viewports.
 
-### 📱 How to Install as a Web App
+## 📱 How to Install
 
-You can install Bubble Breathing directly on your device for quick access, just like a native app. Follow these simple steps:
+Install Bubble Breathing as a Web App (PWA) for the best experience:
 
-1. Open the app in your browser (Chrome recommended for Android, Safari for iOS)
-2. Tap the menu button (⋮) on Android or the share button (⎙) on iOS
-3. Select "Add to Home Screen" or "Install app"
-4. Confirm the installation
+1. **Open** the link in your browser (Chrome/Android, Safari/iOS).
+2. **Tap** the Menu (⋮) or Share (⎙) button.
+3. **Select** "Add to Home Screen" or "Install App".
 
-The app will appear on your home screen with the custom icon and can be used offline!
+*Note: The app is designed to stay responsive even at high zoom levels, as shown in the demonstration below.*
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation & Zoom Adaptability" width="300">
 </p>
 
-### 🛠️ Technologies Used
+## 🛠️ Technologies
 
-- **HTML5:** For the semantic structure of the application, including `viewport-fit=cover` for edge-to-edge mobile experiences.
-- **CSS3:** For all styling, animations, and the fully adaptive layout.
-  - **Modern CSS Layouts:** Utilizes Flexbox, `clamp()` for fluid typography, and dynamic viewport units (`dvh`, `vmin`) to create a robust, full-screen interface that solves common mobile viewport challenges.
-  - **CSS Variables:** For easy theming and maintenance.
-- **JavaScript (ES6+):** For all application logic, state management, and user interactions, structured within an object-oriented `BubbleBreathingApp` class for clean, manageable code.
+- **HTML5:** Semantic structure with `viewport-fit=cover`.
+- **CSS3:** Modern layouts using Flexbox, `clamp()`, and dynamic viewport units (`dvh`, `vmin`).
+- **JavaScript (ES6+):** Object-oriented state management and logic.
 
-### 📄 License
 
-This project is under the MIT License.
+## 📄 License
 
-[Go to Spanish version 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
+This project is licensed under the **Apache 2.0 License**. See [LICENSE](LICENSE) for details.
 
 ---
-
-<a name="version-en-espanol"></a>
-
-## 🇪🇸 Versión en Español
-
-Una aplicación web inmersiva de tipo nativo para ejercicios de respiración rítmica guiada. Esta herramienta te ayuda a mantener la concentración y controlar tu ritmo a través de una interfaz limpia a pantalla completa, diseñada para funcionar perfectamente en cualquier dispositivo, desde ordenadores de escritorio a móviles, sin necesidad de instalación.
-
-### ✨ [Demo en vivo aquí](https://marodriguezd.github.io/Bubble-Breathing/)
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot_es.png" alt="Bubble Breathing Screenshot" width="350">
-</p>
-
-### ✨ Características
-
-- **Experiencia de Respiración Personalizada:**
-    - **Ciclos Guiados:** Una "burbuja de respiración" visual y señales auditivas opcionales te guían en cada inhalación y exhalación.
-    - **Personalización Completa:** Adapta las sesiones con rondas ajustables (de 1 a 10 o infinito), respiraciones por ronda y volumen de audio.
-    - **Ritmo Flexible:** Elige entre velocidades Lenta, Estándar y Rápida con una previsualización en vivo para demostrar el ritmo.
-
-- **Gestión Inteligente de Sesiones:**
-    - **Temporizadores Automatizados:** Registra automáticamente la apnea (retención) y te guía a través de una respiración de recuperación estructurada.
-    - **Control Dinámico:** Salta las fases de respiración o recuperación en cualquier momento para un control total de la sesión.
-    - **Resumen Completo:** Revisa los tiempos de retención de cada ronda y tu promedio general al final de la sesión.
-
-- **Experiencia de Usuario Fluida:**
-    - **Configuración Persistente:** Tus preferencias se guardan automáticamente para futuras visitas.
-    - **Soporte Multilingüe:** Cambia fácilmente entre inglés, español, francés, italiano, alemán, portugués y chino simplificado.
-    - **Diseño Adaptativo:** Interfaz inmersiva tipo aplicación que se adapta perfectamente a todos los dispositivos y mantiene los niveles de zoom al instalarse como web app.
-
-### 📱 Cómo Instalar como Web App
-
-Puedes instalar Bubble Breathing directamente en tu dispositivo para un acceso rápido, igual que una aplicación nativa. Sigue estos sencillos pasos:
-
-1. Abre la aplicación en tu navegador (se recomienda Chrome para Android, Safari para iOS)
-2. Toca el botón de menú (⋮) en Android o el botón de compartir (⎙) en iOS
-3. Selecciona "Añadir a pantalla de inicio" o "Instalar aplicación"
-4. Confirma la instalación
-
-¡La aplicación aparecerá en tu pantalla de inicio con el icono personalizado y podrás usarla sin conexión!
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation" width="350">
-</p>
-
-### 🛠️ Tecnologías Utilizadas
-
-- **HTML5:** Para la estructura semántica de la aplicación, incluyendo `viewport-fit=cover` para una experiencia inmersiva de borde a borde en móviles.
-- **CSS3:** Para los estilos, animaciones y el diseño completamente adaptativo.
-  - **Layouts Modernos de CSS:** Utiliza Flexbox, `clamp()` para tipografía fluida y unidades de viewport dinámicas (`dvh`, `vmin`) para crear una interfaz robusta a pantalla completa que soluciona los desafíos habituales de los viewports móviles.
-  - **Variables CSS:** Para un fácil mantenimiento del tema.
-- **JavaScript (ES6+):** Para toda la lógica de la aplicación, manejo de estado e interacciones del usuario, estructurado en una clase `BubbleBreathingApp` orientada a objetos para un código limpio y manejable.
-
-<a name="zoom-examples"></a>
-
-## 📸 Zoom Adaptability Examples / Ejemplos de Adaptabilidad al Zoom
-
-<table align="center">
-  <thead>
-    <tr>
-      <th align="center">Normal Zoom (100%) / Zoom Normal (100%)</th>
-      <th align="center">Increased Zoom (150%) / Zoom Aumentado (150%)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/normal-zoom-example.png" alt="Normal Zoom Example" width="420"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/increased-zoom-example.png" alt="Increased Zoom Example" width="420"></td>
-    </tr>
-  </tbody>
-</table>
-
-[Back to English version 🇬🇧](#english-version)   •   [Volver a la versión en español 🇪🇸](#version-en-espanol)   •   [Back to top ⬆️](#bubble-breathing)
+<div align="center">
+  Made with ❤️ for better breathing.
+</div>
