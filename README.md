@@ -53,7 +53,7 @@ Install Bubble Breathing as a Web App (PWA) for the best experience:
 *Note: The app is designed to stay responsive even at high zoom levels, as shown in the demonstration below.*
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation & Zoom Adaptability" width="300">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation & Zoom Adaptability" width="400">
 </p>
 
 ## 🛠️ Technologies
