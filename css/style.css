@@ -19,6 +19,10 @@
   --color-dropdown-shadow: rgba(0, 0, 0, 0.4);
   --color-dropdown-option-hover: rgba(255, 255, 255, 0.1);
   --color-dropdown-option-active: rgba(255, 255, 255, 0.2);
+  --color-dropdown-scrollbar-track: rgba(255, 255, 255, 0.1);
+  --color-dropdown-scrollbar-thumb: rgba(255, 255, 255, 0.3);
+  --color-dropdown-scrollbar-thumb-hover: rgba(255, 255, 255, 0.5);
+  --color-secondary: #3498db;
 }
 
 html[data-theme="light"] {

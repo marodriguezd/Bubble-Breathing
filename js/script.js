@@ -39,9 +39,21 @@ class BubbleBreathingApp {
       fast: { inhale: 1000, exhale: 1000 }
     };
 
+    this.APNEA_ESTIMATE_SECONDS = 90;
+    this.RECOVERY_COUNTDOWN_SECONDS = 15;
+    this.COUNTDOWN_DURATION_SECONDS = 3;
+    this.PREVIEW_START_DELAY_MS = 500;
+    this.SECRET_MODE_TAP_COUNT = 7;
+
+    this.timers = {
+      retention: null,
+      preview: null,
+      previewInhale: null,
+      previewExhale: null,
+      countdown: null
+    };
+
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    this.previewAnimation = null;
-    this.previewTimers = { inhale: null, exhale: null };
     this.previewBreathCount = 1;
     this.previewActive = false;
     this.previewFirstCycle = true;
@@ -107,9 +119,7 @@ class BubbleBreathingApp {
     this.updateConfigUI();
     this.updateEstimatedTime();
     this.restartPreviewAnimation();
-    this.restartPreviewAnimation();
 
-    // Hide the secret mode and remove the unlocked flag
     this.elements.speedMidFast.classList.add('hidden-mode');
     localStorage.removeItem('midFastUnlocked');
 
@@ -341,7 +351,7 @@ class BubbleBreathingApp {
 
     // Estimated apnea time based on user's example.
     // This is a simplified model and doesn't include the post-apnea recovery breath.
-    const estimatedApnea = 90;
+    const estimatedApnea = this.APNEA_ESTIMATE_SECONDS;
 
     const totalSeconds = rounds * (breaths * breathDuration + estimatedApnea);
 
@@ -527,7 +537,7 @@ class BubbleBreathingApp {
       }
       this.lastTap = time;
 
-      if (this.tapCount === 7) {
+      if (this.tapCount === this.SECRET_MODE_TAP_COUNT) {
         this.elements.speedMidFast.classList.remove('hidden-mode');
         localStorage.setItem('midFastUnlocked', 'true');
       }
@@ -672,7 +682,7 @@ class BubbleBreathingApp {
     this.elements.exerciseHexagon.style.transform = 'scale(1)';
 
     this.updateProgress();
-    setTimeout(() => this.breathingCycle(), 500);
+    setTimeout(() => this.breathingCycle(), this.PREVIEW_START_DELAY_MS);
   }
 
   /**
@@ -719,7 +729,7 @@ class BubbleBreathingApp {
 
     this.playRetentionStartSignal();
 
-    setTimeout(() => this.startRetentionPhase(), 500);
+    setTimeout(() => this.startRetentionPhase(), this.PREVIEW_START_DELAY_MS);
   }
 
   /**
@@ -734,7 +744,7 @@ class BubbleBreathingApp {
 
     this.playRetentionStartSignal();
 
-    this.retentionInterval = setInterval(() => {
+    this.timers.retention = setInterval(() => {
       const elapsed = Math.floor((Date.now() - this.session.retentionStart) / 1000);
       this.elements.retentionTimer.textContent = this.formatTime(elapsed);
     }, 100);
@@ -766,7 +776,7 @@ class BubbleBreathingApp {
    * Ends the retention phase.
    */
   endRetention() {
-    clearInterval(this.retentionInterval);
+    clearInterval(this.timers.retention);
     const retentionTime = Math.floor((Date.now() - this.session.retentionStart) / 1000);
     this.session.results.push({ round: this.session.currentRound, retentionTime });
     this.startRecoverySequence();
@@ -794,7 +804,7 @@ class BubbleBreathingApp {
     this.playBreathTone();
     this.vibrate();
 
-    this.startCountdown(3, () => this.startRecoveryPhase());
+    this.startCountdown(this.COUNTDOWN_DURATION_SECONDS, () => this.startRecoveryPhase());
   }
 
   /**
@@ -806,7 +816,7 @@ class BubbleBreathingApp {
     this.elements.recoverySubtitle.style.display = 'none';
     this.updateProgress();
 
-    this.startCountdown(15, () => this.startExhalingPhase());
+    this.startCountdown(this.RECOVERY_COUNTDOWN_SECONDS, () => this.startExhalingPhase());
   }
 
   /**
@@ -822,7 +832,7 @@ class BubbleBreathingApp {
     this.playBreathTone();
     this.vibrate();
 
-    this.startCountdown(3, () => {
+    this.startCountdown(this.COUNTDOWN_DURATION_SECONDS, () => {
       this.elements.recoverySubtitle.style.display = 'none';
       this.completeRound();
     });
@@ -837,22 +847,22 @@ class BubbleBreathingApp {
     this.elements.breathCounter.textContent = seconds;
     let countdown = seconds;
 
-    const interval = setInterval(() => {
+    this.timers.countdown = setInterval(() => {
       countdown--;
-      if (countdown < 0) { // Ensure it doesn't go below 0
+      if (countdown < 0) {
         countdown = 0;
       }
       this.elements.breathCounter.textContent = countdown;
       if (countdown === 0) {
-        clearInterval(interval);
-        // Introduce a small delay before calling onComplete
+        clearInterval(this.timers.countdown);
+        this.timers.countdown = null;
         setTimeout(() => {
           onComplete();
-        }, 500); // 500ms delay to show '0'
+        }, this.PREVIEW_START_DELAY_MS);
       }
     }, 1000);
 
-    this.session.timers.push(interval);
+    this.session.timers.push(this.timers.countdown);
   }
 
   /**
@@ -917,7 +927,16 @@ class BubbleBreathingApp {
    * Clears all timers.
    */
   clearTimers() {
-    if (this.retentionInterval) clearInterval(this.retentionInterval);
+    if (this.timers.retention) {
+      clearInterval(this.timers.retention);
+      this.timers.retention = null;
+    }
+
+    if (this.timers.countdown) {
+      clearInterval(this.timers.countdown);
+      this.timers.countdown = null;
+    }
+
     this.session.timers.forEach(timer => {
       clearTimeout(timer);
       clearInterval(timer);
@@ -1001,15 +1020,15 @@ class BubbleBreathingApp {
       this.elements.previewHexagon.style.transition = `transform ${inhale}ms ease-in-out`;
       this.elements.previewHexagon.style.transform = 'scale(1.3)';
 
-      this.previewTimers.inhale = setTimeout(() => {
+      this.timers.previewInhale = setTimeout(() => {
         this.elements.previewHexagon.style.transition = `transform ${exhale}ms ease-in-out`;
         this.elements.previewHexagon.style.transform = 'scale(0.9)';
 
-        this.previewTimers.exhale = setTimeout(animate, exhale);
+        this.timers.previewExhale = setTimeout(animate, exhale);
       }, inhale);
     };
 
-    this.previewAnimation = setTimeout(animate, 500);
+    this.timers.preview = setTimeout(animate, this.PREVIEW_START_DELAY_MS);
   }
 
   /**
@@ -1018,15 +1037,20 @@ class BubbleBreathingApp {
   stopPreviewAnimation() {
     this.previewActive = false;
 
-    if (this.previewAnimation) {
-      clearTimeout(this.previewAnimation);
-      this.previewAnimation = null;
+    if (this.timers.preview) {
+      clearTimeout(this.timers.preview);
+      this.timers.preview = null;
     }
 
-    Object.values(this.previewTimers).forEach(timer => {
-      if (timer) clearTimeout(timer);
-    });
-    this.previewTimers = { inhale: null, exhale: null };
+    if (this.timers.previewInhale) {
+      clearTimeout(this.timers.previewInhale);
+      this.timers.previewInhale = null;
+    }
+
+    if (this.timers.previewExhale) {
+      clearTimeout(this.timers.previewExhale);
+      this.timers.previewExhale = null;
+    }
 
     this.elements.previewHexagon.style.transition = 'transform 0.3s';
     this.elements.previewHexagon.style.transform = 'scale(1)';
