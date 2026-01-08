@@ -31,7 +31,7 @@ class BubbleBreathingApp {
     // Load saved configuration or use default
     this.config = this.loadConfig();
 
-    this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [] };
+    this.session = { currentRound: 1, currentBreath: 0, isRunning: false, phase: 'config', results: [], timers: [], startTime: null };
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
       standard: { inhale: 2000, exhale: 1000 },
@@ -334,7 +334,12 @@ class BubbleBreathingApp {
       <span><strong>${this.formatTime(avg)}</strong></span>
     </div>`;
 
-    this.elements.resultsContent.innerHTML = resultsHTML + avgHTML;
+    const totalSeconds = Math.floor((Date.now() - this.session.startTime) / 1000);
+    const totalTimeHTML = `<div class="total-time-display">
+      ${this.t('totalTimeLabel')}: ${this.formatTime(totalSeconds)}
+    </div>`;
+
+    this.elements.resultsContent.innerHTML = resultsHTML + avgHTML + totalTimeHTML;
   }
 
   /**
@@ -659,7 +664,8 @@ class BubbleBreathingApp {
       isRunning: true,
       phase: 'breathing',
       results: [],
-      timers: []
+      timers: [],
+      startTime: Date.now()
     };
     this.stopPreviewAnimation();
     this.showScreen('exercise');
@@ -916,7 +922,8 @@ class BubbleBreathingApp {
       isRunning: false,
       phase: 'config',
       results: [],
-      timers: []
+      timers: [],
+      startTime: null
     };
     this.clearTimers();
     this.showScreen('config');

@@ -30,7 +30,8 @@ window.translations = {
     timeToExhale: "Tiempo para exhalar",
     langIndicator: "Cambiar idioma",
     estimated_time: "Tiempo estimado",
-    resetting: "Reseteando..."
+    resetting: "Reseteando...",
+    totalTimeLabel: "Tiempo total"
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -62,7 +63,8 @@ window.translations = {
     timeToExhale: "Time to exhale",
     langIndicator: "Change language",
     estimated_time: "Estimated time",
-    resetting: "Resetting..."
+    resetting: "Resetting...",
+    totalTimeLabel: "Total time"
   },
   fr: {
     appTitle: "Bubble Breathing",
@@ -94,7 +96,8 @@ window.translations = {
     timeToExhale: "Temps d'expiration",
     langIndicator: "Changer de langue",
     estimated_time: "Temps estimé",
-    resetting: "Réinitialisation..."
+    resetting: "Réinitialisation...",
+    totalTimeLabel: "Temps total"
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -126,7 +129,8 @@ window.translations = {
     timeToExhale: "Tempo per espirare",
     langIndicator: "Cambia lingua",
     estimated_time: "Tempo stimato",
-    resetting: "Ripristino..."
+    resetting: "Ripristino...",
+    totalTimeLabel: "Tempo totale"
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -158,7 +162,8 @@ window.translations = {
     timeToExhale: "Zeit zum Ausatmen",
     langIndicator: "Sprache ändern",
     estimated_time: "Geschätzte Zeit",
-    resetting: "Zurücksetzen..."
+    resetting: "Zurücksetzen...",
+    totalTimeLabel: "Gesamtzeit"
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -190,7 +195,8 @@ window.translations = {
     timeToExhale: "Tempo para expirar",
     langIndicator: "Mudar idioma",
     estimated_time: "Tempo estimado",
-    resetting: "Redefinindo..."
+    resetting: "Redefinindo...",
+    totalTimeLabel: "Tiempo total"
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -222,7 +228,8 @@ window.translations = {
     timeToExhale: "呼气时间",
     langIndicator: "更改语言",
     estimated_time: "预计时间",
-    resetting: "正在重置..."
+    resetting: "正在重置...",
+    totalTimeLabel: "总时间"
   }
 };
 
