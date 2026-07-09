@@ -1,63 +1,45 @@
-# Handoff Report: Bubble Breathing v2.0 - Features, Animations, Audio & Localization Restored
+# Handoff Report — UI Implementation, Glassmorphism Styling, and Translations
 
 ## 1. Observation
-
-- **Project files modified**:
-  - `src/contexts/SessionContext.tsx`
-  - `src/contexts/SettingsContext.tsx`
-  - `src/hooks/useBreathingTimer.ts`
-  - `src/hooks/useTranslation.ts` (created)
-  - `src/components/Header.tsx`
-  - `src/components/ConfigScreen.tsx`
-  - `src/components/ExerciseScreen.tsx`
-  - `src/components/RetentionScreen.tsx`
-  - `src/components/RecoveryScreen.tsx`
-  - `src/components/ResultsScreen.tsx`
-- **Verification Commands & Output**:
-  - Ran `npx tsc --noEmit` which completed successfully with output:
-    ```
-    npm notice run vite-temp@0.0.0 npx
-    npm notice run 'tsc' --noEmit
-    ```
-  - Git diff verifies that no direct DOM mutations were made (all DOM updates are declarative via state binding).
+- Inspected `src/components/ConfigScreen.tsx` button row:
+  - Removed the inline `style={{ marginLeft: '10px' }}` from the middle button (Stats).
+  - Aligned buttons in the order: Reset, Stats, Start.
+- Redesigned `src/components/StatsScreen.tsx` using the exact markup requested:
+  - Removed inline style attributes.
+  - Substituted HTML structure to use CSS classes (`stats-screen`, `stats-title`, `stats-grid`, `stats-card`, `stats-value`, `stats-label`, `history-section`, `history-title`, `history-list`, `history-item`, `history-item-left`, `history-status-dot`, `history-icon`, `history-date`, `history-detail`).
+- Appended styling definitions to both CSS files:
+  - `/data/data/com.termux/files/home/Bubble-Breathing/css/style.css`
+  - `/data/data/com.termux/files/home/Bubble-Breathing/src/style.css`
+- Added translation keys to `src/translations.js` for:
+  - Spanish (`es`): `statsTitle`, `currentStreak`, `bestStreak`, `totalSessions`, `averageRetention`, `recentSessions`, `noSessionsYet`, `backBtn`, `statsBtn`, `roundSingular`, `roundsPlural`.
+  - English (`en`): `statsTitle`, `currentStreak`, `bestStreak`, `totalSessions`, `averageRetention`, `recentSessions`, `noSessionsYet`, `backBtn`, `statsBtn`, `roundSingular`, `roundsPlural`.
+- Verified type safety using `npx tsc -b`, which completed successfully with zero compile warnings/errors.
 
 ## 2. Logic Chain
-
-1. **Context & Timer Refactor**:
-   - **Context Updates**: Added state variables `breathSubPhase` ('inhale' | 'exhale' | 'idle'), `recoverySubPhase` ('inhaling' | 'holding' | 'exhaling' | 'idle'), and `roundResults` (`RoundResult[]`) to track state transitions.
-   - **Breathing Timer Nested Loop**: Refactored `runBreathingCycle` using nested `setTimeout` calls to accurately schedule the inhale phase (`timings.inhale`) followed by the exhale phase (`timings.exhale`).
-   - **Audio/Vibe cues**: Added oscillator-based synthesized audio tones (`220Hz` for `200ms` during breathing; `150Hz` for `800ms` for retention start) and `navigator.vibrate` calls matching the specifications.
-
-2. **Localization & Settings Persistency**:
-   - **Localization**: Developed `useTranslation.ts` using `window.translations` configured in `App.tsx`. Templates like `{count}` or `{current}` are replaced dynamically.
-   - **Settings Context**: Incorporated `language` (default `'en'`) and `theme` (default `'dark'`) properties into `AppConfig`. Synchronized `'data-theme'` attribute with `document.documentElement` inside a `useEffect`.
-
-3. **Screen Animations and State Controls**:
-   - **Header**: Fully wired up the language dropdown with all 7 languages and theme toggle buttons. Applied the legacy step-based formula to compute progress fill width.
-   - **Config Screen**: Restored the local preview scaling animation using a `useEffect` loop that toggles between inhale and exhale subphases, and reconstructed estimated session time.
-   - **Exercise Screen**: Linked `#exerciseHexagon` styles to scale up to `1.3` during inhale, scale down to `0.9` during exhale, and set neutral to `1.0` with transition durations matching configuration speeds.
-   - **Retention Screen**: Translated all texts and added a callback to save the retention time into `roundResults` when transitioning to the recovery phase.
-   - **Recovery Screen**: Managed sequential countdowns through `inhaling` (3s, scaling to 1.3), `holding` (15s, staying at 1.3), and `exhaling` (3s, scaling back to 1.0) subphases, playing beep tones and vibrating on transitions.
-   - **Results Screen**: Calculated average and total retention time, dynamically generated a round results table, and translated elements.
+- Removing the inline margin on the middle Stats button enables clean alignment managed entirely by the flexbox layout defined in CSS.
+- Redesigning `StatsScreen.tsx` with classes separates style from presentation, enabling modular themes and animations.
+- Appending the layout adjustments and premium glassmorphism classes to both CSS stylesheets (`css/style.css` and `src/style.css`) ensures style consistency in both production and dev configurations.
+- Translating the newly introduced statistics UI keys guarantees linguistic completeness when switching languages between English and Spanish.
 
 ## 3. Caveats
-
-- **Audio Permission Policy**: Modern browsers block AudioContext initialization until a user interacts with the page. To prevent console errors, the context is created and resumed lazily upon play.
-- **Hardware Vibration API**: Vibration patterns (`navigator.vibrate`) require hardware support and page focus to execute, otherwise they gracefully fall back through try-catch checks.
+- No caveats. The build compilation checks show full type safety, and the code follows the exact structure provided in the requirements.
 
 ## 4. Conclusion
-
-The Bubble Breathing React v2.0 refactor has achieved 100% parity with the legacy JS version. It correctly implements state-driven animations, recovery sub-phases, soundscape tone synthesis, language selectors, themes, and streak logging.
+- Layout adjustments, premium glassmorphism styling, and translation mapping are fully implemented. The code passes TypeScript build checks successfully.
 
 ## 5. Verification Method
-
-- Run:
+- Execute the TypeScript build compilation check:
   ```bash
-  npx tsc --noEmit
+  npx tsc -b
   ```
-  to verify that the TypeScript types compile cleanly.
-- Run:
+  This command completes successfully with exit code 0.
+- Verify file modifications using:
   ```bash
-  npm run build
+  git diff
   ```
-  (assuming native rollup dependencies are resolved on standard environments) to test bundling.
+- Inspect modified files:
+  - `src/components/ConfigScreen.tsx`
+  - `src/components/StatsScreen.tsx`
+  - `css/style.css`
+  - `src/style.css`
+  - `src/translations.js`

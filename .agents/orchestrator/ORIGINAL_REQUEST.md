@@ -1,16 +1,12 @@
 # Original User Request
 
-## 2026-07-09T22:50:16Z
+## Follow-up — 2026-07-09T23:10:47Z
 
-You are the Project Orchestrator. Your mission is to restore and repair the CSS animations and state transitions of the breathing hexagon in React v2.0 of Bubble Breathing, matching the legacy version's fluid behavior, without losing the new React architecture.
+You are the Project Orchestrator. Your mission is to satisfy the user's latest follow-up request:
+1. Redesign and polish the statistics screen (`src/components/StatsScreen.tsx`) to give it a 'premium', visual, and definitive design. Use glassmorphism transparencies matching the theme, improve padding/margin, round borders, align the stats grid, and enhance the history list with icons or status colors.
+2. Reorganize the button alignment in the configuration screen (`src/components/ConfigScreen.tsx`) so that 'Reset' is aligned to the left, 'Stats' is in the center, and 'Start' is on the right.
+3. Ensure responsiveness, no overflows, clean CSS rules in `css/style.css` rather than excessive inline styles, and all TypeScript/build validation passes (`npm run build`).
 
-Your working directory for agent metadata is `/data/data/com.termux/files/home/Bubble-Breathing/.agents/orchestrator`.
-The original user request is at `/data/data/com.termux/files/home/Bubble-Breathing/.agents/ORIGINAL_REQUEST.md`.
-The workspace is `/data/data/com.termux/files/home/Bubble-Breathing`.
-
-Please follow these steps:
-1. Create a `plan.md` in `/data/data/com.termux/files/home/Bubble-Breathing/.agents/orchestrator` to outline the design decisions, tasks, and validation plan.
-2. Maintain a `progress.md` in `/data/data/com.termux/files/home/Bubble-Breathing/.agents/orchestrator` to track progress regularly. This is vital for the sentinel monitoring tools.
-3. Spawn subagents as needed to research, implement, and verify the changes.
-4. Verify the changes using TypeScript build (`npm run build` or similar) and any existing tests.
-5. Report completion to the parent agent once victory is achieved.
+Your working directory is `/data/data/com.termux/files/home/Bubble-Breathing/.agents/orchestrator`.
+Please read `/data/data/com.termux/files/home/Bubble-Breathing/.agents/ORIGINAL_REQUEST.md` for full context.
+Create your `plan.md`, `progress.md`, and `BRIEFING.md` inside your directory. When you have completed and verified all requirements, notify the parent (Sentinel) with a handoff report.

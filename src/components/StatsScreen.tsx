@@ -15,45 +15,68 @@ export const StatsScreen = () => {
   const averageRetention = totalSessions > 0 ? Math.round(totalRetentionTime / totalSessions) : 0;
 
   return (
-    <div id="statsScreen" className="screen active" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '2rem' }}>{t('statsTitle', { defaultValue: 'Your Statistics' })}</h2>
+    <div id="statsScreen" className="screen active stats-screen">
+      <h2 className="stats-title">{t('statsTitle', { defaultValue: 'Your Statistics' })}</h2>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', width: '100%', maxWidth: '400px', marginBottom: '2rem' }}>
-        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '10px', textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', color: 'var(--color-primary)' }}>{currentStreak}</div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{t('currentStreak', { defaultValue: 'Current Streak' })}</div>
+      <div className="stats-grid">
+        <div className="stats-card">
+          <div className="stats-value primary">{currentStreak}</div>
+          <div className="stats-label">{t('currentStreak', { defaultValue: 'Current Streak' })}</div>
         </div>
-        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '10px', textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', color: 'var(--color-primary)' }}>{longestStreak}</div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{t('bestStreak', { defaultValue: 'Best Streak' })}</div>
+        <div className="stats-card">
+          <div className="stats-value primary">{longestStreak}</div>
+          <div className="stats-label">{t('bestStreak', { defaultValue: 'Best Streak' })}</div>
         </div>
-        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '10px', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.5rem', color: '#fff' }}>{totalSessions}</div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{t('totalSessions', { defaultValue: 'Total Sessions' })}</div>
+        <div className="stats-card">
+          <div className="stats-value small">{totalSessions}</div>
+          <div className="stats-label">{t('totalSessions', { defaultValue: 'Total Sessions' })}</div>
         </div>
-        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '10px', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.5rem', color: '#fff' }}>{averageRetention}s</div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{t('averageRetention', { defaultValue: 'Avg Retention' })}</div>
+        <div className="stats-card">
+          <div className="stats-value small">{averageRetention}s</div>
+          <div className="stats-label">{t('averageRetention', { defaultValue: 'Avg Retention' })}</div>
         </div>
       </div>
 
-      <div style={{ width: '100%', maxWidth: '400px', textAlign: 'left', marginBottom: '2rem' }}>
-        <h3 style={{ color: '#fff', marginBottom: '1rem' }}>{t('recentSessions', { defaultValue: 'Recent Sessions' })}</h3>
+      <div className="history-section">
+        <h3 className="history-title">{t('recentSessions', { defaultValue: 'Recent Sessions' })}</h3>
         {history.length === 0 ? (
-          <p style={{ color: 'var(--color-text)' }}>{t('noSessionsYet', { defaultValue: 'No sessions recorded yet.' })}</p>
+          <p style={{ color: 'var(--color-text)', textAlign: 'center', opacity: 0.7 }}>
+            {t('noSessionsYet', { defaultValue: 'No sessions recorded yet.' })}
+          </p>
         ) : (
-          <div style={{ maxHeight: '200px', overflowY: 'auto', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', padding: '1rem' }}>
-            {history.slice(0, 10).map((session, idx) => (
-              <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: idx < Math.min(history.length, 10) - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
-                <span style={{ color: 'var(--color-text)' }}>{new Date(session.date).toLocaleDateString()}</span>
-                <strong style={{ color: '#fff' }}>{session.retentionSeconds}s ({session.rounds} rnds)</strong>
-              </div>
-            ))}
+          <div className="history-list">
+            {history.slice(0, 10).map((session, idx) => {
+              let statusIcon = '🧘';
+              let statusDotColor = 'var(--color-primary)';
+              if (session.retentionSeconds >= 60) {
+                statusIcon = '⚡';
+                statusDotColor = 'var(--color-success)';
+              } else if (session.retentionSeconds >= 30) {
+                statusIcon = '🌬️';
+                statusDotColor = 'var(--color-secondary)';
+              } else {
+                statusIcon = '⏱️';
+                statusDotColor = 'var(--color-accent)';
+              }
+
+              return (
+                <div key={idx} className="history-item">
+                  <div className="history-item-left">
+                    <span className="history-status-dot" style={{ backgroundColor: statusDotColor, color: statusDotColor }}></span>
+                    <span className="history-icon">{statusIcon}</span>
+                    <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
+                  </div>
+                  <strong className="history-detail">
+                    {session.retentionSeconds}s ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})
+                  </strong>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
 
-      <button className="reset-config-btn" onClick={() => setPhase('idle')}>
+      <button className="reset-config-btn back-btn" onClick={() => setPhase('idle')}>
         {t('backBtn', { defaultValue: 'Back' })}
       </button>
     </div>

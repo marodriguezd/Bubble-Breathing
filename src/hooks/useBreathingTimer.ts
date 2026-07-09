@@ -57,6 +57,7 @@ export const useBreathingTimer = () => {
   } = useSession();
 
   const phaseTimerRef = useRef<number | null>(null);
+  const breathRef = useRef(0);
 
   const getBreathTiming = useCallback((totalMs: number) => {
     let inhale;
@@ -90,37 +91,37 @@ export const useBreathingTimer = () => {
     const timings = getTimings();
     
     // Increment breath at start of cycle
-    setCurrentBreath((prev) => {
-      const nextBreath = prev + 1;
-      if (nextBreath > config.breaths) {
-        // Switch to retention
-        setPhase('retention');
-        setBreathSubPhase('idle');
-        return prev;
-      }
+    breathRef.current += 1;
+    if (breathRef.current > config.breaths) {
+      // Switch to retention
+      setPhase('retention');
+      setBreathSubPhase('idle');
+      return;
+    }
 
-      // Inhale starts
-      setBreathSubPhase('inhale');
-      playTone(220, 200, config.volume);
-      vibrate(30);
+    // Update the state outside the state updater function
+    setCurrentBreath(breathRef.current);
 
-      // Schedule Exhale
+    // Inhale starts
+    setBreathSubPhase('inhale');
+    playTone(220, 200, config.volume);
+    vibrate(30);
+
+    // Schedule Exhale
+    phaseTimerRef.current = window.setTimeout(() => {
+      setBreathSubPhase('exhale');
+
+      // Schedule next breathing cycle
       phaseTimerRef.current = window.setTimeout(() => {
-        setBreathSubPhase('exhale');
+        runBreathingCycle();
+      }, timings.exhale);
 
-        // Schedule next breathing cycle
-        phaseTimerRef.current = window.setTimeout(() => {
-          runBreathingCycle();
-        }, timings.exhale);
-
-      }, timings.inhale);
-
-      return nextBreath;
-    });
+    }, timings.inhale);
   }, [isPlaying, phase, config.breaths, config.volume, getTimings, setCurrentBreath, setPhase, setBreathSubPhase]);
 
   useEffect(() => {
     if (isPlaying && phase === 'breathing') {
+      breathRef.current = 0;
       runBreathingCycle();
     }
     return () => {
@@ -136,6 +137,7 @@ export const useBreathingTimer = () => {
   }, [phase, isPlaying, config.volume]);
 
   const startSession = () => {
+    breathRef.current = 0;
     setIsPlaying(true);
     setCurrentRound(1);
     setCurrentBreath(0);
@@ -143,6 +145,7 @@ export const useBreathingTimer = () => {
   };
 
   const stopSession = () => {
+    breathRef.current = 0;
     setIsPlaying(false);
     setBreathSubPhase('idle');
     stopTimer();

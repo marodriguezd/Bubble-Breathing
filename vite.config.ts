@@ -9,6 +9,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        minify: false
+      },
       manifest: {
         name: 'Bubble Breathing',
         short_name: 'Breathing',

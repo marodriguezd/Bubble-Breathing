@@ -32,7 +32,18 @@ window.translations = {
     langIndicator: "Cambiar idioma",
     estimated_time: "Tiempo estimado",
     resetting: "Reseteando...",
-    totalTimeLabel: "Tiempo total"
+    totalTimeLabel: "Tiempo total",
+    statsTitle: "Mis Estadísticas",
+    currentStreak: "Racha Actual",
+    bestStreak: "Mejor Racha",
+    totalSessions: "Sesiones Totales",
+    averageRetention: "Apnea Promedio",
+    recentSessions: "Sesiones Recientes",
+    noSessionsYet: "Aún no hay sesiones registradas.",
+    backBtn: "Volver",
+    statsBtn: "Estadísticas",
+    roundSingular: "ron",
+    roundsPlural: "rons"
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -66,7 +77,18 @@ window.translations = {
     langIndicator: "Change language",
     estimated_time: "Estimated time",
     resetting: "Resetting...",
-    totalTimeLabel: "Total time"
+    totalTimeLabel: "Total time",
+    statsTitle: "Your Statistics",
+    currentStreak: "Current Streak",
+    bestStreak: "Best Streak",
+    totalSessions: "Total Sessions",
+    averageRetention: "Avg Retention",
+    recentSessions: "Recent Sessions",
+    noSessionsYet: "No sessions recorded yet.",
+    backBtn: "Back",
+    statsBtn: "Stats",
+    roundSingular: "rnd",
+    roundsPlural: "rnds"
   },
   fr: {
     appTitle: "Bubble Breathing",

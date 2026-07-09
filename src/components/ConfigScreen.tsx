@@ -207,7 +207,6 @@ export const ConfigScreen = () => {
         <button 
           className="reset-config-btn" 
           onClick={() => setPhase('stats')}
-          style={{ marginLeft: '10px' }}
         >
           {t('statsBtn', { defaultValue: 'Stats' })}
         </button>

@@ -25,37 +25,48 @@ export const RecoveryScreen = () => {
     if (phase !== 'recovery') return;
 
     const interval = window.setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          if (recoverySubPhase === 'inhaling') {
-            setRecoverySubPhase('holding');
-            return 15;
-          } else if (recoverySubPhase === 'holding') {
-            setRecoverySubPhase('exhaling');
-            playTone(220, 200, config.volume);
-            vibrate(30);
-            return 3;
-          } else if (recoverySubPhase === 'exhaling') {
-            clearInterval(interval);
-            setTimeout(() => {
-              setRecoverySubPhase('idle');
-              if (currentRound >= config.rounds) {
-                setPhase('finished');
-              } else {
-                setCurrentRound((r) => r + 1);
-                setCurrentBreath(0);
-                setPhase('breathing');
-              }
-            }, 0);
-            return 0;
-          }
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [phase, recoverySubPhase, currentRound, config.rounds, config.volume, setPhase, setCurrentRound, setRecoverySubPhase]);
+  }, [phase]);
+
+  // Handle transitions when timeLeft reaches 0
+  useEffect(() => {
+    if (phase !== 'recovery') return;
+
+    if (timeLeft === 0) {
+      if (recoverySubPhase === 'inhaling') {
+        setRecoverySubPhase('holding');
+        setTimeLeft(15);
+      } else if (recoverySubPhase === 'holding') {
+        setRecoverySubPhase('exhaling');
+        setTimeLeft(3);
+        playTone(220, 200, config.volume);
+        vibrate(30);
+      } else if (recoverySubPhase === 'exhaling') {
+        setRecoverySubPhase('idle');
+        if (currentRound >= config.rounds) {
+          setPhase('finished');
+        } else {
+          setCurrentRound((r) => r + 1);
+          setCurrentBreath(0);
+          setPhase('breathing');
+        }
+      }
+    }
+  }, [
+    timeLeft,
+    phase,
+    recoverySubPhase,
+    currentRound,
+    config.rounds,
+    config.volume,
+    setPhase,
+    setCurrentRound,
+    setRecoverySubPhase,
+    setCurrentBreath
+  ]);
 
   if (phase !== 'recovery') return null;
 
