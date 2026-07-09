@@ -122,7 +122,18 @@ window.translations = {
     langIndicator: "Changer de langue",
     estimated_time: "Temps estimé",
     resetting: "Réinitialisation...",
-    totalTimeLabel: "Temps total"
+    totalTimeLabel: "Temps total",
+    statsTitle: "Vos Statistiques",
+    currentStreak: "Série Actuelle",
+    bestStreak: "Meilleure Série",
+    totalSessions: "Sessions Totales",
+    averageRetention: "Rétention Moy.",
+    recentSessions: "Sessions Récentes",
+    noSessionsYet: "Aucune session enregistrée.",
+    backBtn: "Retour",
+    statsBtn: "Stats",
+    roundSingular: "tour",
+    roundsPlural: "tours"
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -156,7 +167,18 @@ window.translations = {
     langIndicator: "Cambia lingua",
     estimated_time: "Tempo stimato",
     resetting: "Ripristino...",
-    totalTimeLabel: "Tempo totale"
+    totalTimeLabel: "Tempo totale",
+    statsTitle: "Le Tue Statistiche",
+    currentStreak: "Serie Attuale",
+    bestStreak: "Miglior Serie",
+    totalSessions: "Sessioni Totali",
+    averageRetention: "Ritenzione Media",
+    recentSessions: "Sessioni Recenti",
+    noSessionsYet: "Nessuna sessione registrata.",
+    backBtn: "Indietro",
+    statsBtn: "Statistiche",
+    roundSingular: "turno",
+    roundsPlural: "turni"
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -190,7 +212,18 @@ window.translations = {
     langIndicator: "Sprache ändern",
     estimated_time: "Geschätzte Zeit",
     resetting: "Zurücksetzen...",
-    totalTimeLabel: "Gesamtzeit"
+    totalTimeLabel: "Gesamtzeit",
+    statsTitle: "Deine Statistiken",
+    currentStreak: "Aktuelle Serie",
+    bestStreak: "Beste Serie",
+    totalSessions: "Gesamt Sitzungen",
+    averageRetention: "Durchschn. Retention",
+    recentSessions: "Letzte Sitzungen",
+    noSessionsYet: "Noch keine Sitzungen aufgezeichnet.",
+    backBtn: "Zurück",
+    statsBtn: "Statistiken",
+    roundSingular: "Runde",
+    roundsPlural: "Runden"
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -224,7 +257,18 @@ window.translations = {
     langIndicator: "Mudar idioma",
     estimated_time: "Tempo estimado",
     resetting: "Redefinindo...",
-    totalTimeLabel: "Tiempo total"
+    totalTimeLabel: "Tempo total",
+    statsTitle: "Suas Estatísticas",
+    currentStreak: "Sequência Atual",
+    bestStreak: "Melhor Sequência",
+    totalSessions: "Sessões Totais",
+    averageRetention: "Retenção Média",
+    recentSessions: "Sessões Recentes",
+    noSessionsYet: "Nenhuma sessão registrada.",
+    backBtn: "Voltar",
+    statsBtn: "Estatísticas",
+    roundSingular: "rodada",
+    roundsPlural: "rodadas"
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -258,7 +302,18 @@ window.translations = {
     langIndicator: "更改语言",
     estimated_time: "预计时间",
     resetting: "正在重置...",
-    totalTimeLabel: "总时间"
+    totalTimeLabel: "总时间",
+    statsTitle: "您的统计数据",
+    currentStreak: "当前连续天数",
+    bestStreak: "最佳连续天数",
+    totalSessions: "总会话数",
+    averageRetention: "平均屏息",
+    recentSessions: "最近会话",
+    noSessionsYet: "尚无会话记录。",
+    backBtn: "返回",
+    statsBtn: "统计",
+    roundSingular: "轮",
+    roundsPlural: "轮"
   }
 };
 

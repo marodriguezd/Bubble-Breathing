@@ -10,7 +10,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        minify: false
+        mode: 'development'
       },
       manifest: {
         name: 'Bubble Breathing',
