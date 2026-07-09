@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 
-export type SessionPhase = 'idle' | 'breathing' | 'retention' | 'recovery' | 'finished';
+export type SessionPhase = 'idle' | 'breathing' | 'retention' | 'recovery' | 'finished' | 'stats';
 export type BreathSubPhase = 'inhale' | 'exhale' | 'idle';
 export type RecoverySubPhase = 'inhaling' | 'holding' | 'exhaling' | 'idle';
 

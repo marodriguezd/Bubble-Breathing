@@ -13,6 +13,7 @@ import { ExerciseScreen } from './components/ExerciseScreen';
 import { RetentionScreen } from './components/RetentionScreen';
 import { RecoveryScreen } from './components/RecoveryScreen';
 import { ResultsScreen } from './components/ResultsScreen';
+import { StatsScreen } from './components/StatsScreen';
 
 import { SoundscapeManager } from './components/SoundscapeManager';
 
@@ -31,6 +32,7 @@ const MainApp = () => {
       {phase === 'retention' && <RetentionScreen />}
       {phase === 'recovery' && <RecoveryScreen />}
       {phase === 'finished' && <ResultsScreen />}
+      {phase === 'stats' && <StatsScreen />}
     </div>
   );
 };
