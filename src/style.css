@@ -872,8 +872,11 @@ body {
 }
 
 .stats-screen .back-btn {
-  max-width: 12rem;
-  width: 100%;
+  max-width: 8rem;
+  width: auto;
   margin: 1rem auto 0 auto;
   display: block;
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  border-radius: 1.25rem;
 }
