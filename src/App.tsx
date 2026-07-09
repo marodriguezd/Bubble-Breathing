@@ -81,12 +81,19 @@ function App() {
         <button className="speed-btn active" data-speed="standard" id="speedStandard">
           Standard
         </button>
-        <button className="speed-btn hidden-mode" data-speed="mid-fast" id="speedMidFast">
-          Mid-Fast
+        <button className="speed-btn" data-speed="custom" id="speedCustom">
+          Custom
         </button>
         <button className="speed-btn" data-speed="fast" id="speedFast">
           Fast
         </button>
+      </div>
+      <div className="slider-group" id="customSpeedSliderGroup" style={{ display: 'none' }}>
+        <label htmlFor="customSpeedSlider">
+          <span className="slider-label" id="customSpeedLabel">Cycle Time:</span>
+          <span id="customSpeedValue">3.0</span>s
+        </label>
+        <input type="range" id="customSpeedSlider" min="1.0" max="8.0" step="0.1" value="3.0" className="slider" />
       </div>
       <div className="slider-group">
         <label htmlFor="roundsSlider">

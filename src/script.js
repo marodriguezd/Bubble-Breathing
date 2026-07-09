@@ -26,7 +26,7 @@ class BubbleBreathingApp {
     };
 
     // Default configuration
-    this.defaultConfig = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25 };
+    this.defaultConfig = { speed: 'standard', rounds: 3, breaths: 30, volume: 0.25, customTime: 3.0 };
 
     // Load saved configuration or use default
     this.config = this.loadConfig();
@@ -35,7 +35,6 @@ class BubbleBreathingApp {
     this.speedSettings = {
       slow: { inhale: 2500, exhale: 1500 },
       standard: { inhale: 2000, exhale: 1000 },
-      'mid-fast': { inhale: 1500, exhale: 1000 },
       fast: { inhale: 1000, exhale: 1000 }
     };
 
@@ -43,7 +42,6 @@ class BubbleBreathingApp {
     this.RECOVERY_COUNTDOWN_SECONDS = 15;
     this.COUNTDOWN_DURATION_SECONDS = 3;
     this.PREVIEW_START_DELAY_MS = 500;
-    this.SECRET_MODE_TAP_COUNT = 7;
 
     this.timers = {
       retention: null,
@@ -75,10 +73,11 @@ class BubbleBreathingApp {
         const rounds = parsed.rounds === 11 ? Infinity : (parsed.rounds >= 1 && parsed.rounds <= 10) ? parsed.rounds : this.defaultConfig.rounds;
         // Validate that the saved configuration is valid
         return {
-          speed: ['slow', 'standard', 'mid-fast', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
+          speed: ['slow', 'standard', 'custom', 'fast'].includes(parsed.speed) ? parsed.speed : this.defaultConfig.speed,
           rounds: rounds,
           breaths: (parsed.breaths >= 5 && parsed.breaths <= 60) ? parsed.breaths : this.defaultConfig.breaths,
-          volume: (parsed.volume >= 0 && parsed.volume <= 0.5) ? parsed.volume : this.defaultConfig.volume
+          volume: (parsed.volume >= 0 && parsed.volume <= 0.5) ? parsed.volume : this.defaultConfig.volume,
+          customTime: (parsed.customTime >= 1.0 && parsed.customTime <= 8.0) ? parsed.customTime : this.defaultConfig.customTime
         };
       }
     } catch (e) {
@@ -120,9 +119,6 @@ class BubbleBreathingApp {
     this.updateEstimatedTime();
     this.restartPreviewAnimation();
 
-    this.elements.speedMidFast.classList.add('hidden-mode');
-    localStorage.removeItem('midFastUnlocked');
-
     // Revert button state after a short delay
     setTimeout(() => {
       btn.classList.remove('is-resetting');
@@ -149,6 +145,16 @@ class BubbleBreathingApp {
       btn.classList.toggle('active', btn.dataset.speed === this.config.speed);
     });
 
+    if (this.elements.customSpeedSliderGroup) {
+      if (this.config.speed === 'custom') {
+        this.elements.customSpeedSliderGroup.style.display = 'flex'; // or block based on css
+        this.elements.customSpeedSlider.value = this.config.customTime;
+        this.elements.customSpeedValue.textContent = Number(this.config.customTime).toFixed(1);
+      } else {
+        this.elements.customSpeedSliderGroup.style.display = 'none';
+      }
+    }
+
     // Update exercise instruction
     this.updateExerciseInstruction();
   }
@@ -160,7 +166,6 @@ class BubbleBreathingApp {
     this.initElements();
     this.applyInitialTheme();
     this.initEventListeners();
-    this.initSecretMode();
     this.updateLanguage();
     this.updateLanguageDisplay();
     this.updateConfigUI();
@@ -210,8 +215,9 @@ class BubbleBreathingApp {
     elements.previewLabel.textContent = this.t('previewLabel');
     elements.speedSlow.textContent = this.t('speedSlow');
     elements.speedStandard.textContent = this.t('speedStandard');
-    elements.speedMidFast.textContent = this.t('speedMidFast');
+    elements.speedCustom.textContent = this.t('speedCustom');
     elements.speedFast.textContent = this.t('speedFast');
+    if (elements.customSpeedLabel) elements.customSpeedLabel.textContent = this.t('customSpeedLabel');
     elements.roundsLabel.textContent = this.t('roundsLabel');
     elements.breathsLabel.textContent = this.t('breathsLabel');
     elements.volumeLabel.textContent = this.t('volumeLabel');
@@ -350,9 +356,9 @@ class BubbleBreathingApp {
       this.elements.estimatedTime.textContent = '∞';
       return;
     }
-    const { rounds, breaths, speed } = this.config;
-    const speedSetting = this.speedSettings[speed];
-    const breathDuration = (speedSetting.inhale + speedSetting.exhale) / 1000;
+    const { rounds, breaths, speed, customTime } = this.config;
+    const { inhale, exhale } = speed === 'custom' ? this.getBreathTiming(customTime * 1000) : this.speedSettings[speed];
+    const breathDuration = (inhale + exhale) / 1000;
 
     // Estimated apnea time based on user's example.
     // This is a simplified model and doesn't include the post-apnea recovery breath.
@@ -391,9 +397,13 @@ class BubbleBreathingApp {
       previewLabel: document.getElementById('previewLabel'),
       speedSlow: document.getElementById('speedSlow'),
       speedStandard: document.getElementById('speedStandard'),
-      speedMidFast: document.getElementById('speedMidFast'),
+      speedCustom: document.getElementById('speedCustom'),
       speedFast: document.getElementById('speedFast'),
       speedBtns: document.querySelectorAll('.speed-btn'),
+      customSpeedSliderGroup: document.getElementById('customSpeedSliderGroup'),
+      customSpeedSlider: document.getElementById('customSpeedSlider'),
+      customSpeedValue: document.getElementById('customSpeedValue'),
+      customSpeedLabel: document.getElementById('customSpeedLabel'),
       roundsSlider: document.getElementById('roundsSlider'),
       roundsValue: document.getElementById('roundsValue'),
       roundsLabel: document.getElementById('roundsLabel'),
@@ -499,11 +509,23 @@ class BubbleBreathingApp {
       this.saveConfig();
     });
 
+    if (this.elements.customSpeedSlider) {
+      this.elements.customSpeedSlider.addEventListener('input', e => {
+        const val = parseFloat(e.target.value);
+        this.config.customTime = val;
+        this.elements.customSpeedValue.textContent = val.toFixed(1);
+        this.saveConfig();
+        this.restartPreviewAnimation();
+        this.updateEstimatedTime();
+      });
+    }
+
     this.elements.speedBtns.forEach(btn => btn.addEventListener('click', () => {
       this.elements.speedBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       this.config.speed = btn.dataset.speed;
       this.saveConfig();
+      this.updateConfigUI();
       this.restartPreviewAnimation();
       this.updateEstimatedTime();
     }));
@@ -521,32 +543,6 @@ class BubbleBreathingApp {
     this.elements.retentionHexagon.addEventListener('click', () => this.endRetention());
     this.elements.skipToRetentionBtn.addEventListener('click', () => this.skipToRetention());
     this.elements.skipRecoveryBtn.addEventListener('click', () => this.skipRecovery());
-  }
-
-  /**
-   * Initializes the secret mode.
-   */
-  initSecretMode() {
-    if (localStorage.getItem('midFastUnlocked')) {
-      this.elements.speedMidFast.classList.remove('hidden-mode');
-    } else {
-      this.elements.speedMidFast.classList.add('hidden-mode');
-    }
-
-    this.elements.container.addEventListener('click', () => {
-      const time = new Date().getTime();
-      if (time - this.lastTap < 300) {
-        this.tapCount++;
-      } else {
-        this.tapCount = 1;
-      }
-      this.lastTap = time;
-
-      if (this.tapCount === this.SECRET_MODE_TAP_COUNT) {
-        this.elements.speedMidFast.classList.remove('hidden-mode');
-        localStorage.setItem('midFastUnlocked', 'true');
-      }
-    });
   }
 
   /**
@@ -704,7 +700,7 @@ class BubbleBreathingApp {
     this.elements.breathCounter.textContent = this.session.currentBreath;
     this.updateProgress();
 
-    const { inhale, exhale } = this.speedSettings[this.config.speed];
+    const { inhale, exhale } = this.config.speed === 'custom' ? this.getBreathTiming(this.config.customTime * 1000) : this.speedSettings[this.config.speed];
 
     this.playBreathTone();
     this.vibrate();
@@ -1016,7 +1012,7 @@ class BubbleBreathingApp {
         return;
       }
 
-      const { inhale, exhale } = this.speedSettings[this.config.speed];
+      const { inhale, exhale } = this.config.speed === 'custom' ? this.getBreathTiming(this.config.customTime * 1000) : this.speedSettings[this.config.speed];
 
       if (!this.previewFirstCycle) {
         this.previewBreathCount++;
@@ -1069,6 +1065,23 @@ class BubbleBreathingApp {
   restartPreviewAnimation() {
     this.stopPreviewAnimation();
     setTimeout(() => this.startPreviewAnimation(), 100);
+  }
+
+  /**
+   * Calculates dynamic inhalation and exhalation times for custom speed mode.
+   * @param {number} totalMs Total duration of one breathing cycle in milliseconds.
+   * @returns {object} { inhale, exhale } times in milliseconds.
+   */
+  getBreathTiming(totalMs) {
+    let inhale;
+    if (totalMs <= 2000) {
+      inhale = totalMs / 2;
+    } else if (totalMs <= 3000) {
+      inhale = 1000 + (totalMs - 2000); 
+    } else {
+      inhale = 2000 + (totalMs - 3000) * 0.5;
+    }
+    return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
   }
 }
 export function initApp() {

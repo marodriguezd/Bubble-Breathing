@@ -705,9 +705,6 @@ body {
   z-index: 5;
 }
 
-.hidden-mode {
-  display: none;
-}
 
 .total-time-display {
   font-size: 1.15rem;
