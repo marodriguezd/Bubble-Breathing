@@ -1,12 +1,12 @@
 # Bubble Breathing
 
 <div align="center">
-  <img src="assets/icon.svg" alt="Bubble Breathing Logo" width="128" height="128">
+  <img src="public/assets/icon.svg" alt="Bubble Breathing Logo" width="128" height="128">
   <h3>Immersive Guided Breathing App</h3>
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
   [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Bubble-Breathing/)
-  [![Made With](https://img.shields.io/badge/Made%20With-HTML%2FCSS%2FJS-EF7620)](https://developer.mozilla.org)
+  [![Made With](https://img.shields.io/badge/Made%20With-React%20%2B%20Vite%20%2B%20TS-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 
   [Features](#-features) • [Installation](#-how-to-install) • [Tech Stack](#-technologies) • [License](#-license)
   
@@ -20,7 +20,7 @@
 **Bubble Breathing** is an immersive, app-like web application designed for guided rhythmic breathing exercises. It helps you maintain focus and control your pace through a clean, full-screen interface that works flawlessly on any device—without installation.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/demo-screenshot.png" alt="Bubble Breathing Screenshot" width="400">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/public/assets/demo-screenshot.png" alt="Bubble Breathing Screenshot" width="400">
 </p>
 
 ## ✨ Features
@@ -53,15 +53,18 @@ Install Bubble Breathing as a Web App (PWA) for the best experience:
 *Note: The app is designed to stay responsive even at high zoom levels, as shown in the demonstration below.*
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation & Zoom Adaptability" width="400">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Bubble-Breathing/main/public/assets/how_to_install_web_app.gif" alt="Bubble Breathing Installation & Zoom Adaptability" width="400">
 </p>
 
 ## 🛠️ Technologies
 
-- **HTML5:** Semantic structure with `viewport-fit=cover`.
-- **CSS3:** Modern layouts using Flexbox, `clamp()`, and dynamic viewport units (`dvh`, `vmin`).
-- **JavaScript (ES6+):** Object-oriented state management and logic.
+The project has been fully modernized and rebuilt to be highly robust and extensible while retaining its exact UI/UX.
 
+- **React:** Component-based UI rendering.
+- **TypeScript:** Strict type checking and robust logic management.
+- **Vite:** High-performance bundler and development environment.
+- **GitHub Actions:** Automated CI/CD pipeline for GitHub Pages deployment.
+- **CSS3:** Modern layouts using Flexbox, `clamp()`, and dynamic viewport units (`dvh`, `vmin`).
 
 ## 📄 License
 

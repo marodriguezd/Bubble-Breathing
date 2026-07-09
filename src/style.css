@@ -1,0 +1,719 @@
+/* Glassmorphism Theme (Unified/Premium) */
+:root {
+  --color-bg-start: #0f2027;
+  --color-bg-mid: #203a43;
+  --color-bg-end: #2c5364;
+  --color-glass-white: rgba(255, 255, 255, 0.08);
+  --color-glass-border: rgba(255, 255, 255, 0.12);
+  --color-glass-shadow: rgba(0, 0, 0, 0.3);
+
+  --color-primary: #4ca1af;
+  --color-accent: #ff9d00;
+  --color-success: #27ae60;
+  --color-danger: #e74c3c;
+  --color-text: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(255, 255, 255, 0.1);
+
+  --color-dropdown-bg: rgba(30, 45, 54, 0.95);
+  --color-dropdown-shadow: rgba(0, 0, 0, 0.4);
+  --color-dropdown-option-hover: rgba(255, 255, 255, 0.1);
+  --color-dropdown-option-active: rgba(255, 255, 255, 0.2);
+  --color-dropdown-scrollbar-track: rgba(255, 255, 255, 0.1);
+  --color-dropdown-scrollbar-thumb: rgba(255, 255, 255, 0.3);
+  --color-dropdown-scrollbar-thumb-hover: rgba(255, 255, 255, 0.5);
+  --color-secondary: #3498db;
+}
+
+html[data-theme="light"] {
+  --color-bg-start: #e0eafc;
+  --color-bg-mid: #cfdef3;
+  --color-bg-end: #f5f7fa;
+  --color-glass-white: rgba(255, 255, 255, 0.4);
+  --color-glass-border: rgba(255, 255, 255, 0.5);
+  --color-glass-shadow: rgba(0, 0, 0, 0.1);
+
+  --color-primary: #2c5f5d;
+  --color-accent: #ff9500;
+  --color-text: #2c3e50;
+  --color-muted: #5a6a7a;
+  --color-border: rgba(0, 0, 0, 0.05);
+
+  --color-dropdown-bg: rgba(255, 255, 255, 0.9);
+  --color-dropdown-shadow: rgba(0, 0, 0, 0.1);
+  --color-dropdown-option-hover: rgba(0, 0, 0, 0.05);
+  --color-dropdown-option-active: rgba(0, 0, 0, 0.1);
+}
+
+/* Remove old Dark Theme section as it is merged into the new system */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: clamp(11px, 2.5vmin, 16px);
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-mid), var(--color-bg-end));
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container {
+  background: var(--color-glass-white);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
+  width: 100vw;
+  max-width: 480px;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .container {
+    height: 90dvh;
+    border-radius: 2rem;
+  }
+}
+
+.header {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  padding: 1.5rem 1rem 1rem;
+  padding-top: calc(1.5rem + env(safe-area-inset-top));
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+#progressBar {
+  height: 0.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  margin-top: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ca1af, #c4e0e5);
+  width: 0;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(76, 161, 175, 0.5);
+}
+
+/* Styles for header buttons */
+.finish-btn,
+.theme-toggle-btn {
+  position: absolute;
+  top: 45%;
+  /* Slightly higher to avoid the progress bar line */
+  transform: translateY(-50%);
+  background: var(--color-glass-white);
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  padding: 0.4rem;
+  border-radius: 50%;
+  width: 2.4rem;
+  /* Slightly smaller */
+  height: 2.4rem;
+  /* Slightly smaller */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+  /* Slightly smaller icon */
+}
+
+.theme-toggle-btn {
+  right: 1rem;
+}
+
+.finish-btn {
+  right: 1rem;
+  width: auto;
+  padding: 0 1.2rem;
+  border-radius: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.finish-btn:hover,
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.finish-btn.hidden,
+.theme-toggle-btn.hidden {
+  display: none;
+}
+
+/* IMPROVEMENT: Elegant language selector with dropdown */
+.lang-container {
+  position: absolute;
+  left: 1rem;
+  top: 45%;
+  /* Match the height of the right buttons */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.lang-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-toggle {
+  background: var(--color-glass-white);
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  padding: 0.4rem 0.7rem;
+  /* Slightly tighter padding */
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  /* Slightly smaller font */
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 3.2rem;
+  /* Slightly narrower */
+  height: 2.4rem;
+  /* Height matches the theme button */
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.lang-toggle::after {
+  content: "▼";
+  font-size: 0.7rem;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.lang-toggle.open::after {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-dropdown-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px var(--color-dropdown-shadow);
+  margin-top: 0.5rem;
+  /* <-- CHANGE #2: Increased separation */
+  min-width: 120px;
+  max-height: 200px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+/* Customize the scrollbar to match the design */
+.lang-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lang-dropdown::-webkit-scrollbar-track {
+  background: var(--color-dropdown-scrollbar-track);
+  border-radius: 3px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb {
+  background: var(--color-dropdown-scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dropdown-scrollbar-thumb-hover);
+}
+
+.lang-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.lang-option:first-child {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.lang-option:last-child {
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.lang-option:hover {
+  background: var(--color-dropdown-option-hover);
+}
+
+.lang-option.active {
+  background: var(--color-dropdown-option-active);
+  font-weight: 600;
+}
+
+.lang-flag {
+  font-size: 1rem;
+}
+
+/* Overlay to close the dropdown when clicking outside */
+.lang-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: none;
+}
+
+.lang-overlay.active {
+  display: block;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  text-align: center;
+  position: relative;
+}
+
+.screen.active {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
+}
+
+.hexagon-container {
+  margin: 0 auto;
+  width: 9.375rem;
+  height: 9.375rem;
+  position: relative;
+}
+
+.hexagon {
+  width: 9.375rem;
+  height: 8.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass Reflection Effect */
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.1) 48%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.1) 52%,
+      transparent 55%);
+  transform: rotate(20deg);
+  pointer-events: none;
+}
+
+.hexagon:active {
+  transform: scale(0.96);
+}
+
+.phase-breathing {
+  background: linear-gradient(135deg, var(--color-accent), #ff6b00);
+  box-shadow: 0 0 30px rgba(255, 157, 0, 0.4);
+}
+
+.phase-retention {
+  background: linear-gradient(135deg, var(--color-danger), #c0392b);
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(231, 76, 60, 0.4);
+}
+
+.phase-recovery {
+  background: linear-gradient(135deg, var(--color-success), #2ecc71);
+  box-shadow: 0 0 30px rgba(39, 174, 96, 0.4);
+}
+
+.breath-counter {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+}
+
+.speed-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.speed-btn {
+  flex-grow: 1;
+  flex-basis: 30%;
+  padding: 0.7rem;
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  border-radius: 1rem;
+  background: var(--color-glass-white);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.speed-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(76, 161, 175, 0.5);
+}
+
+.speed-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.slider-group {
+  padding: 0 1rem;
+}
+
+.slider-group label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  outline: none;
+  display: block;
+  margin: 1.2rem 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), #3b8d99);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  margin-top: -0.65rem;
+  transition: transform 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.slider::-moz-range-thumb {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.estimated-time {
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+/* Styles for configuration buttons */
+.config-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.reset-config-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  border: 1px solid var(--color-glass-border);
+  padding: 1.1rem;
+  flex: 1;
+  max-width: 8rem;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.reset-config-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.start-button {
+  background: linear-gradient(135deg, var(--color-primary), #3b8d99);
+  color: #fff;
+  border: none;
+  padding: 1.1rem;
+  flex: 1;
+  border-radius: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(76, 161, 175, 0.3);
+}
+
+.start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 161, 175, 0.4);
+}
+
+/* Correction for the New Session button on the results screen */
+#resultsScreen .start-button {
+  flex: none;
+  align-self: center;
+  width: auto;
+  padding: 1.1rem 3.5rem;
+}
+
+.round-info {
+  font-size: 1.1rem;
+  color: var(--color-muted);
+}
+
+.instruction {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.retention-timer {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  text-shadow: 0 0 20px rgba(76, 161, 175, 0.3);
+  font-variant-numeric: tabular-nums;
+  margin: 1rem 0;
+}
+
+.tap-instruction {
+  color: var(--color-muted);
+}
+
+#resultsContent {
+  max-height: 300px;
+  /* Adjust this value as needed */
+  overflow-y: auto;
+  padding-right: 10px;
+  /* To avoid content overlapping with the scrollbar */
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem;
+  margin: 0.75rem 0;
+  background: var(--color-glass-white);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.result-item:hover {
+  transform: scale(1.02);
+}
+
+.result-item.highlight {
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.4);
+}
+
+.results-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.preview-label {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+}
+
+.recovery-subtitle {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Specific adjustment for Exercise Screen to ensure stable layout */
+#exerciseScreen {
+  justify-content: flex-start;
+  /* Use manual flex distribution for stability */
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+#exerciseScreen .round-info {
+  margin-top: 0.5rem;
+}
+
+#exerciseScreen .instruction {
+  margin-top: 1rem;
+  min-height: 4rem;
+  /* Reserve space for 1-2 lines of text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#exerciseScreen .hexagon-container {
+  flex: 1;
+  /* Take all available space to keep hexagon centered */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.skip-button {
+  background: linear-gradient(135deg, var(--color-primary), #3b8d99);
+  color: #fff;
+  border: none;
+  padding: 1rem 3rem;
+  /* Slightly larger like the start button */
+  margin-top: 0;
+  border-radius: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(76, 161, 175, 0.3);
+  align-self: center;
+  min-width: 220px;
+}
+
+.skip-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 161, 175, 0.4);
+}
+
+.exercise-footer {
+  /* Removed absolute to keep it in flex flow but with fixed space */
+  width: 100%;
+  padding-top: 1rem;
+  min-height: 8rem;
+  /* Reserve space for button + subtitle to prevent jumps */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 5;
+}
+
+.hidden-mode {
+  display: none;
+}
+
+.total-time-display {
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(76, 161, 175, 0.4);
+}

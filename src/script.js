@@ -1071,5 +1071,6 @@ class BubbleBreathingApp {
     setTimeout(() => this.startPreviewAnimation(), 100);
   }
 }
-
-new BubbleBreathingApp();
+export function initApp() {
+  new BubbleBreathingApp();
+}
