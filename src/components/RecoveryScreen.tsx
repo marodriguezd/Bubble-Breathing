@@ -6,7 +6,7 @@ import { playTone, vibrate } from '../hooks/useBreathingTimer';
 
 export const RecoveryScreen = () => {
   const { config } = useSettings();
-  const { currentRound, setCurrentRound, phase, setPhase, recoverySubPhase, setRecoverySubPhase } = useSession();
+  const { currentRound, setCurrentRound, phase, setPhase, recoverySubPhase, setRecoverySubPhase, setCurrentBreath } = useSession();
   const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(3);
 
@@ -43,6 +43,7 @@ export const RecoveryScreen = () => {
                 setPhase('finished');
               } else {
                 setCurrentRound((r) => r + 1);
+                setCurrentBreath(0);
                 setPhase('breathing');
               }
             }, 0);
@@ -95,6 +96,7 @@ export const RecoveryScreen = () => {
       setPhase('finished');
     } else {
       setCurrentRound((r) => r + 1);
+      setCurrentBreath(0);
       setPhase('breathing');
     }
   };
