@@ -1,6 +1,13 @@
 import React, { createContext, useState, useContext } from 'react';
 
 export type SessionPhase = 'idle' | 'breathing' | 'retention' | 'recovery' | 'finished';
+export type BreathSubPhase = 'inhale' | 'exhale' | 'idle';
+export type RecoverySubPhase = 'inhaling' | 'holding' | 'exhaling' | 'idle';
+
+export interface RoundResult {
+  round: number;
+  retentionTime: number;
+}
 
 interface SessionState {
   phase: SessionPhase;
@@ -8,11 +15,17 @@ interface SessionState {
   currentBreath: number;
   retentionTime: number;
   isPlaying: boolean;
+  breathSubPhase: BreathSubPhase;
+  recoverySubPhase: RecoverySubPhase;
+  roundResults: RoundResult[];
   setPhase: (phase: SessionPhase) => void;
   setCurrentRound: (round: number | ((prev: number) => number)) => void;
   setCurrentBreath: (breath: number | ((prev: number) => number)) => void;
   setRetentionTime: (time: number | ((prev: number) => number)) => void;
   setIsPlaying: (isPlaying: boolean) => void;
+  setBreathSubPhase: (subPhase: BreathSubPhase) => void;
+  setRecoverySubPhase: (subPhase: RecoverySubPhase) => void;
+  setRoundResults: React.Dispatch<React.SetStateAction<RoundResult[]>>;
   resetSession: () => void;
 }
 
@@ -24,6 +37,9 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
   const [currentBreath, setCurrentBreath] = useState(0);
   const [retentionTime, setRetentionTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [breathSubPhase, setBreathSubPhase] = useState<BreathSubPhase>('idle');
+  const [recoverySubPhase, setRecoverySubPhase] = useState<RecoverySubPhase>('idle');
+  const [roundResults, setRoundResults] = useState<RoundResult[]>([]);
 
   const resetSession = () => {
     setPhase('idle');
@@ -31,6 +47,9 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
     setCurrentBreath(0);
     setRetentionTime(0);
     setIsPlaying(false);
+    setBreathSubPhase('idle');
+    setRecoverySubPhase('idle');
+    setRoundResults([]);
   };
 
   return (
@@ -40,6 +59,9 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
       currentBreath, setCurrentBreath,
       retentionTime, setRetentionTime,
       isPlaying, setIsPlaying,
+      breathSubPhase, setBreathSubPhase,
+      recoverySubPhase, setRecoverySubPhase,
+      roundResults, setRoundResults,
       resetSession
     }}>
       {children}
@@ -52,3 +74,4 @@ export const useSession = () => {
   if (!context) throw new Error('useSession must be used within SessionProvider');
   return context;
 };
+

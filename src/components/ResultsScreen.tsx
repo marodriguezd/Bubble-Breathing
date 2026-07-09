@@ -2,41 +2,71 @@ import React, { useEffect, useRef } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useHistory } from '../contexts/HistoryContext';
 import { useSettings } from '../contexts/SettingsContext';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const ResultsScreen = () => {
-  const { phase, resetSession, retentionTime, currentRound } = useSession();
+  const { phase, resetSession, roundResults } = useSession();
   const { config } = useSettings();
   const { addSession, currentStreak, longestStreak } = useHistory();
+  const { t } = useTranslation();
   const savedRef = useRef(false);
+
+  const totalRetentionTime = roundResults.reduce((acc, r) => acc + r.retentionTime, 0);
+  const averageRetentionTime = roundResults.length > 0 
+    ? Math.round(totalRetentionTime / roundResults.length) 
+    : 0;
 
   useEffect(() => {
     if (phase === 'finished' && !savedRef.current) {
       addSession({
-        retentionSeconds: retentionTime,
-        rounds: currentRound,
+        retentionSeconds: totalRetentionTime,
+        rounds: roundResults.length || config.rounds,
         speed: config.speed === 'custom' ? `custom-${config.customTime}` : config.speed
       });
       savedRef.current = true;
     }
-  }, [phase, addSession, retentionTime, currentRound, config.speed, config.customTime]);
+  }, [phase, addSession, totalRetentionTime, roundResults.length, config.speed, config.customTime, config.rounds]);
+
+  // Reset saved flag when session resets
+  useEffect(() => {
+    if (phase === 'idle') {
+      savedRef.current = false;
+    }
+  }, [phase]);
 
   if (phase !== 'finished') return null;
 
   return (
     <div id="resultsScreen" className="screen active">
-      <div className="results-title">Session Results</div>
+      <div className="results-title">{t('resultsTitle')}</div>
       <div id="resultsContent" style={{ marginBottom: '2rem', textAlign: 'center' }}>
-        <p style={{ fontSize: '1.2rem', marginBottom: '1rem', color: '#fff' }}>
-          Total Retention Time: <strong>{retentionTime}s</strong>
+        <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem', color: '#fff' }}>
+          {t('totalTimeLabel')}: <strong>{totalRetentionTime}s</strong>
         </p>
-        <p style={{ fontSize: '1rem', color: 'var(--color-primary)' }}>
-          🔥 Current Streak: {currentStreak} days
+        <p style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#fff' }}>
+          {t('averageLabel')}: <strong>{averageRetentionTime}s</strong>
         </p>
-        <p style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>
-          🏆 Longest Streak: {longestStreak} days
+        
+        {roundResults.length > 0 && (
+          <div style={{ margin: '1.5rem auto', maxWidth: '300px', textAlign: 'left', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
+            {roundResults.map((r) => (
+              <div key={r.round} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <span>{t('roundLabel', { round: r.round })}:</span>
+                <strong>{r.retentionTime}s</strong>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <p style={{ fontSize: '1rem', color: 'var(--color-primary)', margin: '0.5rem 0' }}>
+          🔥 Streak: {currentStreak}
+        </p>
+        <p style={{ fontSize: '0.9rem', color: 'var(--color-text)', margin: '0.5rem 0' }}>
+          🏆 Best: {longestStreak}
         </p>
       </div>
-      <button className="start-button" onClick={resetSession}>New Session</button>
+      <button className="start-button" onClick={resetSession}>{t('newSessionBtn')}</button>
     </div>
   );
 };
+
