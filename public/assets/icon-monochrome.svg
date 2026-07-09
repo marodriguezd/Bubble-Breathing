@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Android 13+ Themed (Monochrome) Icon -->
+  <!-- Contains only a single color/alpha channel with no background -->
+  
+  <polygon points="256,106 386,181 386,331 256,406 126,331 126,181" 
+           fill="none" stroke="black" stroke-width="32" stroke-linejoin="round"/>
+  <circle cx="256" cy="256" r="95" fill="black"/>
+</svg>

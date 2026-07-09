@@ -4,13 +4,20 @@
   "description": "An immersive, app-like web application for guided rhythmic breathing exercises.",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f5f7fa",
+  "background_color": "#1e403f",
   "theme_color": "#2c5f5d",
   "icons": [
     {
       "src": "./assets/icon.svg",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-monochrome.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ]
 }
