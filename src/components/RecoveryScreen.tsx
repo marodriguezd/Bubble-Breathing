@@ -106,7 +106,6 @@ export const RecoveryScreen = () => {
       </div>
       <div className="instruction">{getInstructionText()}</div>
       {showSubtitle && <div className="recovery-subtitle" style={{ display: 'block' }}>{subtitleText}</div>}
-      <div className="retention-timer">{timeLeft}s</div>
       <div className="hexagon-container">
         <div 
           className="hexagon phase-recovery" 
