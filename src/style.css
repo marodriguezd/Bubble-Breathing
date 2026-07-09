@@ -738,6 +738,8 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  flex-grow: 0;
+  justify-content: flex-start;
 }
 
 .stats-title {
