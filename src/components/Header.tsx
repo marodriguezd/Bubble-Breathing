@@ -54,6 +54,14 @@ export const Header = () => {
   return (
     <div className="header">
       <div className="lang-container">
+        {isDropdownOpen && (
+          <div 
+            className="lang-overlay" 
+            id="langOverlay" 
+            style={{ display: 'block' }}
+            onClick={() => setIsDropdownOpen(false)}
+          ></div>
+        )}
         <div className="lang-selector">
           <button 
             className="lang-toggle" 
@@ -64,9 +72,8 @@ export const Header = () => {
             <span id="langCode">{currentLangObj.code.toUpperCase()}</span>
           </button>
           <div 
-            className="lang-dropdown" 
+            className={`lang-dropdown ${isDropdownOpen ? 'open' : ''}`}
             id="langDropdown" 
-            style={{ display: isDropdownOpen ? 'block' : 'none' }}
           >
             {LANGUAGES.map((lang) => (
               <button 
@@ -83,13 +90,6 @@ export const Header = () => {
             ))}
           </div>
         </div>
-        {isDropdownOpen && (
-          <div 
-            className="lang-overlay" 
-            id="langOverlay" 
-            onClick={() => setIsDropdownOpen(false)}
-          ></div>
-        )}
       </div>
       <h1 id="headerTitle">{t('appTitle')}</h1>
       <div id="progressBar">
