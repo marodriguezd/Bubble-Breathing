@@ -147,7 +147,7 @@ class BubbleBreathingApp {
 
     if (this.elements.customSpeedSliderGroup) {
       if (this.config.speed === 'custom') {
-        this.elements.customSpeedSliderGroup.style.display = 'flex'; // or block based on css
+        this.elements.customSpeedSliderGroup.style.display = 'block';
         this.elements.customSpeedSlider.value = this.config.customTime;
         this.elements.customSpeedValue.textContent = Number(this.config.customTime).toFixed(1);
       } else {
