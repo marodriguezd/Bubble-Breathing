@@ -93,28 +93,28 @@ function App() {
           <span className="slider-label" id="customSpeedLabel">Cycle Time:</span>
           <span id="customSpeedValue">3.0</span>s
         </label>
-        <input type="range" id="customSpeedSlider" min="1.0" max="8.0" step="0.1" value="3.0" className="slider" />
+        <input type="range" id="customSpeedSlider" min="1.0" max="8.0" step="0.1" defaultValue="3.0" className="slider" />
       </div>
       <div className="slider-group">
         <label htmlFor="roundsSlider">
           <span className="slider-label" id="roundsLabel">Rounds:</span>
           <span id="roundsValue">3</span>
         </label>
-        <input type="range" id="roundsSlider" min="1" max="11" value="3" className="slider" />
+        <input type="range" id="roundsSlider" min="1" max="11" defaultValue="3" className="slider" />
       </div>
       <div className="slider-group">
         <label htmlFor="breathsSlider">
           <span className="slider-label" id="breathsLabel">Breaths:</span>
           <span id="breathsValue">30</span>
         </label>
-        <input type="range" id="breathsSlider" min="5" max="60" step="5" value="30" className="slider" />
+        <input type="range" id="breathsSlider" min="5" max="60" step="5" defaultValue="30" className="slider" />
       </div>
       <div className="slider-group">
         <label htmlFor="volumeSlider">
           <span className="slider-label" id="volumeLabel">Volume:</span>
           <span id="volumeValue">50</span>%
         </label>
-        <input type="range" id="volumeSlider" min="0" max="100" step="5" value="50" className="slider" />
+        <input type="range" id="volumeSlider" min="0" max="100" step="5" defaultValue="50" className="slider" />
       </div>
       <div className="estimated-time">
         <span data-translate="estimated_time">Estimated time</span>: <span id="estimated-time"></span>
