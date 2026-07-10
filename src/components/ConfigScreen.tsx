@@ -180,6 +180,24 @@ export const ConfigScreen = () => {
         />
       </div>
 
+      <div className="slider-group" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+        <label style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+          <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+        </label>
+        <div className="speed-selector" style={{ margin: 0 }}>
+          {['none', 'rain', 'whitenoise', 'bowls'].map((s) => (
+            <button 
+              key={s}
+              className={`speed-btn ${config.soundscape === s ? 'active' : ''}`}
+              onClick={() => updateConfig({ soundscape: s })}
+              style={{ flex: 1, padding: '0.4rem 0.2rem', fontSize: '0.85rem' }}
+            >
+              {t(`soundscape_${s}`)}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="slider-group">
         <label>
           <span className="slider-label">{t('volumeLabel')}</span>
@@ -200,7 +218,7 @@ export const ConfigScreen = () => {
       <div className="config-buttons">
         <button 
           className="reset-config-btn" 
-          onClick={() => updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5 })}
+          onClick={() => updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5, soundscape: 'none' })}
         >
           {t('resetConfigBtn')}
         </button>

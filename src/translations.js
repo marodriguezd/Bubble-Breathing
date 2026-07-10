@@ -45,7 +45,14 @@ window.translations = {
     roundSingular: "ron",
     roundsPlural: "rons",
     confirmDelete: "¿Eliminar este registro?",
-    delete: "Eliminar"
+    delete: "Eliminar",
+    soundscapeLabel: "Sonido:",
+    soundscape_none: "Ninguno",
+    soundscape_rain: "Lluvia",
+    soundscape_whitenoise: "Ruido Blanco",
+    soundscape_bowls: "Cuencos",
+    clear_history_button: "Borrar Historial",
+    clear_history_confirm: "¿Estás seguro de que deseas borrar todo el historial?"
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -92,7 +99,14 @@ window.translations = {
     roundSingular: "rnd",
     roundsPlural: "rnds",
     confirmDelete: "Delete this record?",
-    delete: "Delete"
+    delete: "Delete",
+    soundscapeLabel: "Sound:",
+    soundscape_none: "None",
+    soundscape_rain: "Rain",
+    soundscape_whitenoise: "White Noise",
+    soundscape_bowls: "Bowls",
+    clear_history_button: "Clear History",
+    clear_history_confirm: "Are you sure you want to clear all history?"
   },
   fr: {
     appTitle: "Bubble Breathing",
@@ -139,7 +153,14 @@ window.translations = {
     roundSingular: "tour",
     roundsPlural: "tours",
     confirmDelete: "Supprimer cet enregistrement?",
-    delete: "Supprimer"
+    delete: "Supprimer",
+    soundscapeLabel: "Son:",
+    soundscape_none: "Aucun",
+    soundscape_rain: "Pluie",
+    soundscape_whitenoise: "Bruit Blanc",
+    soundscape_bowls: "Bols",
+    clear_history_button: "Effacer l'historique",
+    clear_history_confirm: "Voulez-vous vraiment effacer tout l'historique?"
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -186,7 +207,14 @@ window.translations = {
     roundSingular: "turno",
     roundsPlural: "turni",
     confirmDelete: "Eliminare questo record?",
-    delete: "Elimina"
+    delete: "Elimina",
+    soundscapeLabel: "Suono:",
+    soundscape_none: "Nessuno",
+    soundscape_rain: "Pioggia",
+    soundscape_whitenoise: "Rumore Bianco",
+    soundscape_bowls: "Campane",
+    clear_history_button: "Cancella Cronologia",
+    clear_history_confirm: "Sei sicuro di voler cancellare tutta la cronologia?"
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -233,7 +261,14 @@ window.translations = {
     roundSingular: "Runde",
     roundsPlural: "Runden",
     confirmDelete: "Diesen Eintrag löschen?",
-    delete: "Löschen"
+    delete: "Löschen",
+    soundscapeLabel: "Ton:",
+    soundscape_none: "Keiner",
+    soundscape_rain: "Regen",
+    soundscape_whitenoise: "Weißes Rauschen",
+    soundscape_bowls: "Klangschalen",
+    clear_history_button: "Verlauf löschen",
+    clear_history_confirm: "Möchten Sie den gesamten Verlauf wirklich löschen?"
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -280,7 +315,14 @@ window.translations = {
     roundSingular: "rodada",
     roundsPlural: "rodadas",
     confirmDelete: "Excluir este registro?",
-    delete: "Excluir"
+    delete: "Excluir",
+    soundscapeLabel: "Som:",
+    soundscape_none: "Nenhum",
+    soundscape_rain: "Chuva",
+    soundscape_whitenoise: "Ruído Branco",
+    soundscape_bowls: "Tigelas",
+    clear_history_button: "Limpar Histórico",
+    clear_history_confirm: "Tem certeza de que deseja limpar todo o histórico?"
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -327,8 +369,15 @@ window.translations = {
     roundSingular: "轮",
     roundsPlural: "轮",
     confirmDelete: "删除此记录？",
-    delete: "删除"
-  }
+    delete: "删除",
+    soundscapeLabel: "声音：",
+    soundscape_none: "无",
+    soundscape_rain: "雨声",
+    soundscape_whitenoise: "白噪音",
+    soundscape_bowls: "颂钵",
+    clear_history_button: "清除历史记录",
+    clear_history_confirm: "您确定要清除所有历史记录吗？"
+  },
 };
 
 // NOTE: If you add a new language, make sure to:

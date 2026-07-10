@@ -6,12 +6,18 @@ import { formatTime } from '../utils/timeFormat';
 
 export const StatsScreen = () => {
   const { phase, setPhase } = useSession();
-  const { history, currentStreak, longestStreak, removeSession } = useHistory();
+  const { history, currentStreak, longestStreak, removeSession, clearHistory } = useHistory();
   const { t } = useTranslation();
 
   const handleDelete = (id: string) => {
     if (window.confirm(t('confirmDelete', { defaultValue: 'Delete this record?' }))) {
       removeSession(id);
+    }
+  };
+
+  const handleClearHistory = () => {
+    if (window.confirm(t('clear_history_confirm', { defaultValue: 'Are you sure you want to clear all history?' }))) {
+      clearHistory();
     }
   };
 
@@ -95,12 +101,18 @@ export const StatsScreen = () => {
         )}
       </div>
 
-      <div className="config-buttons" style={{ marginTop: 'auto' }}>
-        <div style={{ flex: 1 }}></div>
+      <div className="config-buttons" style={{ marginTop: 'auto', gap: '10px', justifyContent: 'center' }}>
+        <button 
+          className="reset-config-btn back-btn" 
+          onClick={handleClearHistory} 
+          style={{ margin: 0, backgroundColor: 'rgba(255, 68, 68, 0.1)', color: '#ff4444', borderColor: 'rgba(255, 68, 68, 0.3)' }}
+          disabled={history.length === 0}
+        >
+          {t('clear_history_button', { defaultValue: 'Clear History' })}
+        </button>
         <button className="reset-config-btn back-btn" onClick={() => setPhase('idle')} style={{ margin: 0 }}>
           {t('backBtn', { defaultValue: 'Back' })}
         </button>
-        <div style={{ flex: 1 }}></div>
       </div>
     </div>
   );
