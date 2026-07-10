@@ -71,7 +71,12 @@ export const StatsScreen = () => {
                   <div className="history-item-left">
                     <span className="history-status-dot" style={{ backgroundColor: statusDotColor, color: statusDotColor }}></span>
                     <span className="history-icon">{statusIcon}</span>
-                    <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
+                      <span className="history-date" style={{ fontSize: '0.85em', opacity: 0.8, marginTop: '2px' }}>
+                        {new Date(session.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
                   </div>
                   <strong className="history-detail" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>{formatTime(session.retentionSeconds)} ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})</span>
