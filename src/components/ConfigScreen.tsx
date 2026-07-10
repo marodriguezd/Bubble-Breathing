@@ -185,7 +185,7 @@ export const ConfigScreen = () => {
           <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
         </label>
         <div className="speed-selector" style={{ margin: 0 }}>
-          {['none', 'rain', 'whitenoise', 'bowls'].map((s) => (
+          {['none', 'rain', 'whitenoise', 'ocean'].map((s) => (
             <button 
               key={s}
               className={`speed-btn ${config.soundscape === s ? 'active' : ''}`}

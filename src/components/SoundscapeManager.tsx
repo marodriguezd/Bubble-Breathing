@@ -23,7 +23,7 @@ export const SoundscapeManager = () => {
     switch (config.soundscape) {
       case 'rain': src = 'assets/rain.wav'; break;
       case 'whitenoise': src = 'assets/whitenoise.wav'; break;
-      case 'bowls': src = 'assets/bowls.wav'; break;
+      case 'ocean': src = 'assets/ocean.mp3'; break;
       default: src = ''; break;
     }
 
