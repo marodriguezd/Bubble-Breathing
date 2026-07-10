@@ -21,8 +21,8 @@ export const SoundscapeManager = () => {
     // Set track
     let src = '';
     switch (config.soundscape) {
-      case 'rain': src = 'assets/rain.wav'; break;
-      case 'whitenoise': src = 'assets/whitenoise.wav'; break;
+      case 'rain': src = 'assets/rain.mp3'; break;
+      case 'whitenoise': src = 'assets/whitenoise.mp3'; break;
       case 'ocean': src = 'assets/ocean.mp3'; break;
       default: src = ''; break;
     }

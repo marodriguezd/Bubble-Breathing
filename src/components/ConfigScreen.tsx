@@ -38,8 +38,7 @@ export const ConfigScreen = () => {
 
   const playPreview = (soundName: string) => {
     if (soundName === 'none') return;
-    const ext = soundName === 'ocean' ? 'mp3' : 'wav';
-    const audio = new Audio(`assets/${soundName}.${ext}`);
+    const audio = new Audio(`assets/${soundName}.mp3`);
     audio.volume = config.volume;
     audio.play().catch(e => console.error("Preview blocked:", e));
     
