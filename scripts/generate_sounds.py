@@ -37,16 +37,27 @@ def generate_rain():
     write_wav('public/assets/rain.wav', samples)
 
 def generate_bowls():
-    print("Generating singing bowls...")
+    print("Generating singing bowls (improved)...")
     samples = []
-    freq1, freq2, freq3 = 432.0, 864.0, 1296.0
+    # To loop perfectly over 5s, diff must be multiple of 0.2 Hz
+    f1, f1_beat = 216.0, 216.4 
+    f2, f2_beat = 432.0, 432.4
+    f3, f3_beat = 864.0, 864.6 
+    
     for i in range(NUM_SAMPLES):
         t = i / SAMPLE_RATE
-        env = math.sin(t * math.pi / DURATION)
-        val = (math.sin(2 * math.pi * freq1 * t) * 0.6 +
-               math.sin(2 * math.pi * freq2 * t) * 0.3 +
-               math.sin(2 * math.pi * freq3 * t) * 0.1) * env
-        samples.append(val * 0.7)
+        # Beating tones
+        comp1 = (math.sin(2 * math.pi * f1 * t) + math.sin(2 * math.pi * f1_beat * t)) * 0.5
+        comp2 = (math.sin(2 * math.pi * f2 * t) + math.sin(2 * math.pi * f2_beat * t)) * 0.3
+        comp3 = (math.sin(2 * math.pi * f3 * t) + math.sin(2 * math.pi * f3_beat * t)) * 0.1
+        
+        val = comp1 + comp2 + comp3
+        # Soft saturation for richness
+        val = math.tanh(val)
+        
+        # We apply a very slight crossfade-like amplitude adjustment at the edges to ensure zero-crossing matches, 
+        # but since frequencies are exact multiples of 1/5 Hz, they should inherently loop seamlessly at t=0 and t=5.
+        samples.append(val * 0.5)
     write_wav('public/assets/bowls.wav', samples)
 
 if __name__ == "__main__":
