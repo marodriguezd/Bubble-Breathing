@@ -3,13 +3,7 @@ import { useSession } from '../contexts/SessionContext';
 import { useHistory } from '../contexts/HistoryContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
-
-const formatTime = (seconds: number): string => {
-  if (seconds < 60) return `${seconds}s`;
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return s > 0 ? `${seconds}s (${m}m ${s}s)` : `${seconds}s (${m}m)`;
-};
+import { formatTime } from '../utils/timeFormat';
 
 export const ResultsScreen = () => {
   const { phase, resetSession, roundResults } = useSession();

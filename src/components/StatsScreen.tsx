@@ -2,6 +2,7 @@ import React from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useHistory } from '../contexts/HistoryContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { formatTime } from '../utils/timeFormat';
 
 export const StatsScreen = () => {
   const { phase, setPhase } = useSession();
@@ -32,7 +33,7 @@ export const StatsScreen = () => {
           <div className="stats-label">{t('totalSessions', { defaultValue: 'Total Sessions' })}</div>
         </div>
         <div className="stats-card">
-          <div className="stats-value small">{averageRetention}s</div>
+          <div className="stats-value small">{formatTime(averageRetention)}</div>
           <div className="stats-label">{t('averageRetention', { defaultValue: 'Avg Retention' })}</div>
         </div>
       </div>
@@ -67,7 +68,7 @@ export const StatsScreen = () => {
                     <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
                   </div>
                   <strong className="history-detail">
-                    {session.retentionSeconds}s ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})
+                    {formatTime(session.retentionSeconds)} ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})
                   </strong>
                 </div>
               );
@@ -76,9 +77,13 @@ export const StatsScreen = () => {
         )}
       </div>
 
-      <button className="reset-config-btn back-btn" onClick={() => setPhase('idle')}>
-        {t('backBtn', { defaultValue: 'Back' })}
-      </button>
+      <div className="config-buttons" style={{ marginTop: 'auto' }}>
+        <div style={{ flex: 1 }}></div>
+        <button className="reset-config-btn back-btn" onClick={() => setPhase('idle')} style={{ margin: 0 }}>
+          {t('backBtn', { defaultValue: 'Back' })}
+        </button>
+        <div style={{ flex: 1 }}></div>
+      </div>
     </div>
   );
 };
