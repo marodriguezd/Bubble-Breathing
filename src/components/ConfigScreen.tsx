@@ -180,22 +180,33 @@ export const ConfigScreen = () => {
         />
       </div>
 
-      <div className="slider-group" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-        <label style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+      <div className="slider-group">
+        <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+          <select 
+            value={config.soundscape}
+            onChange={(e) => updateConfig({ soundscape: e.target.value as any })}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: '12px', 
+              border: '2px solid var(--bubble-color)', 
+              background: 'var(--bg-color)', 
+              color: 'var(--text-color)',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              outline: 'none',
+              cursor: 'pointer',
+              minWidth: '140px',
+              fontFamily: 'inherit'
+            }}
+          >
+            {['none', 'rain', 'whitenoise', 'ocean'].map((s) => (
+              <option key={s} value={s}>
+                {t(`soundscape_${s}`)}
+              </option>
+            ))}
+          </select>
         </label>
-        <div className="speed-selector" style={{ margin: 0 }}>
-          {['none', 'rain', 'whitenoise', 'ocean'].map((s) => (
-            <button 
-              key={s}
-              className={`speed-btn ${config.soundscape === s ? 'active' : ''}`}
-              onClick={() => updateConfig({ soundscape: s })}
-              style={{ flex: 1, padding: '0.4rem 0.2rem', fontSize: '0.85rem' }}
-            >
-              {t(`soundscape_${s}`)}
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="slider-group">
