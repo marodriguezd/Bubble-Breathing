@@ -13,6 +13,7 @@ export interface HistoryState {
   currentStreak: number;
   longestStreak: number;
   addSession: (session: Omit<SessionHistory, 'id' | 'date'>) => void;
+  removeSession: (id: string) => void;
   clearHistory: () => void;
 }
 
@@ -80,6 +81,10 @@ export const HistoryProvider = ({ children }: { children: React.ReactNode }) => 
     setHistory(prev => [newSession, ...prev]);
   };
 
+  const removeSession = (id: string) => {
+    setHistory(prev => prev.filter(session => session.id !== id));
+  };
+
   const clearHistory = () => {
     setHistory([]);
     setCurrentStreak(0);
@@ -87,7 +92,7 @@ export const HistoryProvider = ({ children }: { children: React.ReactNode }) => 
   };
 
   return (
-    <HistoryContext.Provider value={{ history, currentStreak, longestStreak, addSession, clearHistory }}>
+    <HistoryContext.Provider value={{ history, currentStreak, longestStreak, addSession, removeSession, clearHistory }}>
       {children}
     </HistoryContext.Provider>
   );

@@ -6,8 +6,14 @@ import { formatTime } from '../utils/timeFormat';
 
 export const StatsScreen = () => {
   const { phase, setPhase } = useSession();
-  const { history, currentStreak, longestStreak } = useHistory();
+  const { history, currentStreak, longestStreak, removeSession } = useHistory();
   const { t } = useTranslation();
+
+  const handleDelete = (id: string) => {
+    if (window.confirm(t('confirmDelete', { defaultValue: 'Delete this record?' }))) {
+      removeSession(id);
+    }
+  };
 
   if (phase !== 'stats') return null;
 
@@ -67,8 +73,15 @@ export const StatsScreen = () => {
                     <span className="history-icon">{statusIcon}</span>
                     <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
                   </div>
-                  <strong className="history-detail">
-                    {formatTime(session.retentionSeconds)} ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})
+                  <strong className="history-detail" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span>{formatTime(session.retentionSeconds)} ({session.rounds} {session.rounds === 1 ? t('roundSingular', { defaultValue: 'rnd' }) : t('roundsPlural', { defaultValue: 'rnds' })})</span>
+                    <button 
+                      onClick={() => handleDelete(session.id)}
+                      title={t('delete', { defaultValue: 'Delete' })}
+                      style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px', lineHeight: 1 }}
+                    >
+                      ×
+                    </button>
                   </strong>
                 </div>
               );

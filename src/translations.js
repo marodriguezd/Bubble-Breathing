@@ -43,7 +43,9 @@ window.translations = {
     backBtn: "Volver",
     statsBtn: "Estadísticas",
     roundSingular: "ron",
-    roundsPlural: "rons"
+    roundsPlural: "rons",
+    confirmDelete: "¿Eliminar este registro?",
+    delete: "Eliminar"
   },
   en: {
     appTitle: "Bubble Breathing",
@@ -88,7 +90,9 @@ window.translations = {
     backBtn: "Back",
     statsBtn: "Stats",
     roundSingular: "rnd",
-    roundsPlural: "rnds"
+    roundsPlural: "rnds",
+    confirmDelete: "Delete this record?",
+    delete: "Delete"
   },
   fr: {
     appTitle: "Bubble Breathing",
@@ -133,7 +137,9 @@ window.translations = {
     backBtn: "Retour",
     statsBtn: "Stats",
     roundSingular: "tour",
-    roundsPlural: "tours"
+    roundsPlural: "tours",
+    confirmDelete: "Supprimer cet enregistrement?",
+    delete: "Supprimer"
   },
   it: {
     appTitle: "Bubble Breathing",
@@ -178,7 +184,9 @@ window.translations = {
     backBtn: "Indietro",
     statsBtn: "Statistiche",
     roundSingular: "turno",
-    roundsPlural: "turni"
+    roundsPlural: "turni",
+    confirmDelete: "Eliminare questo record?",
+    delete: "Elimina"
   },
   de: {
     appTitle: "Bubble Breathing",
@@ -223,7 +231,9 @@ window.translations = {
     backBtn: "Zurück",
     statsBtn: "Statistiken",
     roundSingular: "Runde",
-    roundsPlural: "Runden"
+    roundsPlural: "Runden",
+    confirmDelete: "Diesen Eintrag löschen?",
+    delete: "Löschen"
   },
   pt: {
     appTitle: "Bubble Breathing",
@@ -268,7 +278,9 @@ window.translations = {
     backBtn: "Voltar",
     statsBtn: "Estatísticas",
     roundSingular: "rodada",
-    roundsPlural: "rodadas"
+    roundsPlural: "rodadas",
+    confirmDelete: "Excluir este registro?",
+    delete: "Excluir"
   },
   zh: {
     appTitle: "泡泡呼吸",
@@ -313,7 +325,9 @@ window.translations = {
     backBtn: "返回",
     statsBtn: "统计",
     roundSingular: "轮",
-    roundsPlural: "轮"
+    roundsPlural: "轮",
+    confirmDelete: "删除此记录？",
+    delete: "删除"
   }
 };
 
