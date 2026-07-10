@@ -36,6 +36,29 @@ export const ConfigScreen = () => {
     setPhase('breathing');
   };
 
+  const playPreview = (soundName: string) => {
+    if (soundName === 'none') return;
+    const ext = soundName === 'ocean' ? 'mp3' : 'wav';
+    const audio = new Audio(`assets/${soundName}.${ext}`);
+    audio.volume = config.volume;
+    audio.play().catch(e => console.error("Preview blocked:", e));
+    
+    // Simple fade out after 3 seconds
+    setTimeout(() => {
+      let vol = audio.volume;
+      const fade = setInterval(() => {
+        if (vol > 0.1) {
+          vol -= 0.1;
+          audio.volume = vol;
+        } else {
+          clearInterval(fade);
+          audio.pause();
+          audio.src = "";
+        }
+      }, 100);
+    }, 3000);
+  };
+
   const getEstimatedTime = () => {
     const timings = config.speed === 'custom'
       ? getBreathTiming(config.customTime * 1000)
@@ -180,33 +203,47 @@ export const ConfigScreen = () => {
         />
       </div>
 
-      <div className="slider-group">
-        <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
-          <select 
-            value={config.soundscape}
-            onChange={(e) => updateConfig({ soundscape: e.target.value as any })}
-            style={{ 
-              padding: '0.5rem 1rem', 
-              borderRadius: '12px', 
-              border: '2px solid var(--bubble-color)', 
-              background: 'var(--bg-color)', 
-              color: 'var(--text-color)',
-              fontSize: '0.9rem',
-              fontWeight: '500',
-              outline: 'none',
-              cursor: 'pointer',
-              minWidth: '140px',
-              fontFamily: 'inherit'
-            }}
-          >
+      <div className="slider-group" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+        <details style={{ width: '100%', cursor: 'pointer' }}>
+          <summary style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', listStyle: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span className="slider-label" style={{ margin: 0 }}>{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+              <span style={{ fontSize: '0.9rem', color: 'var(--text-color)', opacity: 0.8 }}>
+                {t(`soundscape_${config.soundscape}`)}
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              {config.soundscape !== 'none' && (
+                <button 
+                  onClick={(e) => { e.preventDefault(); playPreview(config.soundscape); }}
+                  style={{ 
+                    background: 'none', border: 'none', cursor: 'pointer', 
+                    fontSize: '1.2rem', padding: '0', display: 'flex', alignItems: 'center' 
+                  }}
+                  title="Preview Sound"
+                >
+                  ▶️
+                </button>
+              )}
+              <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>▼</span>
+            </div>
+          </summary>
+          <div className="speed-selector" style={{ margin: '15px 0 0 0' }}>
             {['none', 'rain', 'whitenoise', 'ocean'].map((s) => (
-              <option key={s} value={s}>
+              <button 
+                key={s}
+                className={`speed-btn ${config.soundscape === s ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateConfig({ soundscape: s as any });
+                }}
+                style={{ flex: 1, padding: '0.4rem 0.2rem', fontSize: '0.85rem' }}
+              >
                 {t(`soundscape_${s}`)}
-              </option>
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
+        </details>
       </div>
 
       <div className="slider-group">
