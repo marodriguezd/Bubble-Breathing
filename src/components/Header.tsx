@@ -96,7 +96,7 @@ export const Header = () => {
         <div id="progressFill" style={{ width: `${progressWidth}%` }}></div>
       </div>
       <button 
-        className={`theme-toggle-btn ${phase !== 'idle' ? 'hidden' : ''}`} 
+        className={`theme-toggle-btn ${(phase !== 'idle' && phase !== 'stats') ? 'hidden' : ''}`} 
         id="themeToggleBtn" 
         title="Change theme"
         onClick={toggleTheme}
@@ -104,7 +104,7 @@ export const Header = () => {
         {config.theme === 'dark' ? '☀️' : '🌙'}
       </button>
       <button 
-        className={`finish-btn ${(phase === 'idle' || phase === 'finished') ? 'hidden' : ''}`} 
+        className={`finish-btn ${(phase === 'idle' || phase === 'finished' || phase === 'stats') ? 'hidden' : ''}`} 
         id="finishBtn"
         onClick={() => {
           setIsPlaying(false);
