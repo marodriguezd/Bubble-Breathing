@@ -4,6 +4,13 @@ import { useHistory } from '../contexts/HistoryContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 
+const formatTime = (seconds: number): string => {
+  if (seconds < 60) return `${seconds}s`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return s > 0 ? `${seconds}s (${m}m ${s}s)` : `${seconds}s (${m}m)`;
+};
+
 export const ResultsScreen = () => {
   const { phase, resetSession, roundResults } = useSession();
   const { config } = useSettings();
@@ -41,10 +48,10 @@ export const ResultsScreen = () => {
       <div className="results-title">{t('resultsTitle')}</div>
       <div id="resultsContent" style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem', color: '#fff' }}>
-          {t('totalTimeLabel')}: <strong>{totalRetentionTime}s</strong>
+          {t('totalTimeLabel')}: <strong>{formatTime(totalRetentionTime)}</strong>
         </p>
         <p style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#fff' }}>
-          {t('averageLabel')}: <strong>{averageRetentionTime}s</strong>
+          {t('averageLabel')}: <strong>{formatTime(averageRetentionTime)}</strong>
         </p>
         
         {roundResults.length > 0 && (
@@ -52,7 +59,7 @@ export const ResultsScreen = () => {
             {roundResults.map((r) => (
               <div key={r.round} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                 <span>{t('roundLabel', { round: r.round })}:</span>
-                <strong>{r.retentionTime}s</strong>
+                <strong>{formatTime(r.retentionTime)}</strong>
               </div>
             ))}
           </div>

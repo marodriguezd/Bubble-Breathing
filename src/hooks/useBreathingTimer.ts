@@ -85,7 +85,7 @@ export const useBreathingTimer = () => {
     }
   }, []);
 
-  const runBreathingCycle = useCallback(() => {
+  const runBreathingCycle = useCallback((isFirstCycle = false) => {
     if (!isPlaying || phase !== 'breathing') return;
 
     const timings = getTimings();
@@ -102,27 +102,38 @@ export const useBreathingTimer = () => {
     // Update the state outside the state updater function
     setCurrentBreath(breathRef.current);
 
-    // Inhale starts
-    setBreathSubPhase('inhale');
-    playTone(220, 200, config.volume);
-    vibrate(30);
+    const startInhale = () => {
+      // Inhale starts
+      setBreathSubPhase('inhale');
+      playTone(220, 200, config.volume);
+      vibrate(30);
 
-    // Schedule Exhale
-    phaseTimerRef.current = window.setTimeout(() => {
-      setBreathSubPhase('exhale');
-
-      // Schedule next breathing cycle
+      // Schedule Exhale
       phaseTimerRef.current = window.setTimeout(() => {
-        runBreathingCycle();
-      }, timings.exhale);
+        setBreathSubPhase('exhale');
 
-    }, timings.inhale);
+        // Schedule next breathing cycle
+        phaseTimerRef.current = window.setTimeout(() => {
+          runBreathingCycle();
+        }, timings.exhale);
+
+      }, timings.inhale);
+    };
+
+    if (isFirstCycle) {
+      // Ensure the component renders at idle/scale-1.0 first so the
+      // CSS transition from 1.0 → 1.3 actually fires on the first inhale.
+      setBreathSubPhase('idle');
+      requestAnimationFrame(() => requestAnimationFrame(startInhale));
+    } else {
+      startInhale();
+    }
   }, [isPlaying, phase, config.breaths, config.volume, getTimings, setCurrentBreath, setPhase, setBreathSubPhase]);
 
   useEffect(() => {
     if (isPlaying && phase === 'breathing') {
       breathRef.current = 0;
-      runBreathingCycle();
+      runBreathingCycle(true);
     }
     return () => {
       stopTimer();
