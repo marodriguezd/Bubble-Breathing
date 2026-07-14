@@ -348,23 +348,34 @@ body {
   width: 100%;
   max-width: 28rem;
   margin: 0 auto;
-  padding: 1rem;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
   text-align: center;
   position: relative;
+  overflow-y: auto;
+}
+
+.screen::-webkit-scrollbar {
+  width: 4px;
+}
+
+.screen::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
 }
 
 .screen.active {
   display: flex;
   flex-grow: 1;
   justify-content: flex-start;
-  gap: 0.5rem;
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
+  gap: 1rem;
 }
 
-.screen.active::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+.screen.active::before,
+.screen.active::after {
+  content: '';
+  margin: auto;
+  flex-shrink: 0;
 }
 
 .hexagon-container {
@@ -524,7 +535,7 @@ body {
 .config-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -532,11 +543,11 @@ body {
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-text);
   border: 1px solid var(--color-glass-border);
-  padding: 1.1rem;
+  padding: 1rem 0.5rem;
   flex: 1;
   max-width: 8rem;
   border-radius: 1.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -551,10 +562,10 @@ body {
   background: linear-gradient(135deg, var(--color-primary), #3b8d99);
   color: #fff;
   border: none;
-  padding: 1.1rem;
+  padding: 1rem;
   flex: 1;
   border-radius: 1.5rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -571,7 +582,7 @@ body {
   flex: none;
   align-self: center;
   width: auto;
-  padding: 1.1rem 3.5rem;
+  padding: 1rem 3.5rem;
 }
 
 .round-info {
@@ -720,24 +731,7 @@ body {
   text-shadow: 0 0 15px rgba(76, 161, 175, 0.4);
 }
 
-/* Styles for configuration button alignment adjustments */
-.config-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  width: 100%;
-}
 
-.config-buttons .reset-config-btn,
-.config-buttons .start-button {
-  flex: 1;
-  max-width: none;
-  text-align: center;
-  font-size: 0.95rem;
-  padding: 1rem 0.25rem;
-  border-radius: 1.25rem;
-  margin: 0;
-}
 
 /* Stats Screen Premium Glassmorphism styling */
 .stats-screen {
