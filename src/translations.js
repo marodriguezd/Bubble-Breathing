@@ -51,6 +51,8 @@ window.translations = {
     soundscape_rain: "Lluvia",
     soundscape_whitenoise: "Ruido Blanco",
     soundscape_ocean: "Océano",
+    test_soundscape: "Probar Ambiente",
+    stop_preview: "Detener Sonido",
     clear_history_button: "Borrar Historial",
     clear_history_confirm: "¿Estás seguro de que deseas borrar todo el historial?"
   },
@@ -105,6 +107,8 @@ window.translations = {
     soundscape_rain: "Rain",
     soundscape_whitenoise: "White Noise",
     soundscape_ocean: "Ocean",
+    test_soundscape: "Test Ambient",
+    stop_preview: "Stop Preview",
     clear_history_button: "Clear History",
     clear_history_confirm: "Are you sure you want to clear all history?"
   },
@@ -159,6 +163,8 @@ window.translations = {
     soundscape_rain: "Pluie",
     soundscape_whitenoise: "Bruit Blanc",
     soundscape_ocean: "Océan",
+    test_soundscape: "Tester l'ambiance",
+    stop_preview: "Arrêter l'aperçu",
     clear_history_button: "Effacer l'historique",
     clear_history_confirm: "Voulez-vous vraiment effacer tout l'historique?"
   },
@@ -213,6 +219,8 @@ window.translations = {
     soundscape_rain: "Pioggia",
     soundscape_whitenoise: "Rumore Bianco",
     soundscape_ocean: "Oceano",
+    test_soundscape: "Prova ambiente",
+    stop_preview: "Ferma anteprima",
     clear_history_button: "Cancella Cronologia",
     clear_history_confirm: "Sei sicuro di voler cancellare tutta la cronologia?"
   },
@@ -267,6 +275,8 @@ window.translations = {
     soundscape_rain: "Regen",
     soundscape_whitenoise: "Weißes Rauschen",
     soundscape_ocean: "Ozean",
+    test_soundscape: "Hintergrund testen",
+    stop_preview: "Vorschau stoppen",
     clear_history_button: "Verlauf löschen",
     clear_history_confirm: "Möchten Sie den gesamten Verlauf wirklich löschen?"
   },
@@ -321,6 +331,8 @@ window.translations = {
     soundscape_rain: "Chuva",
     soundscape_whitenoise: "Ruído Branco",
     soundscape_ocean: "Oceano",
+    test_soundscape: "Testar ambiente",
+    stop_preview: "Parar som",
     clear_history_button: "Limpar Histórico",
     clear_history_confirm: "Tem certeza de que deseja limpar todo o histórico?"
   },
@@ -375,6 +387,8 @@ window.translations = {
     soundscape_rain: "雨声",
     soundscape_whitenoise: "白噪音",
     soundscape_ocean: "海洋",
+    test_soundscape: "测试环境音",
+    stop_preview: "停止预览",
     clear_history_button: "清除历史记录",
     clear_history_confirm: "您确定要清除所有历史记录吗？"
   },

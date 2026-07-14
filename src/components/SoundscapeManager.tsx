@@ -20,15 +20,12 @@ export const SoundscapeManager = () => {
 
     // Set track
     let src = '';
-    switch (config.soundscape) {
-      case 'rain': src = 'assets/rain.mp3'; break;
-      case 'whitenoise': src = 'assets/whitenoise.mp3'; break;
-      case 'ocean': src = 'assets/ocean.mp3'; break;
-      default: src = ''; break;
+    if (config.soundscape && config.soundscape !== 'none') {
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      src = `${baseUrl}assets/${config.soundscape}.mp3`;
     }
 
     if (src && audio.src !== src) {
-      // In a real app we would want absolute paths or imported assets
       audio.src = src;
     }
 

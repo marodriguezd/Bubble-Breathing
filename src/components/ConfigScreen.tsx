@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
 import { useSession } from '../contexts/SessionContext';
 import { useTranslation } from '../hooks/useTranslation';
@@ -28,35 +28,47 @@ export const ConfigScreen = () => {
 
   const [previewBreathCount, setPreviewBreathCount] = useState(1);
   const [previewSubPhase, setPreviewSubPhase] = useState<'idle' | 'inhale' | 'exhale'>('idle');
+  const [testingSoundscape, setTestingSoundscape] = useState<boolean>(false);
+  const testSoundscapeRef = useRef<HTMLAudioElement | null>(null);
 
   const handleStart = () => {
+    setTestingSoundscape(false);
     setIsPlaying(true);
     setCurrentRound(1);
     setCurrentBreath(0); // Set to 0 so the first breath cycle increments it to 1
     setPhase('breathing');
   };
 
-  const playPreview = (soundName: string) => {
-    if (soundName === 'none') return;
-    const audio = new Audio(`assets/${soundName}.mp3`);
-    audio.volume = config.volume;
-    audio.play().catch(e => console.error("Preview blocked:", e));
-    
-    // Simple fade out after 3 seconds
-    setTimeout(() => {
-      let vol = audio.volume;
-      const fade = setInterval(() => {
-        if (vol > 0.1) {
-          vol -= 0.1;
-          audio.volume = vol;
-        } else {
-          clearInterval(fade);
-          audio.pause();
-          audio.src = "";
-        }
-      }, 100);
-    }, 3000);
-  };
+  // Clean up soundscape test audio on unmount
+  useEffect(() => {
+    return () => {
+      if (testSoundscapeRef.current) {
+        testSoundscapeRef.current.pause();
+        testSoundscapeRef.current = null;
+      }
+    };
+  }, []);
+
+  // Control playback of the soundscape preview
+  useEffect(() => {
+    if (testingSoundscape && config.soundscape && config.soundscape !== 'none') {
+      if (!testSoundscapeRef.current) {
+        testSoundscapeRef.current = new Audio();
+        testSoundscapeRef.current.loop = true;
+      }
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      const src = `${baseUrl}assets/${config.soundscape}.mp3`;
+      if (testSoundscapeRef.current.src !== src) {
+        testSoundscapeRef.current.src = src;
+      }
+      testSoundscapeRef.current.volume = config.volume;
+      testSoundscapeRef.current.play().catch(e => console.warn("Preview playback failed:", e));
+    } else {
+      if (testSoundscapeRef.current) {
+        testSoundscapeRef.current.pause();
+      }
+    }
+  }, [testingSoundscape, config.soundscape, config.volume]);
 
   const getEstimatedTime = () => {
     const timings = config.speed === 'custom'
@@ -202,45 +214,81 @@ export const ConfigScreen = () => {
         />
       </div>
 
-      <div className="slider-group" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-        <details style={{ width: '100%', cursor: 'pointer' }}>
-          <summary style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', listStyle: 'none' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span className="slider-label" style={{ margin: 0 }}>{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
-              <span style={{ fontSize: '0.9rem', color: 'var(--text-color)', opacity: 0.8 }}>
+      <div className="soundscape-selector-group">
+        <details className="soundscape-details">
+          <summary className="soundscape-summary">
+            <div className="soundscape-summary-left">
+              <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+              <span className="soundscape-current-value">
                 {t(`soundscape_${config.soundscape}`)}
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              {config.soundscape !== 'none' && (
-                <button 
-                  onClick={(e) => { e.preventDefault(); playPreview(config.soundscape); }}
-                  style={{ 
-                    background: 'none', border: 'none', cursor: 'pointer', 
-                    fontSize: '1.2rem', padding: '0', display: 'flex', alignItems: 'center' 
-                  }}
-                  title="Preview Sound"
-                >
-                  ▶️
-                </button>
-              )}
-              <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>▼</span>
+            <div className="soundscape-summary-right">
+              <span className="soundscape-arrow">▼</span>
             </div>
           </summary>
-          <div className="speed-selector" style={{ margin: '15px 0 0 0' }}>
-            {['none', 'rain', 'whitenoise', 'ocean'].map((s) => (
+          
+          <div className="soundscape-expanded-content">
+            <div className="soundscape-grid">
               <button 
-                key={s}
-                className={`speed-btn ${config.soundscape === s ? 'active' : ''}`}
+                type="button"
+                className={`soundscape-btn ${config.soundscape === 'none' ? 'active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  updateConfig({ soundscape: s as any });
+                  updateConfig({ soundscape: 'none' });
+                  setTestingSoundscape(false);
                 }}
-                style={{ flex: 1, padding: '0.4rem 0.2rem', fontSize: '0.85rem' }}
               >
-                {t(`soundscape_${s}`)}
+                <span className="soundscape-icon">🔇</span>
+                <span className="soundscape-name">{t('soundscape_none')}</span>
               </button>
-            ))}
+              <button 
+                type="button"
+                className={`soundscape-btn ${config.soundscape === 'rain' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateConfig({ soundscape: 'rain' });
+                }}
+              >
+                <span className="soundscape-icon">🌧️</span>
+                <span className="soundscape-name">{t('soundscape_rain')}</span>
+              </button>
+              <button 
+                type="button"
+                className={`soundscape-btn ${config.soundscape === 'whitenoise' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateConfig({ soundscape: 'whitenoise' });
+                }}
+              >
+                <span className="soundscape-icon">💨</span>
+                <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
+              </button>
+              <button 
+                type="button"
+                className={`soundscape-btn ${config.soundscape === 'ocean' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateConfig({ soundscape: 'ocean' });
+                }}
+              >
+                <span className="soundscape-icon">🌊</span>
+                <span className="soundscape-name">{t('soundscape_ocean')}</span>
+              </button>
+            </div>
+            
+            {config.soundscape !== 'none' && (
+              <button
+                type="button"
+                className={`soundscape-test-btn ${testingSoundscape ? 'testing' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTestingSoundscape(!testingSoundscape);
+                }}
+              >
+                {testingSoundscape ? `⏹️ ${t('stop_preview')}` : `▶️ ${t('test_soundscape')}`}
+              </button>
+            )}
           </div>
         </details>
       </div>
@@ -265,13 +313,19 @@ export const ConfigScreen = () => {
       <div className="config-buttons">
         <button 
           className="reset-config-btn" 
-          onClick={() => updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5, soundscape: 'none' })}
+          onClick={() => {
+            updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5, soundscape: 'none' });
+            setTestingSoundscape(false);
+          }}
         >
           {t('resetConfigBtn')}
         </button>
         <button 
           className="reset-config-btn" 
-          onClick={() => setPhase('stats')}
+          onClick={() => {
+            setTestingSoundscape(false);
+            setPhase('stats');
+          }}
         >
           {t('statsBtn', { defaultValue: 'Stats' })}
         </button>
