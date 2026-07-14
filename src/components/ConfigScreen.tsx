@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
 import { useSession } from '../contexts/SessionContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { VolumeX, CloudRain, Wind, Waves, Play, Square } from 'lucide-react';
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
   slow: { inhale: 2500, exhale: 1500 },
@@ -239,7 +240,7 @@ export const ConfigScreen = () => {
                   setTestingSoundscape(false);
                 }}
               >
-                <span className="soundscape-icon">🔇</span>
+                <span className="soundscape-icon" style={{ display: 'flex' }}><VolumeX size={20} /></span>
                 <span className="soundscape-name">{t('soundscape_none')}</span>
               </button>
               <button 
@@ -250,7 +251,7 @@ export const ConfigScreen = () => {
                   updateConfig({ soundscape: 'rain' });
                 }}
               >
-                <span className="soundscape-icon">🌧️</span>
+                <span className="soundscape-icon" style={{ display: 'flex' }}><CloudRain size={20} /></span>
                 <span className="soundscape-name">{t('soundscape_rain')}</span>
               </button>
               <button 
@@ -261,7 +262,7 @@ export const ConfigScreen = () => {
                   updateConfig({ soundscape: 'whitenoise' });
                 }}
               >
-                <span className="soundscape-icon">💨</span>
+                <span className="soundscape-icon" style={{ display: 'flex' }}><Wind size={20} /></span>
                 <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
               </button>
               <button 
@@ -272,7 +273,7 @@ export const ConfigScreen = () => {
                   updateConfig({ soundscape: 'ocean' });
                 }}
               >
-                <span className="soundscape-icon">🌊</span>
+                <span className="soundscape-icon" style={{ display: 'flex' }}><Waves size={20} /></span>
                 <span className="soundscape-name">{t('soundscape_ocean')}</span>
               </button>
             </div>
@@ -285,8 +286,9 @@ export const ConfigScreen = () => {
                   e.preventDefault();
                   setTestingSoundscape(!testingSoundscape);
                 }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
               >
-                {testingSoundscape ? `⏹️ ${t('stop_preview')}` : `▶️ ${t('test_soundscape')}`}
+                {testingSoundscape ? <><Square size={16} fill="currentColor" /> {t('stop_preview')}</> : <><Play size={16} fill="currentColor" /> {t('test_soundscape')}</>}
               </button>
             )}
           </div>

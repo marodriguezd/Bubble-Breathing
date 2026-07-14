@@ -4,6 +4,7 @@ import { useHistory } from '../contexts/HistoryContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { formatTime } from '../utils/timeFormat';
+import { Flame, Trophy } from 'lucide-react';
 
 export const ResultsScreen = () => {
   const { phase, resetSession, roundResults } = useSession();
@@ -59,11 +60,11 @@ export const ResultsScreen = () => {
           </div>
         )}
 
-        <p style={{ fontSize: '1rem', color: 'var(--color-primary)', margin: '0.5rem 0' }}>
-          🔥 Streak: {currentStreak}
+        <p style={{ fontSize: '1rem', color: 'var(--color-primary)', margin: '0.5rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <Flame size={20} /> Streak: {currentStreak}
         </p>
-        <p style={{ fontSize: '0.9rem', color: 'var(--color-text)', margin: '0.5rem 0' }}>
-          🏆 Best: {longestStreak}
+        <p style={{ fontSize: '0.9rem', color: 'var(--color-text)', margin: '0.5rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <Trophy size={18} /> Best: {longestStreak}
         </p>
       </div>
       <button className="start-button" onClick={resetSession}>{t('newSessionBtn')}</button>

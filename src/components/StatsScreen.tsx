@@ -3,6 +3,7 @@ import { useSession } from '../contexts/SessionContext';
 import { useHistory } from '../contexts/HistoryContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { formatTime } from '../utils/timeFormat';
+import { Activity, Zap, Wind, Timer, X } from 'lucide-react';
 
 export const StatsScreen = () => {
   const { phase, setPhase } = useSession();
@@ -59,16 +60,16 @@ export const StatsScreen = () => {
         ) : (
           <div className="history-list">
             {history.slice(0, 10).map((session, idx) => {
-              let statusIcon = '🧘';
+              let StatusIconComponent = Activity;
               let statusDotColor = 'var(--color-primary)';
               if (session.retentionSeconds >= 60) {
-                statusIcon = '⚡';
+                StatusIconComponent = Zap;
                 statusDotColor = 'var(--color-success)';
               } else if (session.retentionSeconds >= 30) {
-                statusIcon = '🌬️';
+                StatusIconComponent = Wind;
                 statusDotColor = 'var(--color-secondary)';
               } else {
-                statusIcon = '⏱️';
+                StatusIconComponent = Timer;
                 statusDotColor = 'var(--color-accent)';
               }
 
@@ -76,7 +77,7 @@ export const StatsScreen = () => {
                 <div key={idx} className="history-item">
                   <div className="history-item-left">
                     <span className="history-status-dot" style={{ backgroundColor: statusDotColor, color: statusDotColor }}></span>
-                    <span className="history-icon">{statusIcon}</span>
+                    <span className="history-icon" style={{ display: 'flex' }}><StatusIconComponent size={20} color={statusDotColor} /></span>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span className="history-date">{new Date(session.date).toLocaleDateString()}</span>
                       <span className="history-date" style={{ fontSize: '0.85em', opacity: 0.8, marginTop: '2px' }}>
@@ -89,9 +90,9 @@ export const StatsScreen = () => {
                     <button 
                       onClick={() => handleDelete(session.id)}
                       title={t('delete', { defaultValue: 'Delete' })}
-                      style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '1.2rem', padding: '0 4px', lineHeight: 1 }}
+                      style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer', display: 'flex', padding: '0 4px' }}
                     >
-                      ×
+                      <X size={18} />
                     </button>
                   </strong>
                 </div>

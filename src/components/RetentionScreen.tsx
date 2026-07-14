@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { Square } from 'lucide-react';
 
 export const RetentionScreen = () => {
   const { config } = useSettings();
@@ -54,7 +55,7 @@ export const RetentionScreen = () => {
           onClick={handleTransitionToRecovery}
           style={{ cursor: 'pointer' }}
         >
-          <div className="breath-counter">■</div>
+          <div className="breath-counter" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Square size={48} fill="currentColor" /></div>
         </div>
       </div>
       <div className="tap-instruction">
