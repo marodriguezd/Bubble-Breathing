@@ -118,7 +118,15 @@ export const RecoveryScreen = () => {
         {t('roundInfo', { current: currentRound, total: config.rounds === 11 ? '∞' : config.rounds })}
       </div>
       <div className="instruction">{getInstructionText()}</div>
-      {showSubtitle && <div className="recovery-subtitle" style={{ display: 'block' }}>{subtitleText}</div>}
+      <div 
+        className="recovery-subtitle" 
+        style={{ 
+          display: 'block', 
+          visibility: showSubtitle ? 'visible' : 'hidden' 
+        }}
+      >
+        {showSubtitle ? subtitleText : '\u00A0'}
+      </div>
       <div className="hexagon-container">
         <div 
           className="hexagon phase-recovery" 

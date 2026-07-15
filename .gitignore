@@ -29,3 +29,6 @@ MEMORY.md
 *.njsproj
 *.sln
 *.sw?
+
+# Agents internal logs
+.agents/

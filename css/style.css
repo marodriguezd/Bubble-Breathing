@@ -352,12 +352,30 @@ body {
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
   text-align: center;
   position: relative;
+  overflow-y: auto;
+}
+
+.screen::-webkit-scrollbar {
+  width: 4px;
+}
+
+.screen::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
 }
 
 .screen.active {
   display: flex;
   flex-grow: 1;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.screen.active::before,
+.screen.active::after {
+  content: '';
+  margin: auto;
+  flex-shrink: 0;
 }
 
 .hexagon-container {
@@ -426,15 +444,13 @@ body {
 }
 
 .speed-selector {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   width: 100%;
 }
 
 .speed-btn {
-  flex-grow: 1;
-  flex-basis: 30%;
   padding: 0.7rem;
   border: 1px solid var(--color-glass-border);
   color: var(--color-text);
@@ -478,7 +494,7 @@ body {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   outline: none;
   display: block;
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
 }
 
 .slider::-webkit-slider-thumb {
@@ -510,7 +526,7 @@ body {
 }
 
 .estimated-time {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-weight: 600;
   color: var(--color-muted);
 }
@@ -519,7 +535,7 @@ body {
 .config-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -527,11 +543,11 @@ body {
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-text);
   border: 1px solid var(--color-glass-border);
-  padding: 1.1rem;
+  padding: 1rem 0.5rem;
   flex: 1;
   max-width: 8rem;
   border-radius: 1.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -546,10 +562,10 @@ body {
   background: linear-gradient(135deg, var(--color-primary), #3b8d99);
   color: #fff;
   border: none;
-  padding: 1.1rem;
+  padding: 1rem;
   flex: 1;
   border-radius: 1.5rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -566,7 +582,7 @@ body {
   flex: none;
   align-self: center;
   width: auto;
-  padding: 1.1rem 3.5rem;
+  padding: 1rem 3.5rem;
 }
 
 .round-info {
@@ -641,7 +657,8 @@ body {
 }
 
 /* Specific adjustment for Exercise and Recovery Screens to ensure stable layout */
-#exerciseScreen, #recoveryScreen {
+#exerciseScreen,
+#recoveryScreen {
   justify-content: flex-start;
   /* Use manual flex distribution for stability */
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
@@ -671,7 +688,6 @@ body {
   justify-content: center;
   margin: 0 auto;
   min-height: 13rem;
-  /* Reserve space for the 1.3x animation scale */
 }
 
 .skip-button {
@@ -711,9 +727,6 @@ body {
   z-index: 5;
 }
 
-.hidden-mode {
-  display: none;
-}
 
 .total-time-display {
   font-size: 1.15rem;
@@ -724,24 +737,7 @@ body {
   text-shadow: 0 0 15px rgba(76, 161, 175, 0.4);
 }
 
-/* Styles for configuration button alignment adjustments */
-.config-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  width: 100%;
-}
 
-.config-buttons .reset-config-btn,
-.config-buttons .start-button {
-  flex: 1;
-  max-width: none;
-  text-align: center;
-  font-size: 0.95rem;
-  padding: 1rem 0.25rem;
-  border-radius: 1.25rem;
-  margin: 0;
-}
 
 /* Stats Screen Premium Glassmorphism styling */
 .stats-screen {
@@ -823,7 +819,7 @@ body {
 }
 
 .history-list {
-  max-height: 150px;
+  max-height: 50vh;
   overflow-y: auto;
   background: var(--color-glass-white);
   backdrop-filter: blur(12px);
@@ -883,8 +879,186 @@ body {
 }
 
 .stats-screen .back-btn {
-  max-width: 12rem;
-  width: 100%;
+  max-width: 8rem;
+  width: auto;
   margin: 1rem auto 0 auto;
   display: block;
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  border-radius: 1.25rem;
+}
+
+/* Soundscape collapsible dropdown container */
+.soundscape-selector-group {
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.soundscape-details {
+  width: 100%;
+  border: 1px solid var(--color-glass-border);
+  background: var(--color-glass-white);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.soundscape-details[open] {
+  background: rgba(20, 35, 45, 0.4);
+}
+
+html[data-theme="light"] .soundscape-details[open] {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.soundscape-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.soundscape-summary::-webkit-details-marker {
+  display: none;
+}
+
+.soundscape-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.soundscape-summary-left .slider-label {
+  margin: 0;
+  font-weight: 600;
+}
+
+.soundscape-current-value {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  background: rgba(76, 161, 175, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.75rem;
+  text-shadow: none;
+}
+
+.soundscape-summary-right {
+  display: flex;
+  align-items: center;
+}
+
+.soundscape-arrow {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  transition: transform 0.3s ease;
+}
+
+.soundscape-details[open] .soundscape-arrow {
+  transform: rotate(180deg);
+}
+
+.soundscape-expanded-content {
+  padding: 0 1.2rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.soundscape-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.soundscape-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.8rem 0.4rem;
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  border-radius: 1rem;
+  background: var(--color-glass-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.soundscape-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.soundscape-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(76, 161, 175, 0.4);
+}
+
+.soundscape-icon {
+  font-size: 1.4rem;
+}
+
+.soundscape-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.soundscape-test-btn {
+  margin-top: 0.75rem;
+  align-self: center;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-text);
+  border-radius: 1rem;
+  background: var(--color-glass-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.soundscape-test-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.soundscape-test-btn.testing {
+  background: rgba(39, 174, 96, 0.2);
+  border-color: var(--color-success);
+  color: var(--color-success);
+  box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+}
+
+/* Adjustments for small vertical screens */
+@media (max-height: 700px) {
+  .hexagon-container {
+    transform: scale(0.8);
+    margin-top: -1.5rem;
+    margin-bottom: -1.5rem;
+  }
+  
+  .slider-group {
+    padding: 0 0.5rem;
+  }
+
+  .screen {
+    padding: 0.5rem;
+  }
 }
