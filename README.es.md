@@ -72,6 +72,31 @@ El proyecto ha sido totalmente modernizado y reconstruido para ser altamente rob
 Este proyecto está bajo la licencia **Apache 2.0**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
+
+## 🌊 App Complementaria: HydroCycle
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Hydrocicle/main/public/assets/icon.svg" alt="HydroCycle Logo" width="64" height="64">
+  <h3>Guía Interactiva y Temporizador de Terapia de Contraste y Exposición al Frío</h3>
+
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Hydrocicle/)
+  [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/marodriguezd/Hydrocicle)
+</div>
+
+**HydroCycle** es el compañero perfecto de Bubble Breathing — un temporizador guiado de terapia de contraste para duchas calientes/frías y exposición al frío. Construido con la misma filosofía de diseño (glassmorphism, animaciones en tiempo real, señales de audio con Web Audio API, PWA, multilingüe), te ayuda a desarrollar resiliencia a través de la exposición deliberada a contrastes de temperatura.
+
+| Bubble Breathing | HydroCycle |
+|---|---|
+| 🫁 Respiración rítmica y entrenamiento de apnea | 🚿 Terapia de contraste caliente/fría y exposición al frío |
+| 🟢 Hexágono que escala con las fases de respiración | 🔵 Hexágono que cambia de color (naranja→cian) con la temperatura |
+| 🔊 Señales de audio para inhalación/exhalación | 🔔 Sirenas de transición y pitidos de cuenta regresiva |
+| 🏆 Racha de tiempo de retención | 🥶 Racha de exposición al frío |
+| ⚡ Rendimiento: ≥60s de retención | 🥇 Rendimiento: ≥180s de exposición al frío |
+
+> 🧊 **Pruébalos juntos**: Usa Bubble Breathing para calmar tu mente antes de una ducha fría, ¡y luego lanza HydroCycle para cronometrar tu exposición!
+
+---
+
 <div align="center">
   Hecho con ❤️ para respirar mejor.
 </div>

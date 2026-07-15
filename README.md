@@ -83,6 +83,31 @@ The project has been fully rebuilt from vanilla JavaScript to a modern React arc
 This project is licensed under the **Apache 2.0 License**. See [LICENSE](LICENSE) for details.
 
 ---
+
+## 🌊 Complementary App: HydroCycle
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/marodriguezd/Hydrocicle/main/public/assets/icon.svg" alt="HydroCycle Logo" width="64" height="64">
+  <h3>Immersive Guided Contrast Therapy & Cold Exposure Timer</h3>
+
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen)](https://marodriguezd.github.io/Hydrocicle/)
+  [![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/marodriguezd/Hydrocicle)
+</div>
+
+**HydroCycle** is the perfect companion to Bubble Breathing — a guided contrast therapy timer for hot/cold shower training and cold exposure. Built with the same design philosophy (glassmorphism, real-time animations, Web Audio cues, PWA, multilingual), it helps you build resilience through deliberate temperature contrast exposure.
+
+| Bubble Breathing | HydroCycle |
+|---|---|
+| 🫁 Rhythmic breathing & breath-hold training | 🚿 Hot/cold contrast therapy & cold exposure |
+| 🟢 Hexagon scales with breath phases | 🔵 Hexagon changes color (orange→cyan) with temperature |
+| 🔊 Inhale/exhale audio cues | 🔔 Transition sirens & countdown beeps |
+| 🏆 Retention time streaks | 🥶 Cold exposure streaks |
+| ⚡ Performance: ≥60s retention | 🥇 Performance: ≥180s cold exposure |
+
+> 🧊 **Try them together**: Use Bubble Breathing to calm your mind before a cold shower, then launch HydroCycle to time your exposure!
+
+---
+
 <div align="center">
   Made with ❤️ for better breathing.
 </div>
