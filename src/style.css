@@ -819,7 +819,7 @@ body {
 }
 
 .history-list {
-  max-height: 50vh;
+  max-height: 12rem;
   overflow-y: auto;
   background: var(--color-glass-white);
   backdrop-filter: blur(12px);
