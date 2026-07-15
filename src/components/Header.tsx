@@ -47,7 +47,9 @@ export const Header = () => {
         currentStep += config.breaths + 1.5;
       }
     }
-    progressWidth = Math.min(100, (currentStep / totalSteps) * 100);
+    if (config.rounds !== 11) {
+      progressWidth = Math.min(100, (currentStep / totalSteps) * 100);
+    }
   } else if (phase === 'finished') {
     progressWidth = 100;
   }

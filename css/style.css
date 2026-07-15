@@ -639,18 +639,20 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Specific adjustment for Exercise Screen to ensure stable layout */
-#exerciseScreen {
+/* Specific adjustment for Exercise and Recovery Screens to ensure stable layout */
+#exerciseScreen, #recoveryScreen {
   justify-content: flex-start;
   /* Use manual flex distribution for stability */
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
 }
 
-#exerciseScreen .round-info {
+#exerciseScreen .round-info,
+#recoveryScreen .round-info {
   margin-top: 0.5rem;
 }
 
-#exerciseScreen .instruction {
+#exerciseScreen .instruction,
+#recoveryScreen .instruction {
   margin-top: 1rem;
   min-height: 4rem;
   /* Reserve space for 1-2 lines of text */
@@ -659,7 +661,8 @@ body {
   justify-content: center;
 }
 
-#exerciseScreen .hexagon-container {
+#exerciseScreen .hexagon-container,
+#recoveryScreen .hexagon-container {
   flex: 1;
   /* Take all available space to keep hexagon centered */
   display: flex;

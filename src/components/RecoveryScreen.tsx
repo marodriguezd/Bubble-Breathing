@@ -46,7 +46,7 @@ export const RecoveryScreen = () => {
         vibrate(30);
       } else if (recoverySubPhase === 'exhaling') {
         setRecoverySubPhase('idle');
-        if (currentRound >= config.rounds) {
+        if (currentRound >= config.rounds && config.rounds !== 11) {
           setPhase('finished');
         } else {
           setCurrentRound((r) => r + 1);
@@ -103,7 +103,7 @@ export const RecoveryScreen = () => {
 
   const handleSkip = () => {
     setRecoverySubPhase('idle');
-    if (currentRound >= config.rounds) {
+    if (currentRound >= config.rounds && config.rounds !== 11) {
       setPhase('finished');
     } else {
       setCurrentRound((r) => r + 1);
@@ -115,7 +115,7 @@ export const RecoveryScreen = () => {
   return (
     <div id="recoveryScreen" className="screen active">
       <div className="round-info">
-        {t('roundInfo', { current: currentRound, total: config.rounds })}
+        {t('roundInfo', { current: currentRound, total: config.rounds === 11 ? '∞' : config.rounds })}
       </div>
       <div className="instruction">{getInstructionText()}</div>
       {showSubtitle && <div className="recovery-subtitle" style={{ display: 'block' }}>{subtitleText}</div>}

@@ -51,7 +51,7 @@ export const ExerciseScreen = () => {
   return (
     <div id="exerciseScreen" className="screen active">
       <div className="round-info" id="roundInfo">
-        {t('roundInfo', { current: currentRound, total: config.rounds })}
+        {t('roundInfo', { current: currentRound, total: config.rounds === 11 ? '∞' : config.rounds })}
       </div>
       <div className="instruction" id="exerciseInstruction">
         {t('exerciseInstruction', { count: config.breaths })}

@@ -78,6 +78,7 @@ export const ConfigScreen = () => {
     const breathDuration = (timings.inhale + timings.exhale) / 1000;
     const estimatedApnea = 90;
 
+    if (config.rounds === 11) return '∞';
     const totalSeconds = config.rounds * (config.breaths * breathDuration + estimatedApnea);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = Math.round(totalSeconds % 60);
@@ -192,7 +193,7 @@ export const ConfigScreen = () => {
       <div className="slider-group">
         <label>
           <span className="slider-label">{t('roundsLabel')}</span>
-          <span>{config.rounds}</span>
+          <span>{config.rounds === 11 ? '∞' : config.rounds}</span>
         </label>
         <input 
           type="range" min="1" max="11" 

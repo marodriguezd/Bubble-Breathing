@@ -45,7 +45,7 @@ export const RetentionScreen = () => {
   return (
     <div id="retentionScreen" className="screen active">
       <div className="round-info">
-        {t('roundInfo', { current: currentRound, total: config.rounds })}
+        {t('roundInfo', { current: currentRound, total: config.rounds === 11 ? '∞' : config.rounds })}
       </div>
       <div className="instruction">{t('retentionInstruction')}</div>
       <div className="retention-timer">{formatTime(retentionTime)}</div>
