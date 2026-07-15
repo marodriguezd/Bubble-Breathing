@@ -637,6 +637,7 @@ body {
   color: var(--color-primary);
   font-weight: 600;
   margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Specific adjustment for Exercise and Recovery Screens to ensure stable layout */
@@ -669,6 +670,8 @@ body {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  min-height: 13rem;
+  /* Reserve space for the 1.3x animation scale */
 }
 
 .skip-button {
@@ -820,7 +823,7 @@ body {
 }
 
 .history-list {
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
   background: var(--color-glass-white);
   backdrop-filter: blur(12px);
