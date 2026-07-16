@@ -43,10 +43,14 @@ export const ExerciseScreen = () => {
     duration = timings.exhale;
   }
 
+  const isLastBreath = currentBreath === config.breaths;
+
   const hexagonStyle = {
     transform: `scale(${scale})`,
     transition: `transform ${duration}ms ease-in-out`
   };
+
+  const hexagonClass = `hexagon phase-breathing${isLastBreath ? ' last-breath' : ''}`;
 
   return (
     <div id="exerciseScreen" className="screen active">
@@ -58,11 +62,11 @@ export const ExerciseScreen = () => {
       </div>
       <div className="hexagon-container">
         <div 
-          className="hexagon phase-breathing" 
+          className={hexagonClass}
           id="exerciseHexagon"
           style={hexagonStyle}
         >
-          <div className="breath-counter" id="breathCounter">{currentBreath}</div>
+          <div className={`breath-counter${isLastBreath ? ' last-breath' : ''}`} id="breathCounter">{currentBreath}</div>
         </div>
       </div>
       <div id="exerciseFooter" className="exercise-footer">

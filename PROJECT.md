@@ -13,6 +13,28 @@
 | 3 | M3: Verification & Auditing | Run TypeScript compilation check (`npm run build`) and perform reviewer/auditor gates. | M2 | IN_PROGRESS |
 | 4 | M4: Final Handoff | Document achievements and prepare final report for Sentinel. | M3 | PLANNED |
 
+## Features
+
+### Last Breath Amplified Feedback (v2026-07-16)
+The last inhalation and exhalation before each apnea (breath hold) now have intensified sensory feedback:
+
+**Sound (useBreathingTimer.ts):**
+- Normal breath: 220Hz tone, 200ms, base volume, 30ms vibration
+- Last INHALE: 180Hz tone (deeper), 400ms (longer), volume ×1.5 (capped at 1.0), strong vibration pattern [100,50,100,50,150]
+- Last EXHALE: 160Hz tone, 500ms, volume ×1.5, vibration pattern [80,40,80]
+
+**Visual (ExerciseScreen.tsx + style.css):**
+- Hexagon gets class `last-breath` → pulsing golden glow animation (`@keyframes lastBreathGlow`)
+- Hexagon background shifts to brighter amber (`#ffc107` → `#ff6b00`)
+- Breath counter gets bright text-shadow (white-gold glow)
+
+**Scope:** Only affects the breath cycle when `breathRef.current === config.breaths` (last breath of each round). Timing, transitions, retention logic, and round management are untouched.
+
+**Files modified:**
+- `src/hooks/useBreathingTimer.ts` — amplified `playTone`/`vibrate` on last breath
+- `src/components/ExerciseScreen.tsx` — conditional `last-breath` CSS class
+- `src/style.css` — `@keyframes lastBreathGlow`, `.hexagon.last-breath`, `.breath-counter.last-breath`
+
 ## Code Layout
 - `src/components/StatsScreen.tsx`: React component for session stats and history view.
 - `src/components/ConfigScreen.tsx`: React component for app configurations and action buttons.

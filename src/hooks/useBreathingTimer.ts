@@ -92,6 +92,8 @@ export const useBreathingTimer = () => {
     
     // Increment breath at start of cycle
     breathRef.current += 1;
+    const isLastBreath = breathRef.current === config.breaths;
+
     if (breathRef.current > config.breaths) {
       // Switch to retention
       setPhase('retention');
@@ -105,12 +107,27 @@ export const useBreathingTimer = () => {
     const startInhale = () => {
       // Inhale starts
       setBreathSubPhase('inhale');
-      playTone(220, 200, config.volume);
-      vibrate(30);
+
+      if (isLastBreath) {
+        // Last breath before apnea — amplified feedback
+        const boostedVolume = Math.min(1, config.volume * 1.5);
+        playTone(180, 400, boostedVolume);
+        vibrate([100, 50, 100, 50, 150]);
+      } else {
+        playTone(220, 200, config.volume);
+        vibrate(30);
+      }
 
       // Schedule Exhale
       phaseTimerRef.current = window.setTimeout(() => {
         setBreathSubPhase('exhale');
+
+        // For the last breath, also amplify exhalation feedback
+        if (isLastBreath) {
+          const boostedVolume = Math.min(1, config.volume * 1.5);
+          playTone(160, 500, boostedVolume);
+          vibrate([80, 40, 80]);
+        }
 
         // Schedule next breathing cycle
         phaseTimerRef.current = window.setTimeout(() => {

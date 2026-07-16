@@ -425,6 +425,26 @@ body {
   box-shadow: 0 0 30px rgba(255, 157, 0, 0.4);
 }
 
+/* Last breath glow animation — brighter pulse before apnea */
+@keyframes lastBreathGlow {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(255, 220, 50, 0.5), 0 0 80px rgba(255, 157, 0, 0.3), 0 0 120px rgba(255, 100, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(255, 230, 80, 0.8), 0 0 120px rgba(255, 157, 0, 0.5), 0 0 180px rgba(255, 100, 0, 0.2);
+  }
+}
+
+.hexagon.last-breath {
+  animation: lastBreathGlow 1.2s ease-in-out infinite;
+  background: linear-gradient(135deg, #ffc107, #ff6b00);
+}
+
+/* Last breath counter — bright static glow (text-shadow, no box-shadow animation needed) */
+.breath-counter.last-breath {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 200, 0, 0.5);
+}
+
 .phase-retention {
   background: linear-gradient(135deg, var(--color-danger), #c0392b);
   cursor: pointer;
