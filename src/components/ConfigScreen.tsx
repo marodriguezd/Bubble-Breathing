@@ -5,20 +5,14 @@ import { useTranslation } from '../hooks/useTranslation';
 import { VolumeX, CloudRain, Wind, Waves, Play, Square } from 'lucide-react';
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2500, exhale: 1500 },
-  standard: { inhale: 2000, exhale: 1000 },
-  fast: { inhale: 1000, exhale: 1000 }
+  slow: { inhale: 1600, exhale: 2400 },
+  standard: { inhale: 1200, exhale: 1800 },
+  fast: { inhale: 800, exhale: 1200 }
 };
 
 const getBreathTiming = (totalMs: number) => {
-  let inhale;
-  if (totalMs <= 2000) {
-    inhale = totalMs / 2;
-  } else if (totalMs <= 3000) {
-    inhale = 1000 + (totalMs - 2000); 
-  } else {
-    inhale = 2000 + (totalMs - 3000) * 0.5;
-  }
+  // Proporción más suave: ~40% inhalación, ~60% exhalación
+  const inhale = totalMs * 0.4;
   return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
 };
 
