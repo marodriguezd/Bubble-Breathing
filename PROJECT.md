@@ -20,10 +20,10 @@ The last inhalation and exhalation before each apnea (breath hold) now have inte
 
 **Sound (useBreathingTimer.ts):**
 - Normal breath: 220Hz tone, 200ms, base volume, 30ms vibration
-- Last INHALE: 180Hz tone (deeper), 400ms (longer), volume ×1.5 (capped at 1.0), strong vibration pattern [100,50,100,50,150]
-- Last EXHALE: 160Hz tone, 500ms, volume ×1.5, vibration pattern [80,40,80]
+- Last **INHALE**: 150Hz tone (deep), 600ms (long), **volume ×2.5** (capped at 1.0), strong vibration pattern [150,60,150,60,200], console.log debug
+- Last **EXHALE**: 120Hz tone (very deep), 800ms (very long), **volume ×2.5**, vibration pattern [120,50,120], console.log debug
 
-**Visual (ExerciseScreen.tsx + style.css):**
+**Visual (ExerciseScreen.tsx + style.css + css/style.css):**
 - Hexagon gets class `last-breath` → pulsing golden glow animation (`@keyframes lastBreathGlow`)
 - Hexagon background shifts to brighter amber (`#ffc107` → `#ff6b00`)
 - Breath counter gets bright text-shadow (white-gold glow)
@@ -34,6 +34,7 @@ The last inhalation and exhalation before each apnea (breath hold) now have inte
 - `src/hooks/useBreathingTimer.ts` — amplified `playTone`/`vibrate` on last breath
 - `src/components/ExerciseScreen.tsx` — conditional `last-breath` CSS class
 - `src/style.css` — `@keyframes lastBreathGlow`, `.hexagon.last-breath`, `.breath-counter.last-breath`
+- `css/style.css` — synced with src/style.css (was missing the last-breath rules)
 
 ## Code Layout
 - `src/components/StatsScreen.tsx`: React component for session stats and history view.
