@@ -110,7 +110,6 @@ export const useBreathingTimer = () => {
 
       if (isLastBreath) {
         // Last breath before apnea — strongly amplified feedback
-        console.log('🔥 LAST BREATH — amplified feedback activated! breath:', breathRef.current, 'total:', config.breaths);
         const boostedVolume = Math.min(1, config.volume * 2.5);
         playTone(150, 600, boostedVolume);
         vibrate([150, 60, 150, 60, 200]);
@@ -125,7 +124,6 @@ export const useBreathingTimer = () => {
 
         // For the last breath, also amplify exhalation feedback
         if (isLastBreath) {
-          console.log('🌬️ LAST BREATH EXHALE — amplified!');
           const boostedVolume = Math.min(1, config.volume * 2.5);
           playTone(120, 800, boostedVolume);
           vibrate([120, 50, 120]);
