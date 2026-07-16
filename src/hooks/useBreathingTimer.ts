@@ -41,9 +41,9 @@ export const vibrate = (pattern: number | number[]) => {
 };
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 1000, exhale: 3000 },
-  standard: { inhale: 800, exhale: 2200 },
-  fast: { inhale: 500, exhale: 1500 }
+  slow: { inhale: 1600, exhale: 2400 },
+  standard: { inhale: 1200, exhale: 1800 },
+  fast: { inhale: 800, exhale: 1200 }
 };
 
 export const useBreathingTimer = () => {
@@ -60,15 +60,8 @@ export const useBreathingTimer = () => {
   const breathRef = useRef(0);
 
   const getBreathTiming = useCallback((totalMs: number) => {
-    let inhale;
-    if (totalMs <= 2500) {
-      inhale = totalMs * (0.4 / 2.5);
-    } else if (totalMs <= 6000) {
-      const fraction = (totalMs - 2500) / (6000 - 2500);
-      inhale = 400 + fraction * (2000 - 400); 
-    } else {
-      inhale = 2000;
-    }
+    // Proporción más suave: ~40% inhalación, ~60% exhalación
+    const inhale = totalMs * 0.4;
     return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
   }, []);
 
