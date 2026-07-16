@@ -47,3 +47,24 @@ En `StatsScreen.tsx`, eliminar el aspecto de "placeholder". Se debe aplicar un d
 - [ ] La pantalla de estadísticas es responsiva y no se desborda en pantallas pequeñas.
 - [ ] El diseño de estadísticas se integra orgánicamente con el CSS global (`style.css`), sin usar estilos en línea excesivos, migrando las reglas a clases CSS limpias.
 - [ ] Todo el código nuevo respeta la validación de TypeScript (`npm run build` sin errores).
+
+## Follow-up — 2026-07-15T08:19:05Z
+
+Mejorar el espaciado de elementos en las pantallas de recuperación entre rondas, y ajustar la pantalla de estadísticas reduciendo la altura vertical del contenedor de historial de estadísticas para que encaje mejor en pantalla, manteniendo su scroll.
+
+Working directory: /data/data/com.termux/files/home/Bubble-Breathing
+Integrity mode: development
+
+## Requirements
+
+### R1. Pantalla de recuperación
+Ajustar el espaciado (márgenes/paddings) de los elementos en la pantalla de recuperación entre rondas para que la distribución sea visualmente equilibrada y profesional.
+
+### R2. Pantalla de estadísticas
+Reducir la altura máxima (vertical) del contenedor que muestra las estadísticas pasadas eligiendo una altura razonable (ej. `max-height: 50vh`) para que encaje bien en el espacio disponible de la pantalla sin empujar otros elementos. El contenido interno debe seguir siendo scrolleable.
+
+## Acceptance Criteria
+
+### Interfaz de Usuario
+- [ ] Un agente independiente (Agent-as-judge) revisa los archivos HTML/CSS modificados y confirma que los márgenes/paddings de la pantalla de recuperación han sido ajustados de manera balanceada.
+- [ ] Un agente independiente (Agent-as-judge) verifica analíticamente que al contenedor de estadísticas se le ha aplicado una propiedad de restricción de altura (como `max-height`) y que mantiene `overflow-y: auto` o similar.
