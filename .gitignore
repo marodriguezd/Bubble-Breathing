@@ -32,3 +32,4 @@ MEMORY.md
 
 # Agents internal logs
 .agents/
+.opencode/
