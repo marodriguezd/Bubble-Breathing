@@ -4,14 +4,14 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 1600, exhale: 2400 },
-  standard: { inhale: 1200, exhale: 1800 },
-  fast: { inhale: 800, exhale: 1200 }
+  slow: { inhale: 2500, exhale: 1500 },
+  standard: { inhale: 2000, exhale: 1000 },
+  fast: { inhale: 1300, exhale: 700 }
 };
 
 const getBreathTiming = (totalMs: number) => {
-  // Proporción más suave: ~40% inhalación, ~60% exhalación
-  const inhale = totalMs * 0.4;
+  // Wim Hof: ~65% inhalación (larga y activa), ~35% exhalación (corta y pasiva)
+  const inhale = totalMs * 0.65;
   return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
 };
 
@@ -28,20 +28,23 @@ export const ExerciseScreen = () => {
 
   let scale = 1.0;
   let duration = 300; // default transition duration
+  let easing = 'ease-in-out';
 
   if (breathSubPhase === 'inhale') {
     scale = 1.3;
     duration = timings.inhale;
+    easing = 'ease-out'; // smooth controlled expansion
   } else if (breathSubPhase === 'exhale') {
     scale = 0.9;
     duration = timings.exhale;
+    easing = 'ease-in'; // rapid passive drop (elastic recoil)
   }
 
   const isLastBreath = currentBreath === config.breaths;
 
   const hexagonStyle = {
     transform: `scale(${scale})`,
-    transition: `transform ${duration}ms ease-in-out`
+    transition: `transform ${duration}ms ${easing}`
   };
 
   const hexagonClass = `hexagon phase-breathing${isLastBreath ? ' last-breath' : ''}`;
