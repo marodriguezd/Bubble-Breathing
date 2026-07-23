@@ -3,6 +3,7 @@ import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { Square } from 'lucide-react';
+import { playTone, vibrate } from '../hooks/useBreathingTimer';
 
 export const RetentionScreen = () => {
   const { config } = useSettings();
@@ -21,6 +22,20 @@ export const RetentionScreen = () => {
       if (interval) clearInterval(interval);
     };
   }, [phase, setRetentionTime]);
+
+  // Per-minute feedback during apnea: subtle beep + light double-tap vibration
+  // so the user can count elapsed minutes by ear without watching the timer.
+  // Distinct from the last-breath feedback (which is lower pitch and louder).
+  // - Sound is gated by playTone() itself when volume === 0.
+  // - Vibration is ALWAYS requested here: navigator.vibrate() is filtered by the
+  //   device's system mode (silent → blocked by the OS, vibrate/sound → passes),
+  //   so we should not gate it on the app's in-app volume slider.
+  useEffect(() => {
+    if (phase === 'retention' && retentionTime > 0 && retentionTime % 60 === 0) {
+      playTone(880, 180, config.volume);
+      vibrate([100, 50, 100]);
+    }
+  }, [phase, retentionTime, config.volume]);
 
 
   const formatTime = (seconds: number) => {

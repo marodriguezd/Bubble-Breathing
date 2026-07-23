@@ -36,6 +36,24 @@ The last inhalation and exhalation before each apnea (breath hold) now have inte
 - `src/style.css` — `@keyframes lastBreathGlow`, `.hexagon.last-breath`, `.breath-counter.last-breath`
 - `css/style.css` — synced with src/style.css (was missing the last-breath rules)
 
+### Per-Minute Apnea Notification (v2026-07-21)
+Added a subtle per-cue during the apnea (breath-hold) phase so the user can keep count by ear without watching the timer.
+
+**Trigger:** Whenever `phase === 'retention' && retentionTime > 0 && retentionTime % 60 === 0`. Fires once per minute on the minute boundary (60s, 120s, 180s, ...).
+
+**Sound:** `playTone(880, 180, config.volume)` — a clear 880 Hz sine tick, intentionally higher pitch than the lower (150/120/220 Hz) feedback used during breathing and last-breath so the user hears a distinct cue.
+
+**Vibration:** `vibrate([100, 50, 100])` — soft double-tap, lighter than the last-breath and retention-start patterns.
+
+**Volume semantics:**
+- Sound: gated by `playTone()` itself when `config.volume === 0` (mute means silence).
+- Vibration: ALWAYS requested from the app. On Android, `navigator.vibrate()` is regulated by the device's system mode — silent mode blocks it, vibrate / sound modes allow it. We deliberately do NOT gate vibration on the in-app volume slider.
+
+**Reuse:** No new helpers — leverages the existing `playTone` and `vibrate` exports from `src/hooks/useBreathingTimer.ts`.
+
+**Files modified:**
+- `src/components/RetentionScreen.tsx` — added one `useEffect` (~10 lines)
+
 ## Code Layout
 - `src/components/StatsScreen.tsx`: React component for session stats and history view.
 - `src/components/ConfigScreen.tsx`: React component for app configurations and action buttons.

@@ -23,6 +23,13 @@ export const playTone = (frequency: number, duration: number, volume: number) =>
     oscillator.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 
+    oscillator.onended = () => {
+      try {
+        oscillator.disconnect();
+        gainNode.disconnect();
+      } catch (_) {}
+    };
+
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + duration / 1000);
   } catch (e) {
