@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
@@ -9,11 +9,13 @@ export const RetentionScreen = () => {
   const { config } = useSettings();
   const { currentRound, phase, setPhase, retentionTime, setRetentionTime, setRoundResults } = useSession();
   const { t } = useTranslation();
+  const lastBeepMinuteRef = useRef(0);
 
   useEffect(() => {
     let interval: number | null = null;
     if (phase === 'retention') {
       setRetentionTime(0);
+      lastBeepMinuteRef.current = 0;
       interval = window.setInterval(() => {
         setRetentionTime((prev) => prev + 1);
       }, 1000);
@@ -31,9 +33,13 @@ export const RetentionScreen = () => {
   //   device's system mode (silent → blocked by the OS, vibrate/sound → passes),
   //   so we should not gate it on the app's in-app volume slider.
   useEffect(() => {
-    if (phase === 'retention' && retentionTime > 0 && retentionTime % 60 === 0) {
-      playTone(880, 180, config.volume);
-      vibrate([100, 50, 100]);
+    if (phase === 'retention' && retentionTime > 0) {
+      const currentMinute = Math.floor(retentionTime / 60);
+      if (currentMinute > 0 && retentionTime % 60 === 0 && currentMinute > lastBeepMinuteRef.current) {
+        lastBeepMinuteRef.current = currentMinute;
+        playTone(880, 180, config.volume);
+        vibrate([100, 50, 100]);
+      }
     }
   }, [phase, retentionTime, config.volume]);
 

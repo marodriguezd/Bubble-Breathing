@@ -18,7 +18,7 @@ if ('serviceWorker' in navigator) {
 // Register service worker and check for updates aggressively
 registerSW({
   immediate: true,
-  onRegistered(r) {
+  onRegistered(r: ServiceWorkerRegistration | undefined) {
     if (r) {
       r.update();
       // Check for updates when the window is focused
@@ -31,7 +31,7 @@ registerSW({
       }, 30 * 60 * 1000);
     }
   },
-  onRegisterError(error) {
+  onRegisterError(error: unknown) {
     console.error('SW registration error', error);
   }
 });

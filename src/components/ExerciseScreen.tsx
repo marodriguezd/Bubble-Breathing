@@ -17,7 +17,7 @@ const getBreathTiming = (totalMs: number) => {
 
 export const ExerciseScreen = () => {
   const { config } = useSettings();
-  const { currentRound, currentBreath, setPhase, phase, breathSubPhase } = useSession();
+  const { currentRound, currentBreath, setPhase, phase, breathSubPhase, setRetentionTime } = useSession();
   const { t } = useTranslation();
 
   if (phase !== 'breathing') return null;
@@ -67,7 +67,7 @@ export const ExerciseScreen = () => {
         </div>
       </div>
       <div id="exerciseFooter" className="exercise-footer">
-        <button className="skip-button" onClick={() => setPhase('retention')}>
+        <button className="skip-button" onClick={() => { setRetentionTime(0); setPhase('retention'); }}>
           {t('skipToRetentionBtn')}
         </button>
       </div>

@@ -7,16 +7,22 @@ import { formatTime } from '../utils/timeFormat';
 import { Flame, Trophy } from 'lucide-react';
 
 export const ResultsScreen = () => {
-  const { phase, resetSession, roundResults } = useSession();
+  const { phase, resetSession, roundResults, sessionStartTime } = useSession();
   const { config } = useSettings();
   const { addSession, currentStreak, longestStreak } = useHistory();
   const { t } = useTranslation();
   const savedRef = useRef(false);
+  const sessionDurationRef = useRef<number | null>(null);
+
+  if (phase === 'finished' && sessionDurationRef.current === null) {
+    sessionDurationRef.current = sessionStartTime ? Math.max(0, Math.round((Date.now() - sessionStartTime) / 1000)) : 0;
+  }
 
   const totalRetentionTime = roundResults.reduce((acc, r) => acc + r.retentionTime, 0);
   const averageRetentionTime = roundResults.length > 0 
     ? Math.round(totalRetentionTime / roundResults.length) 
     : 0;
+  const totalSessionTime = sessionDurationRef.current ?? 0;
 
   useEffect(() => {
     if (phase === 'finished' && !savedRef.current) {
@@ -29,10 +35,11 @@ export const ResultsScreen = () => {
     }
   }, [phase, addSession, totalRetentionTime, roundResults.length, config.speed, config.customTime, config.rounds]);
 
-  // Reset saved flag when session resets
+  // Reset saved flag and cached session duration when session resets
   useEffect(() => {
     if (phase === 'idle') {
       savedRef.current = false;
+      sessionDurationRef.current = null;
     }
   }, [phase]);
 
@@ -43,10 +50,13 @@ export const ResultsScreen = () => {
       <div className="results-title">{t('resultsTitle')}</div>
       <div id="resultsContent" style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem', color: '#fff' }}>
-          {t('totalTimeLabel')}: <strong>{formatTime(totalRetentionTime)}</strong>
+          {t('totalSessionLabel')}: <strong>{formatTime(totalSessionTime)}</strong>
         </p>
-        <p style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#fff' }}>
-          {t('averageLabel')}: <strong>{formatTime(averageRetentionTime)}</strong>
+        <p style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'rgba(255, 255, 255, 0.9)' }}>
+          {t('totalRetentionLabel')}: <strong>{formatTime(totalRetentionTime)}</strong>
+        </p>
+        <p style={{ fontSize: '1rem', marginBottom: '1rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+          {t('averageRetentionLabel')}: <strong>{formatTime(averageRetentionTime)}</strong>
         </p>
         
         {roundResults.length > 0 && (

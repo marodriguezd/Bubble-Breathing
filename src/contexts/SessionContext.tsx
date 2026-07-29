@@ -18,6 +18,7 @@ interface SessionState {
   breathSubPhase: BreathSubPhase;
   recoverySubPhase: RecoverySubPhase;
   roundResults: RoundResult[];
+  sessionStartTime: number | null;
   setPhase: (phase: SessionPhase) => void;
   setCurrentRound: (round: number | ((prev: number) => number)) => void;
   setCurrentBreath: (breath: number | ((prev: number) => number)) => void;
@@ -26,6 +27,7 @@ interface SessionState {
   setBreathSubPhase: (subPhase: BreathSubPhase) => void;
   setRecoverySubPhase: (subPhase: RecoverySubPhase) => void;
   setRoundResults: React.Dispatch<React.SetStateAction<RoundResult[]>>;
+  setSessionStartTime: (time: number | null) => void;
   resetSession: () => void;
 }
 
@@ -40,6 +42,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
   const [breathSubPhase, setBreathSubPhase] = useState<BreathSubPhase>('idle');
   const [recoverySubPhase, setRecoverySubPhase] = useState<RecoverySubPhase>('idle');
   const [roundResults, setRoundResults] = useState<RoundResult[]>([]);
+  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
   const resetSession = () => {
     setPhase('idle');
@@ -50,6 +53,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
     setBreathSubPhase('idle');
     setRecoverySubPhase('idle');
     setRoundResults([]);
+    setSessionStartTime(null);
   };
 
   return (
@@ -62,6 +66,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
       breathSubPhase, setBreathSubPhase,
       recoverySubPhase, setRecoverySubPhase,
       roundResults, setRoundResults,
+      sessionStartTime, setSessionStartTime,
       resetSession
     }}>
       {children}

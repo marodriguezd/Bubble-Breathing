@@ -59,6 +59,8 @@ export const useBreathingTimer = () => {
     phase, setPhase,
     setCurrentRound,
     setCurrentBreath,
+    setRetentionTime,
+    setSessionStartTime,
     isPlaying, setIsPlaying,
     breathSubPhase, setBreathSubPhase
   } = useSession();
@@ -97,6 +99,7 @@ export const useBreathingTimer = () => {
 
     if (breathRef.current > config.breaths) {
       // Switch to retention
+      setRetentionTime(0);
       setPhase('retention');
       setBreathSubPhase('idle');
       return;
@@ -146,7 +149,7 @@ export const useBreathingTimer = () => {
     } else {
       startInhale();
     }
-  }, [isPlaying, phase, config.breaths, config.volume, getTimings, setCurrentBreath, setPhase, setBreathSubPhase]);
+  }, [isPlaying, phase, config.breaths, config.volume, getTimings, setCurrentBreath, setPhase, setBreathSubPhase, setRetentionTime]);
 
   useEffect(() => {
     if (isPlaying && phase === 'breathing') {
@@ -170,6 +173,8 @@ export const useBreathingTimer = () => {
     setIsPlaying(true);
     setCurrentRound(1);
     setCurrentBreath(0);
+    setRetentionTime(0);
+    setSessionStartTime(Date.now());
     setPhase('breathing');
   };
 
@@ -177,6 +182,7 @@ export const useBreathingTimer = () => {
     breathRef.current = 0;
     setIsPlaying(false);
     setBreathSubPhase('idle');
+    setSessionStartTime(null);
     stopTimer();
   };
 
