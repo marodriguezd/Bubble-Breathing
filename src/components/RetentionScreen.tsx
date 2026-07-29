@@ -37,7 +37,7 @@ export const RetentionScreen = () => {
       const currentMinute = Math.floor(retentionTime / 60);
       if (currentMinute > 0 && retentionTime % 60 === 0 && currentMinute > lastBeepMinuteRef.current) {
         lastBeepMinuteRef.current = currentMinute;
-        playTone(880, 180, config.volume);
+        playTone(180, 350, config.volume * 0.75);
         vibrate([100, 50, 100]);
       }
     }

@@ -210,7 +210,7 @@ vibrate(pattern: number | number[]): void
 - `vibrate(pattern)` **NO se gates** con la configuración de volumen de la app. Es deliberado: Android filtra por modo de dispositivo (silencio = bloqueado por el OS; vibración/sonido = pasa). Si lo gateas con `config.volume`, rompes la semántica intencional del proyecto (ver `RetentionScreen` — per-minute cue; y `useBreathingTimer` — last-breath).
 - Tonos distinguibles (ver `PROJECT.md`):
   - `220 Hz / 200ms` — respiración normal
-  - `880 Hz / 180ms` — per-minute cue durante apnea
+  - `180 Hz / 350ms` — per-minute cue durante apnea (volumen suave 0.75x)
   - `150 Hz / 600ms` — última inhalación (× 2.5 volumen, cap a 1.0)
   - `120 Hz / 800ms` — última exhalación (× 2.5 volumen, cap a 1.0)
 - `AudioContext` es singleton, lazy: `audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)()` solo en la primera llamada. Trata como `let audioCtx: AudioContext | null = null` (fuera del hook, por eso no se reinicia entre fases).

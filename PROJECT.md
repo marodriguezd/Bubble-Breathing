@@ -41,7 +41,7 @@ Added a subtle per-cue during the apnea (breath-hold) phase so the user can keep
 
 **Trigger:** Whenever `phase === 'retention' && retentionTime > 0 && retentionTime % 60 === 0`. Fires once per minute on the minute boundary (60s, 120s, 180s, ...).
 
-**Sound:** `playTone(880, 180, config.volume)` — a clear 880 Hz sine tick, intentionally higher pitch than the lower (150/120/220 Hz) feedback used during breathing and last-breath so the user hears a distinct cue.
+**Sound:** `playTone(180, 350, config.volume * 0.75)` — a soft, warm 180 Hz tone (350ms) at gentle volume, matching the relaxing atmosphere of the retention phase.
 
 **Vibration:** `vibrate([100, 50, 100])` — soft double-tap, lighter than the last-breath and retention-start patterns.
 
