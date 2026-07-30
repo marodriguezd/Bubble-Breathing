@@ -18,7 +18,7 @@ const getBreathTiming = (totalMs: number) => {
 
 export const ConfigScreen = () => {
   const { config, updateConfig } = useSettings();
-  const { setPhase, setCurrentRound, setCurrentBreath, setIsPlaying } = useSession();
+  const { setPhase, setCurrentRound, setCurrentBreath, setIsPlaying, setSessionStartTime } = useSession();
   const { t } = useTranslation();
 
   const [previewBreathCount, setPreviewBreathCount] = useState(1);
@@ -31,6 +31,7 @@ export const ConfigScreen = () => {
     setIsPlaying(true);
     setCurrentRound(1);
     setCurrentBreath(0); // Set to 0 so the first breath cycle increments it to 1
+    setSessionStartTime(Date.now());
     setPhase('breathing');
   };
 

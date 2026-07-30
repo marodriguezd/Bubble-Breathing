@@ -14,14 +14,16 @@ export const ResultsScreen = () => {
   const savedRef = useRef(false);
   const sessionDurationRef = useRef<number | null>(null);
 
-  if (phase === 'finished' && sessionDurationRef.current === null) {
-    sessionDurationRef.current = sessionStartTime ? Math.max(0, Math.round((Date.now() - sessionStartTime) / 1000)) : 0;
-  }
-
   const totalRetentionTime = roundResults.reduce((acc, r) => acc + r.retentionTime, 0);
   const averageRetentionTime = roundResults.length > 0 
     ? Math.round(totalRetentionTime / roundResults.length) 
     : 0;
+
+  if (phase === 'finished' && sessionDurationRef.current === null) {
+    const measuredDuration = sessionStartTime ? Math.max(0, Math.round((Date.now() - sessionStartTime) / 1000)) : 0;
+    sessionDurationRef.current = Math.max(measuredDuration, totalRetentionTime);
+  }
+
   const totalSessionTime = sessionDurationRef.current ?? 0;
 
   useEffect(() => {
