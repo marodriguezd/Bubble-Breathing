@@ -1,5 +1,5 @@
 // Translations for the Bubble Breathing app
-window.translations = {
+const bubbleTranslations = {
   es: {
     appTitle: "Bubble Breathing",
     finishBtn: "Finalizar",
@@ -414,6 +414,17 @@ window.translations = {
     clear_history_confirm: "您确定要清除所有历史记录吗？"
   },
 };
+
+// Export to window safely and non-destructively
+if (typeof window !== 'undefined') {
+  window.bubbleTranslations = bubbleTranslations;
+  window.translations = window.translations || {};
+  for (const lang of Object.keys(bubbleTranslations)) {
+    window.translations[lang] = Object.assign({}, window.translations[lang] || {}, bubbleTranslations[lang]);
+  }
+}
+
+export default bubbleTranslations;
 
 // NOTE: If you add a new language, make sure to:
 // 1. Add the language code to the `availableLanguages` array in `script.js`.
