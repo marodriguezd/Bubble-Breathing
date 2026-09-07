@@ -172,139 +172,141 @@ export const ConfigScreen = () => {
         ))}
       </div>
 
-      {config.speed === 'custom' && (
-        <div className="slider-group" id="customSpeedSliderGroup">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', margin: '0.6rem 0' }}>
+        {config.speed === 'custom' && (
+          <div className="slider-group" id="customSpeedSliderGroup">
+            <label>
+              <span className="slider-label">{t('customSpeedLabel')}</span>
+              <span>{config.customTime.toFixed(1)}s</span>
+            </label>
+            <input 
+              type="range" 
+              min="1.0" max="8.0" step="0.1" 
+              value={config.customTime} 
+              onChange={(e) => updateConfig({ customTime: parseFloat(e.target.value) })}
+              className="slider" 
+            />
+          </div>
+        )}
+
+        <div className="slider-group">
           <label>
-            <span className="slider-label">{t('customSpeedLabel')}</span>
-            <span>{config.customTime.toFixed(1)}s</span>
+            <span className="slider-label">{t('roundsLabel')}</span>
+            <span>{config.rounds === 11 ? '∞' : config.rounds}</span>
           </label>
           <input 
-            type="range" 
-            min="1.0" max="8.0" step="0.1" 
-            value={config.customTime} 
-            onChange={(e) => updateConfig({ customTime: parseFloat(e.target.value) })}
+            type="range" min="1" max="11" 
+            value={config.rounds} 
+            onChange={(e) => updateConfig({ rounds: parseInt(e.target.value, 10) })}
             className="slider" 
           />
         </div>
-      )}
 
-      <div className="slider-group">
-        <label>
-          <span className="slider-label">{t('roundsLabel')}</span>
-          <span>{config.rounds === 11 ? '∞' : config.rounds}</span>
-        </label>
-        <input 
-          type="range" min="1" max="11" 
-          value={config.rounds} 
-          onChange={(e) => updateConfig({ rounds: parseInt(e.target.value, 10) })}
-          className="slider" 
-        />
-      </div>
+        <div className="slider-group">
+          <label>
+            <span className="slider-label">{t('breathsLabel')}</span>
+            <span>{config.breaths}</span>
+          </label>
+          <input 
+            type="range" min="5" max="60" step="5" 
+            value={config.breaths} 
+            onChange={(e) => updateConfig({ breaths: parseInt(e.target.value, 10) })}
+            className="slider" 
+          />
+        </div>
 
-      <div className="slider-group">
-        <label>
-          <span className="slider-label">{t('breathsLabel')}</span>
-          <span>{config.breaths}</span>
-        </label>
-        <input 
-          type="range" min="5" max="60" step="5" 
-          value={config.breaths} 
-          onChange={(e) => updateConfig({ breaths: parseInt(e.target.value, 10) })}
-          className="slider" 
-        />
-      </div>
-
-      <div className="soundscape-selector-group">
-        <details className="soundscape-details">
-          <summary className="soundscape-summary">
-            <div className="soundscape-summary-left">
-              <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
-              <span className="soundscape-current-value">
-                {t(`soundscape_${config.soundscape}`)}
-              </span>
-            </div>
-            <div className="soundscape-summary-right">
-              <span className="soundscape-arrow">▼</span>
-            </div>
-          </summary>
-          
-          <div className="soundscape-expanded-content">
-            <div className="soundscape-grid">
-              <button 
-                type="button"
-                className={`soundscape-btn ${config.soundscape === 'none' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  updateConfig({ soundscape: 'none' });
-                  setTestingSoundscape(false);
-                }}
-              >
-                <span className="soundscape-icon" style={{ display: 'flex' }}><VolumeX size={20} /></span>
-                <span className="soundscape-name">{t('soundscape_none')}</span>
-              </button>
-              <button 
-                type="button"
-                className={`soundscape-btn ${config.soundscape === 'rain' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  updateConfig({ soundscape: 'rain' });
-                }}
-              >
-                <span className="soundscape-icon" style={{ display: 'flex' }}><CloudRain size={20} /></span>
-                <span className="soundscape-name">{t('soundscape_rain')}</span>
-              </button>
-              <button 
-                type="button"
-                className={`soundscape-btn ${config.soundscape === 'whitenoise' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  updateConfig({ soundscape: 'whitenoise' });
-                }}
-              >
-                <span className="soundscape-icon" style={{ display: 'flex' }}><Wind size={20} /></span>
-                <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
-              </button>
-              <button 
-                type="button"
-                className={`soundscape-btn ${config.soundscape === 'ocean' ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  updateConfig({ soundscape: 'ocean' });
-                }}
-              >
-                <span className="soundscape-icon" style={{ display: 'flex' }}><Waves size={20} /></span>
-                <span className="soundscape-name">{t('soundscape_ocean')}</span>
-              </button>
-            </div>
+        <div className="soundscape-selector-group">
+          <details className="soundscape-details">
+            <summary className="soundscape-summary">
+              <div className="soundscape-summary-left">
+                <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+                <span className="soundscape-current-value">
+                  {t(`soundscape_${config.soundscape}`)}
+                </span>
+              </div>
+              <div className="soundscape-summary-right">
+                <span className="soundscape-arrow">▼</span>
+              </div>
+            </summary>
             
-            {config.soundscape !== 'none' && (
-              <button
-                type="button"
-                className={`soundscape-test-btn ${testingSoundscape ? 'testing' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setTestingSoundscape(!testingSoundscape);
-                }}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-              >
-                {testingSoundscape ? <><Square size={16} fill="currentColor" /> {t('stop_preview')}</> : <><Play size={16} fill="currentColor" /> {t('test_soundscape')}</>}
-              </button>
-            )}
-          </div>
-        </details>
-      </div>
+            <div className="soundscape-expanded-content">
+              <div className="soundscape-grid">
+                <button 
+                  type="button"
+                  className={`soundscape-btn ${config.soundscape === 'none' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updateConfig({ soundscape: 'none' });
+                    setTestingSoundscape(false);
+                  }}
+                >
+                  <span className="soundscape-icon" style={{ display: 'flex' }}><VolumeX size={20} /></span>
+                  <span className="soundscape-name">{t('soundscape_none')}</span>
+                </button>
+                <button 
+                  type="button"
+                  className={`soundscape-btn ${config.soundscape === 'rain' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updateConfig({ soundscape: 'rain' });
+                  }}
+                >
+                  <span className="soundscape-icon" style={{ display: 'flex' }}><CloudRain size={20} /></span>
+                  <span className="soundscape-name">{t('soundscape_rain')}</span>
+                </button>
+                <button 
+                  type="button"
+                  className={`soundscape-btn ${config.soundscape === 'whitenoise' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updateConfig({ soundscape: 'whitenoise' });
+                  }}
+                >
+                  <span className="soundscape-icon" style={{ display: 'flex' }}><Wind size={20} /></span>
+                  <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
+                </button>
+                <button 
+                  type="button"
+                  className={`soundscape-btn ${config.soundscape === 'ocean' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updateConfig({ soundscape: 'ocean' });
+                  }}
+                >
+                  <span className="soundscape-icon" style={{ display: 'flex' }}><Waves size={20} /></span>
+                  <span className="soundscape-name">{t('soundscape_ocean')}</span>
+                </button>
+              </div>
+              
+              {config.soundscape !== 'none' && (
+                <button
+                  type="button"
+                  className={`soundscape-test-btn ${testingSoundscape ? 'testing' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTestingSoundscape(!testingSoundscape);
+                  }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                >
+                  {testingSoundscape ? <><Square size={16} fill="currentColor" /> {t('stop_preview')}</> : <><Play size={16} fill="currentColor" /> {t('test_soundscape')}</>}
+                </button>
+              )}
+            </div>
+          </details>
+        </div>
 
-      <div className="slider-group">
-        <label>
-          <span className="slider-label">{t('volumeLabel')}</span>
-          <span>{Math.round(config.volume * 100)}%</span>
-        </label>
-        <input 
-          type="range" min="0" max="100" step="5" 
-          value={Math.round(config.volume * 100)} 
-          onChange={(e) => updateConfig({ volume: parseInt(e.target.value, 10) / 100 })}
-          className="slider" 
-        />
+        <div className="slider-group">
+          <label>
+            <span className="slider-label">{t('volumeLabel')}</span>
+            <span>{Math.round(config.volume * 100)}%</span>
+          </label>
+          <input 
+            type="range" min="0" max="100" step="5" 
+            value={Math.round(config.volume * 100)} 
+            onChange={(e) => updateConfig({ volume: parseInt(e.target.value, 10) / 100 })}
+            className="slider" 
+          />
+        </div>
       </div>
 
       <div className="estimated-time">
