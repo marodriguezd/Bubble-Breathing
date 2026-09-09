@@ -505,32 +505,34 @@ body {
   align-items: center;
   font-weight: 600;
   margin-bottom: 0.3rem;
-  font-size: 0.9rem;
+  color: var(--color-text);
 }
 
 .slider-group label span:last-child {
   font-variant-numeric: tabular-nums;
-  color: var(--color-primary);
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.15rem 0.55rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .slider {
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   width: 100%;
   height: 0.5rem;
   border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   outline: none;
   display: block;
-  margin: 0.6rem 0;
+  margin: 0.8rem 0;
   cursor: pointer;
 }
 
@@ -540,9 +542,9 @@ body {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-primary), #3b8d99);
+  background: linear-gradient(135deg, var(--color-primary), #2980b9);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
   border: 2px solid #fff;
   margin-top: -0.55rem;
   transition: transform 0.2s ease;
@@ -550,7 +552,18 @@ body {
 
 .slider::-webkit-slider-thumb:hover,
 .slider::-webkit-slider-thumb:active {
-  transform: scale(1.15);
+  transform: scale(1.1);
+}
+
+.slider::-moz-range-thumb {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), #2980b9);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  transition: transform 0.2s ease;
 }
 
 .slider::-moz-range-thumb {
