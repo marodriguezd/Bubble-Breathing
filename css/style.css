@@ -448,13 +448,14 @@ body {
 
 .breathing-sphere.last-breath,
 .hexagon.last-breath {
-  background: radial-gradient(circle at 35% 30%, rgba(255, 220, 80, 0.5) 0%, rgba(255, 122, 0, 0.3) 50%, rgba(30, 18, 10, 0.85) 100%);
-  border-color: rgba(255, 220, 80, 0.6);
+  background: linear-gradient(135deg, #ffc107, #ff6b00);
 }
 
 .breathing-sphere.last-breath::before,
 .hexagon.last-breath::before {
-  background: radial-gradient(circle, rgba(255, 220, 80, 0.5) 0%, rgba(255, 122, 0, 0.25) 50%, transparent 75%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: radial-gradient(circle, rgba(255, 220, 80, 0.6) 0%, rgba(255, 107, 0, 0.3) 50%, transparent 75%);
   animation: lastBreathGlow 1.2s ease-in-out infinite;
 }
 
