@@ -96,7 +96,14 @@ export const Header = () => {
       </div>
       <h1 id="headerTitle">{t('appTitle')}</h1>
       <div id="progressBar">
-        <div id="progressFill" style={{ width: `${progressWidth}%` }}></div>
+        <div 
+          id="progressFill" 
+          style={{ 
+            transform: `scaleX(${Math.max(0, Math.min(1, progressWidth / 100))}) translateZ(0)`,
+            transformOrigin: 'left center',
+            willChange: 'transform'
+          }}
+        />
       </div>
       <button 
         className={`theme-toggle-btn ${(phase !== 'idle' && phase !== 'stats') ? 'hidden' : ''}`} 

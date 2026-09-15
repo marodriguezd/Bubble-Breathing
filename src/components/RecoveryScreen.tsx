@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
@@ -9,6 +9,8 @@ export const RecoveryScreen = () => {
   const { currentRound, setCurrentRound, phase, setPhase, recoverySubPhase, setRecoverySubPhase, setCurrentBreath } = useSession();
   const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(3);
+  const subPhaseStartRef = useRef<number>(Date.now());
+  const targetDurationRef = useRef<number>(3);
 
   // Initialize the sub-phase when entering recovery
   useEffect(() => {
@@ -16,17 +18,30 @@ export const RecoveryScreen = () => {
 
     setRecoverySubPhase('inhaling');
     setTimeLeft(3);
+    targetDurationRef.current = 3;
+    subPhaseStartRef.current = Date.now();
     playTone(220, 200, config.volume);
     vibrate(30);
   }, [phase, setRecoverySubPhase, config.volume]);
 
-  // Main countdown timer loop
+  // Synchronize target duration and start timestamp on subphase change
+  useEffect(() => {
+    if (phase !== 'recovery') return;
+    subPhaseStartRef.current = Date.now();
+    if (recoverySubPhase === 'inhaling') targetDurationRef.current = 3;
+    else if (recoverySubPhase === 'holding') targetDurationRef.current = 15;
+    else if (recoverySubPhase === 'exhaling') targetDurationRef.current = 3;
+  }, [phase, recoverySubPhase]);
+
+  // Main countdown loop with 200ms tick delta reconciliation
   useEffect(() => {
     if (phase !== 'recovery') return;
 
     const interval = window.setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+      const elapsed = Math.floor((Date.now() - subPhaseStartRef.current) / 1000);
+      const remaining = Math.max(0, targetDurationRef.current - elapsed);
+      setTimeLeft(remaining);
+    }, 200);
 
     return () => clearInterval(interval);
   }, [phase]);
@@ -96,8 +111,9 @@ export const RecoveryScreen = () => {
     }
 
     return {
-      transform: `scale(${scale})`,
-      transition: `transform ${duration}ms ease-in-out`
+      transform: `scale(${scale}) translateZ(0)`,
+      transition: duration > 0 ? `transform ${duration}ms ease-in-out` : 'none',
+      willChange: 'transform'
     };
   };
 
@@ -127,9 +143,9 @@ export const RecoveryScreen = () => {
       >
         {showSubtitle ? subtitleText : '\u00A0'}
       </div>
-      <div className="hexagon-container">
+      <div className="breathing-sphere-container hexagon-container">
         <div 
-          className="hexagon phase-recovery" 
+          className="breathing-sphere hexagon phase-recovery" 
           style={getHexagonStyle()}
         >
           <div className="breath-counter">{timeLeft}</div>

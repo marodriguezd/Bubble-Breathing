@@ -126,6 +126,7 @@ body {
 }
 
 #progressBar {
+  position: relative;
   height: 0.25rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
@@ -135,11 +136,18 @@ body {
 }
 
 #progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #4ca1af, #c4e0e5);
-  width: 0;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 10px rgba(76, 161, 175, 0.5);
+  background: linear-gradient(90deg, var(--omega-primary-cyan, #00f0ff), var(--omega-primary-water, #0088ff));
+  transform-origin: left center;
+  transform: scaleX(0) translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Styles for header buttons */
@@ -250,6 +258,7 @@ body {
   top: 100%;
   left: 0;
   background: var(--color-dropdown-bg);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: 0.75rem;
   box-shadow: 0 4px 20px var(--color-dropdown-shadow);
@@ -378,66 +387,97 @@ body {
   flex-shrink: 0;
 }
 
+.breathing-sphere-container,
 .hexagon-container {
   margin: 0 auto;
   width: 9.375rem;
   height: 9.375rem;
   position: relative;
-}
-
-.hexagon {
-  width: 9.375rem;
-  height: 8.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Glass Reflection Effect */
+.breathing-sphere,
+.hexagon {
+  width: 9.375rem;
+  height: 9.375rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 50% !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.15);
+  border: 1px solid var(--omega-border-luminous, rgba(0, 240, 255, 0.25));
+}
+
+/* Glass Specular Reflection Effect */
+.breathing-sphere::after,
 .hexagon::after {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg,
-      transparent 45%,
-      rgba(255, 255, 255, 0.1) 48%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.1) 52%,
-      transparent 55%);
-  transform: rotate(20deg);
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 25%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 35%, transparent 65%);
   pointer-events: none;
+  z-index: 2;
 }
 
+/* Luminous Halo Corona Layer (Pulsing without box-shadow repainting) */
+.breathing-sphere::before,
+.hexagon::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(0, 136, 255, 0.08) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.6;
+  will-change: transform, opacity;
+}
+
+.breathing-sphere:active,
 .hexagon:active {
   transform: scale(0.96);
 }
 
 .phase-breathing {
-  background: linear-gradient(135deg, var(--color-accent), #ff6b00);
-  box-shadow: 0 0 30px rgba(255, 157, 0, 0.4);
+  background: radial-gradient(circle at 35% 30%, rgba(0, 240, 255, 0.45) 0%, rgba(0, 136, 255, 0.25) 50%, rgba(10, 20, 32, 0.85) 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* Last breath glow animation — brighter pulse before apnea */
+/* Last breath glow animation — GPU-accelerated opacity pulse on pseudo-element */
 @keyframes lastBreathGlow {
   0%, 100% {
-    box-shadow: 0 0 40px rgba(255, 220, 50, 0.5), 0 0 80px rgba(255, 157, 0, 0.3), 0 0 120px rgba(255, 100, 0, 0.1);
+    opacity: 0.35;
+    transform: scale(1.0);
   }
   50% {
-    box-shadow: 0 0 60px rgba(255, 230, 80, 0.8), 0 0 120px rgba(255, 157, 0, 0.5), 0 0 180px rgba(255, 100, 0, 0.2);
+    opacity: 0.85;
+    transform: scale(1.08);
   }
 }
 
+.breathing-sphere.last-breath,
 .hexagon.last-breath {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 220, 80, 0.5) 0%, rgba(255, 122, 0, 0.3) 50%, rgba(30, 18, 10, 0.85) 100%);
+  border-color: rgba(255, 220, 80, 0.6);
+}
+
+.breathing-sphere.last-breath::before,
+.hexagon.last-breath::before {
+  background: radial-gradient(circle, rgba(255, 220, 80, 0.5) 0%, rgba(255, 122, 0, 0.25) 50%, transparent 75%);
   animation: lastBreathGlow 1.2s ease-in-out infinite;
-  background: linear-gradient(135deg, #ffc107, #ff6b00);
 }
 
 /* Last breath counter — bright static glow (text-shadow, no box-shadow animation needed) */
@@ -446,14 +486,22 @@ body {
 }
 
 .phase-retention {
-  background: linear-gradient(135deg, var(--color-danger), #c0392b);
+  background: radial-gradient(circle at 35% 30%, rgba(231, 76, 60, 0.45) 0%, rgba(192, 57, 43, 0.25) 50%, rgba(20, 10, 15, 0.9) 100%);
+  border-color: rgba(231, 76, 60, 0.45);
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(231, 76, 60, 0.4);
+}
+
+.phase-retention::before {
+  background: radial-gradient(circle, rgba(231, 76, 60, 0.35) 0%, transparent 70%);
 }
 
 .phase-recovery {
-  background: linear-gradient(135deg, var(--color-success), #2ecc71);
-  box-shadow: 0 0 30px rgba(39, 174, 96, 0.4);
+  background: radial-gradient(circle at 35% 30%, rgba(46, 204, 113, 0.45) 0%, rgba(39, 174, 96, 0.25) 50%, rgba(10, 26, 18, 0.9) 100%);
+  border-color: rgba(46, 204, 113, 0.45);
+}
+
+.phase-recovery::before {
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.35) 0%, transparent 70%);
 }
 
 .breath-counter {

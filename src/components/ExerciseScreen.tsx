@@ -42,12 +42,13 @@ export const ExerciseScreen = () => {
 
   const isLastBreath = currentBreath === config.breaths;
 
-  const hexagonStyle = {
-    transform: `scale(${scale})`,
-    transition: `transform ${duration}ms ${easing}`
+  const sphereStyle = {
+    transform: `scale(${scale}) translateZ(0)`,
+    transition: `transform ${duration}ms ${easing}`,
+    willChange: 'transform'
   };
 
-  const hexagonClass = `hexagon phase-breathing${isLastBreath ? ' last-breath' : ''}`;
+  const sphereClass = `breathing-sphere hexagon phase-breathing${isLastBreath ? ' last-breath' : ''}`;
 
   return (
     <div id="exerciseScreen" className="screen active">
@@ -57,11 +58,11 @@ export const ExerciseScreen = () => {
       <div className="instruction" id="exerciseInstruction">
         {t('exerciseInstruction', { count: config.breaths })}
       </div>
-      <div className="hexagon-container">
+      <div className="breathing-sphere-container hexagon-container">
         <div 
-          className={hexagonClass}
+          className={sphereClass}
           id="exerciseHexagon"
-          style={hexagonStyle}
+          style={sphereStyle}
         >
           <div className={`breath-counter${isLastBreath ? ' last-breath' : ''}`} id="breathCounter">{currentBreath}</div>
         </div>

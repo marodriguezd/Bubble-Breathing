@@ -10,15 +10,24 @@ export const RetentionScreen = () => {
   const { currentRound, phase, setPhase, retentionTime, setRetentionTime, setRoundResults } = useSession();
   const { t } = useTranslation();
   const lastBeepMinuteRef = useRef(0);
+  const startTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     let interval: number | null = null;
     if (phase === 'retention') {
       setRetentionTime(0);
       lastBeepMinuteRef.current = 0;
+      startTimeRef.current = Date.now();
+
+      // Tick every 200ms for high-precision second-boundary synchronization
       interval = window.setInterval(() => {
-        setRetentionTime((prev) => prev + 1);
-      }, 1000);
+        if (startTimeRef.current !== null) {
+          const elapsedSec = Math.max(0, Math.floor((Date.now() - startTimeRef.current) / 1000));
+          setRetentionTime(elapsedSec);
+        }
+      }, 200);
+    } else {
+      startTimeRef.current = null;
     }
     return () => {
       if (interval) clearInterval(interval);
@@ -53,12 +62,16 @@ export const RetentionScreen = () => {
   if (phase !== 'retention') return null;
 
   const handleTransitionToRecovery = () => {
+    const finalRetentionTime = startTimeRef.current !== null
+      ? Math.max(0, Math.floor((Date.now() - startTimeRef.current) / 1000))
+      : retentionTime;
+
     setRoundResults((prev) => {
       // Avoid duplicates for the same round
       if (prev.some(r => r.round === currentRound)) {
         return prev;
       }
-      return [...prev, { round: currentRound, retentionTime }];
+      return [...prev, { round: currentRound, retentionTime: finalRetentionTime }];
     });
     setPhase('recovery');
   };
@@ -70,11 +83,11 @@ export const RetentionScreen = () => {
       </div>
       <div className="instruction">{t('retentionInstruction')}</div>
       <div className="retention-timer">{formatTime(retentionTime)}</div>
-      <div className="hexagon-container">
+      <div className="breathing-sphere-container hexagon-container">
         <div 
-          className="hexagon phase-retention" 
+          className="breathing-sphere hexagon phase-retention" 
           onClick={handleTransitionToRecovery}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', transform: 'translateZ(0)', willChange: 'transform' }}
         >
           <div className="breath-counter" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Square size={48} fill="currentColor" /></div>
         </div>

@@ -135,8 +135,9 @@ export const ConfigScreen = () => {
     }
 
     return {
-      transform: `scale(${scale})`,
-      transition: `transform ${duration}ms ${easing}`
+      transform: `scale(${scale}) translateZ(0)`,
+      transition: `transform ${duration}ms ${easing}`,
+      willChange: 'transform'
     };
   };
 
@@ -149,9 +150,9 @@ export const ConfigScreen = () => {
 
   return (
     <div id="configScreen" className="screen active">
-      <div className="hexagon-container">
+      <div className="breathing-sphere-container hexagon-container">
         <div 
-          className="hexagon phase-breathing" 
+          className="breathing-sphere hexagon phase-breathing" 
           id="previewHexagon"
           style={getPreviewStyles()}
         >

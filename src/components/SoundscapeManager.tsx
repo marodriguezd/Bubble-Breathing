@@ -21,8 +21,9 @@ export const SoundscapeManager = () => {
     // Set track
     let src = '';
     if (config.soundscape && config.soundscape !== 'none') {
-      const baseUrl = import.meta.env.BASE_URL || '/';
-      src = `${baseUrl}assets/${config.soundscape}.mp3`;
+      const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');
+      const trackFile = config.soundscape === 'wind' ? 'whitenoise' : config.soundscape;
+      src = `${baseUrl}assets/${trackFile}.mp3`;
     }
 
     if (src && audio.src !== src) {

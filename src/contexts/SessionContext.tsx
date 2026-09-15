@@ -56,6 +56,13 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
     setSessionStartTime(null);
   };
 
+  React.useEffect(() => {
+    const isActive = ['breathing', 'retention', 'recovery'].includes(phase);
+    window.dispatchEvent(new CustomEvent('omega-session-state', {
+      detail: { active: isActive, app: 'bubble' }
+    }));
+  }, [phase]);
+
   return (
     <SessionContext.Provider value={{
       phase, setPhase,
