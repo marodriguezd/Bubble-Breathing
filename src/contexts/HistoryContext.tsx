@@ -30,9 +30,15 @@ export const HistoryProvider = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     localStorage.setItem('bubbleBreathingHistory', JSON.stringify(history));
+    window.dispatchEvent(new CustomEvent('subapp-sync', { detail: { type: 'history', app: 'bubble' } }));
+    window.dispatchEvent(new CustomEvent('omega-sync'));
     
     // Calculate streaks
-    if (history.length === 0) return;
+    if (history.length === 0) {
+      setCurrentStreak(0);
+      setLongestStreak(0);
+      return;
+    }
     
     const dates = [...new Set(history.map(h => new Date(h.date).toDateString()))]
       .map(d => new Date(d).getTime())

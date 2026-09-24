@@ -1,49 +1,24 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
+import { 
+  playInhaleCue, 
+  playExhaleCue, 
+  playLastBreathCue, 
+  playRetentionMinuteCue,
+  playRecoveryCue
+} from '../services/zenAudioService';
 
-let audioCtx: AudioContext | null = null;
-export const playTone = (frequency: number, duration: number, volume: number) => {
-  if (volume === 0) return;
-  try {
-    if (!audioCtx) {
-      const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
-      audioCtx = new AudioCtxClass();
-    }
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator.type = 'sine';
-    oscillator.frequency.value = frequency;
-    gainNode.gain.value = volume;
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.onended = () => {
-      try {
-        oscillator.disconnect();
-        gainNode.disconnect();
-      } catch (_) {}
-    };
-
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + duration / 1000);
-  } catch (e) {
-    console.warn('Audio not available:', e);
-  }
+// Legacy exports for backwards compatibility
+export const playTone = (_frequency: number, _duration: number, _volume: number) => {
+  // Handled by zenAudioService; kept as no-op or proxy for backward compatibility
 };
 
 export const vibrate = (pattern: number | number[]) => {
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     try {
       navigator.vibrate(pattern);
-    } catch (e) {
-      console.warn('Vibration not supported or blocked:', e);
-    }
+    } catch (_) {}
   }
 };
 
@@ -58,18 +33,22 @@ export const useBreathingTimer = () => {
   const {
     phase, setPhase,
     setCurrentRound,
-    setCurrentBreath,
+    currentBreath, setCurrentBreath,
     setRetentionTime,
     setSessionStartTime,
     isPlaying, setIsPlaying,
+    isPaused, setIsPaused,
     breathSubPhase, setBreathSubPhase
   } = useSession();
 
-  const phaseTimerRef = useRef<number | null>(null);
   const breathRef = useRef(0);
+  const breathStartTimeRef = useRef<number | null>(null);
+  const accumulatedMsRef = useRef<number>(0);
+  const animFrameRef = useRef<number | null>(null);
+  const currentSubPhaseRef = useRef<'inhale' | 'exhale' | 'idle'>('idle');
 
   const getBreathTiming = useCallback((totalMs: number) => {
-    // Wim Hof: ~65% inhalación (larga y activa), ~35% exhalación (corta y pasiva)
+    // Wim Hof: ~65% inhalación profunda activa, ~35% exhalación pasiva (soltar)
     const inhale = totalMs * 0.65;
     return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
   }, []);
@@ -81,96 +60,128 @@ export const useBreathingTimer = () => {
     return speedSettings[config.speed] || speedSettings.standard;
   }, [config.speed, config.customTime, getBreathTiming]);
 
-  const stopTimer = useCallback(() => {
-    if (phaseTimerRef.current) {
-      clearTimeout(phaseTimerRef.current);
-      phaseTimerRef.current = null;
+  // Stop active animation frames
+  const stopLoop = useCallback(() => {
+    if (animFrameRef.current !== null) {
+      cancelAnimationFrame(animFrameRef.current);
+      animFrameRef.current = null;
     }
   }, []);
 
-  const runBreathingCycle = useCallback((isFirstCycle = false) => {
-    if (!isPlaying || phase !== 'breathing') return;
-
-    const timings = getTimings();
-    
-    // Increment breath at start of cycle
-    breathRef.current += 1;
-    const isLastBreath = breathRef.current === config.breaths;
-
-    if (breathRef.current > config.breaths) {
-      // Switch to retention
-      setRetentionTime(0);
-      setPhase('retention');
-      setBreathSubPhase('idle');
+  // Main high-precision breath runner
+  useEffect(() => {
+    if (!isPlaying || phase !== 'breathing') {
+      stopLoop();
       return;
     }
 
-    // Update the state outside the state updater function
-    setCurrentBreath(breathRef.current);
+    if (isPaused) {
+      // Pause: accumulate elapsed time and stop ticking
+      if (breathStartTimeRef.current !== null) {
+        accumulatedMsRef.current += Date.now() - breathStartTimeRef.current;
+        breathStartTimeRef.current = null;
+      }
+      stopLoop();
+      return;
+    }
 
-    const startInhale = () => {
-      // Inhale starts
-      setBreathSubPhase('inhale');
+    // Active, unpaused breathing
+    const timings = getTimings();
+    const totalBreathMs = timings.inhale + timings.exhale;
 
-      if (isLastBreath) {
-        // Last breath before apnea — strongly amplified feedback
-        const boostedVolume = Math.min(1, config.volume * 2.5);
-        playTone(150, 600, boostedVolume);
-        vibrate([150, 60, 150, 60, 200]);
+    // Initialize first breath if just starting
+    if (breathStartTimeRef.current === null) {
+      breathStartTimeRef.current = Date.now();
+      if (breathRef.current === 0) {
+        breathRef.current = 1;
+        setCurrentBreath(1);
+        currentSubPhaseRef.current = 'inhale';
+        setBreathSubPhase('inhale');
+        playInhaleCue(config.volume, timings.inhale);
+      }
+    }
+
+    const tick = () => {
+      if (breathStartTimeRef.current === null) return;
+
+      const now = Date.now();
+      const elapsed = accumulatedMsRef.current + (now - breathStartTimeRef.current);
+
+      if (elapsed < timings.inhale) {
+        // Inhaling
+        if (currentSubPhaseRef.current !== 'inhale') {
+          currentSubPhaseRef.current = 'inhale';
+          setBreathSubPhase('inhale');
+          const isLast = breathRef.current === config.breaths;
+          if (isLast) {
+            playLastBreathCue(config.volume);
+          } else {
+            playInhaleCue(config.volume, timings.inhale);
+          }
+        }
+      } else if (elapsed < totalBreathMs) {
+        // Exhaling
+        if (currentSubPhaseRef.current !== 'exhale') {
+          currentSubPhaseRef.current = 'exhale';
+          setBreathSubPhase('exhale');
+          playExhaleCue(config.volume, timings.exhale);
+        }
       } else {
-        playTone(220, 200, config.volume);
-        vibrate(30);
+        // Breath cycle completed! Transition to next breath or retention
+        accumulatedMsRef.current = 0;
+        breathStartTimeRef.current = Date.now();
+
+        if (breathRef.current >= config.breaths) {
+          // All breaths completed for this round -> trigger Apnea Retention!
+          stopLoop();
+          currentSubPhaseRef.current = 'idle';
+          setBreathSubPhase('idle');
+          setRetentionTime(0);
+          setPhase('retention');
+          playLastBreathCue(config.volume);
+          return;
+        } else {
+          // Increment breath count
+          breathRef.current += 1;
+          setCurrentBreath(breathRef.current);
+          currentSubPhaseRef.current = 'inhale';
+          setBreathSubPhase('inhale');
+
+          const isNextLast = breathRef.current === config.breaths;
+          if (isNextLast) {
+            playLastBreathCue(config.volume);
+          } else {
+            playInhaleCue(config.volume, timings.inhale);
+          }
+        }
       }
 
-      // Schedule Exhale
-      phaseTimerRef.current = window.setTimeout(() => {
-        setBreathSubPhase('exhale');
-
-        // For the last breath, also amplify exhalation feedback
-        if (isLastBreath) {
-          const boostedVolume = Math.min(1, config.volume * 2.5);
-          playTone(120, 800, boostedVolume);
-          vibrate([120, 50, 120]);
-        }
-
-        // Schedule next breathing cycle
-        phaseTimerRef.current = window.setTimeout(() => {
-          runBreathingCycle();
-        }, timings.exhale);
-
-      }, timings.inhale);
+      animFrameRef.current = requestAnimationFrame(tick);
     };
 
-    if (isFirstCycle) {
-      // Ensure the component renders at idle/scale-1.0 first so the
-      // CSS transition from 1.0 → 1.3 actually fires on the first inhale.
-      setBreathSubPhase('idle');
-      requestAnimationFrame(() => requestAnimationFrame(startInhale));
-    } else {
-      startInhale();
-    }
-  }, [isPlaying, phase, config.breaths, config.volume, getTimings, setCurrentBreath, setPhase, setBreathSubPhase, setRetentionTime]);
+    animFrameRef.current = requestAnimationFrame(tick);
 
-  useEffect(() => {
-    if (isPlaying && phase === 'breathing') {
-      breathRef.current = 0;
-      runBreathingCycle(true);
-    }
-    return () => {
-      stopTimer();
-    };
-  }, [isPlaying, phase, runBreathingCycle, stopTimer]);
-
-  useEffect(() => {
-    if (phase === 'retention' && isPlaying) {
-      playTone(150, 800, config.volume);
-      vibrate([200, 100, 200, 100, 400]);
-    }
-  }, [phase, isPlaying, config.volume]);
+    return () => stopLoop();
+  }, [
+    isPlaying,
+    isPaused,
+    phase,
+    config.breaths,
+    config.volume,
+    getTimings,
+    setCurrentBreath,
+    setBreathSubPhase,
+    setPhase,
+    setRetentionTime,
+    stopLoop
+  ]);
 
   const startSession = () => {
     breathRef.current = 0;
+    accumulatedMsRef.current = 0;
+    breathStartTimeRef.current = null;
     setIsPlaying(true);
+    setIsPaused(false);
     setCurrentRound(1);
     setCurrentBreath(0);
     setRetentionTime(0);
@@ -179,13 +190,15 @@ export const useBreathingTimer = () => {
   };
 
   const stopSession = () => {
+    stopLoop();
     breathRef.current = 0;
+    accumulatedMsRef.current = 0;
+    breathStartTimeRef.current = null;
     setIsPlaying(false);
+    setIsPaused(false);
     setBreathSubPhase('idle');
     setSessionStartTime(null);
-    stopTimer();
   };
 
   return { startSession, stopSession, getTimings };
 };
-

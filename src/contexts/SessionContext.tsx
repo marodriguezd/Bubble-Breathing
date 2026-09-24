@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useCallback } from 'react';
 
 export type SessionPhase = 'idle' | 'breathing' | 'retention' | 'recovery' | 'finished' | 'stats';
 export type BreathSubPhase = 'inhale' | 'exhale' | 'idle';
@@ -15,6 +15,7 @@ interface SessionState {
   currentBreath: number;
   retentionTime: number;
   isPlaying: boolean;
+  isPaused: boolean;
   breathSubPhase: BreathSubPhase;
   recoverySubPhase: RecoverySubPhase;
   roundResults: RoundResult[];
@@ -24,6 +25,10 @@ interface SessionState {
   setCurrentBreath: (breath: number | ((prev: number) => number)) => void;
   setRetentionTime: (time: number | ((prev: number) => number)) => void;
   setIsPlaying: (isPlaying: boolean) => void;
+  setIsPaused: (isPaused: boolean) => void;
+  togglePause: () => void;
+  pauseSession: () => void;
+  resumeSession: () => void;
   setBreathSubPhase: (subPhase: BreathSubPhase) => void;
   setRecoverySubPhase: (subPhase: RecoverySubPhase) => void;
   setRoundResults: React.Dispatch<React.SetStateAction<RoundResult[]>>;
@@ -39,29 +44,53 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
   const [currentBreath, setCurrentBreath] = useState(0);
   const [retentionTime, setRetentionTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [breathSubPhase, setBreathSubPhase] = useState<BreathSubPhase>('idle');
   const [recoverySubPhase, setRecoverySubPhase] = useState<RecoverySubPhase>('idle');
   const [roundResults, setRoundResults] = useState<RoundResult[]>([]);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
-  const resetSession = () => {
+  const pauseSession = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+
+  const resumeSession = useCallback(() => {
+    setIsPaused(false);
+  }, []);
+
+  const togglePause = useCallback(() => {
+    setIsPaused(prev => !prev);
+  }, []);
+
+  const resetSession = useCallback(() => {
     setPhase('idle');
     setCurrentRound(1);
     setCurrentBreath(0);
     setRetentionTime(0);
     setIsPlaying(false);
+    setIsPaused(false);
     setBreathSubPhase('idle');
     setRecoverySubPhase('idle');
     setRoundResults([]);
     setSessionStartTime(null);
-  };
+  }, []);
 
   React.useEffect(() => {
     const isActive = ['breathing', 'retention', 'recovery'].includes(phase);
     window.dispatchEvent(new CustomEvent('omega-session-state', {
-      detail: { active: isActive, app: 'bubble' }
+      detail: { active: isActive, isPaused, app: 'bubble' }
     }));
-  }, [phase]);
+  }, [phase, isPaused]);
+
+  React.useEffect(() => {
+    const handlePauseSession = (e: any) => {
+      if (typeof e.detail?.pause === 'boolean') {
+        setIsPaused(e.detail.pause);
+      }
+    };
+    window.addEventListener('omega-pause-session', handlePauseSession);
+    return () => window.removeEventListener('omega-pause-session', handlePauseSession);
+  }, []);
 
   return (
     <SessionContext.Provider value={{
@@ -70,6 +99,8 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
       currentBreath, setCurrentBreath,
       retentionTime, setRetentionTime,
       isPlaying, setIsPlaying,
+      isPaused, setIsPaused,
+      togglePause, pauseSession, resumeSession,
       breathSubPhase, setBreathSubPhase,
       recoverySubPhase, setRecoverySubPhase,
       roundResults, setRoundResults,
@@ -86,4 +117,3 @@ export const useSession = () => {
   if (!context) throw new Error('useSession must be used within SessionProvider');
   return context;
 };
-

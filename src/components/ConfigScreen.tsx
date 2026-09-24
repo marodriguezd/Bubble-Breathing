@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
 import { useSession } from '../contexts/SessionContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { BreathingSphere } from './BreathingSphere';
 import { VolumeX, CloudRain, Wind, Waves, Play, Square } from 'lucide-react';
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
@@ -150,15 +151,14 @@ export const ConfigScreen = () => {
 
   return (
     <div id="configScreen" className="screen active">
-      <div className="breathing-sphere-container hexagon-container">
-        <div 
-          className="breathing-sphere hexagon phase-breathing" 
-          id="previewHexagon"
-          style={getPreviewStyles()}
-        >
-          <div className="breath-counter" id="previewCounter">{previewBreathCount}</div>
-        </div>
-      </div>
+      <BreathingSphere
+        phase="breathing"
+        scale={previewSubPhase === 'inhale' ? 1.3 : previewSubPhase === 'exhale' ? 0.92 : 1.0}
+        durationMs={previewSubPhase === 'inhale' ? timings.inhale : previewSubPhase === 'exhale' ? timings.exhale : 300}
+        easing={previewSubPhase === 'inhale' ? 'ease-out' : 'ease-in'}
+        counter={previewBreathCount}
+        id="previewHexagon"
+      />
       <div className="preview-label" id="previewLabel">{t('previewLabel')}</div>
       
       <div className="speed-selector">
