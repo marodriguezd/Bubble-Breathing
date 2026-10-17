@@ -7,12 +7,13 @@ import { playInhaleCue, playExhaleCue, playRecoveryCue } from '../services/zenAu
 import { Play, Pause, RotateCcw } from 'lucide-react';
 
 const INHALE_DURATION_MS = 3000;
-const HOLD_DURATION_MS = 15000;
 const EXHALE_DURATION_MS = 3000;
-const TOTAL_RECOVERY_MS = INHALE_DURATION_MS + HOLD_DURATION_MS + EXHALE_DURATION_MS;
 
 export const RecoveryScreen = () => {
   const { config } = useSettings();
+  const holdDurationMs = (config.recoveryDurationSec || 15) * 1000;
+  const totalRecoveryMs = INHALE_DURATION_MS + holdDurationMs + EXHALE_DURATION_MS;
+
   const {
     currentRound,
     setCurrentRound,
@@ -96,20 +97,20 @@ export const RecoveryScreen = () => {
         const remSec = Math.max(1, Math.ceil((INHALE_DURATION_MS - elapsed) / 1000));
         setDisplayNumber(remSec);
         setProgressPercent((elapsed / INHALE_DURATION_MS) * 100);
-      } else if (elapsed < INHALE_DURATION_MS + HOLD_DURATION_MS) {
-        // Phase 2: Holding breath (3s - 18s)
+      } else if (elapsed < INHALE_DURATION_MS + holdDurationMs) {
+        // Phase 2: Holding breath (3s - holdDurationMs)
         const holdElapsed = elapsed - INHALE_DURATION_MS;
         if (!soundPlayedRef.current.hold) {
           soundPlayedRef.current.hold = true;
           playRecoveryCue(config.volume);
           setRecoverySubPhase('holding');
         }
-        const remSec = Math.max(0, Math.ceil((HOLD_DURATION_MS - holdElapsed) / 1000));
+        const remSec = Math.max(0, Math.ceil((holdDurationMs - holdElapsed) / 1000));
         setDisplayNumber(remSec);
-        setProgressPercent(((HOLD_DURATION_MS - holdElapsed) / HOLD_DURATION_MS) * 100);
-      } else if (elapsed < TOTAL_RECOVERY_MS) {
-        // Phase 3: Exhaling / Releasing (18s - 21s)
-        const exhaleElapsed = elapsed - (INHALE_DURATION_MS + HOLD_DURATION_MS);
+        setProgressPercent(((holdDurationMs - holdElapsed) / holdDurationMs) * 100);
+      } else if (elapsed < totalRecoveryMs) {
+        // Phase 3: Exhaling / Releasing
+        const exhaleElapsed = elapsed - (INHALE_DURATION_MS + holdDurationMs);
         if (!soundPlayedRef.current.exhale) {
           soundPlayedRef.current.exhale = true;
           playExhaleCue(config.volume, EXHALE_DURATION_MS);
@@ -134,13 +135,13 @@ export const RecoveryScreen = () => {
         cancelAnimationFrame(animFrameRef.current);
       }
     };
-  }, [phase, isPaused, config.volume, setRecoverySubPhase]);
+  }, [phase, isPaused, config.volume, config.recoveryDurationSec, holdDurationMs, totalRecoveryMs, setRecoverySubPhase]);
 
   if (phase !== 'recovery') return null;
 
   const getInstructionText = () => {
     if (recoverySubPhase === 'inhaling') return t('inhaleInstruction', { defaultValue: 'Inhala hondo y llena los pulmones' });
-    if (recoverySubPhase === 'holding') return t('holdAirInstruction', { defaultValue: 'Mantén el aire durante 15 segundos' });
+    if (recoverySubPhase === 'holding') return t('holdAirInstruction', { defaultValue: `Mantén el aire durante ${config.recoveryDurationSec || 15} segundos` });
     if (recoverySubPhase === 'exhaling') return t('releaseAirInstruction', { defaultValue: 'Suelta todo el aire...' });
     return '';
   };

@@ -9,6 +9,8 @@ export interface AppConfig {
   soundscape: string;
   language: string;
   theme: string;
+  targetRetentionSec: number;
+  recoveryDurationSec: number;
 }
 
 interface SettingsState {
@@ -34,7 +36,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
           volume: parsed.volume !== undefined ? parsed.volume : 0.5,
           soundscape: parsed.soundscape || 'none',
           language: parsed.language || omegaLang || 'es',
-          theme: parsed.theme || omegaTheme || 'dark'
+          theme: parsed.theme || omegaTheme || 'dark',
+          targetRetentionSec: parsed.targetRetentionSec || 0,
+          recoveryDurationSec: parsed.recoveryDurationSec !== undefined ? parsed.recoveryDurationSec : 15
         };
       } catch (e) {
         console.error(e);
@@ -48,7 +52,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
       volume: 0.5,
       soundscape: 'none',
       language: omegaLang || 'es',
-      theme: omegaTheme || 'dark'
+      theme: omegaTheme || 'dark',
+      targetRetentionSec: 0,
+      recoveryDurationSec: 15
     };
   });
 

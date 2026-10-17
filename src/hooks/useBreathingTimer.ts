@@ -23,9 +23,9 @@ export const vibrate = (pattern: number | number[]) => {
 };
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2500, exhale: 1500 },
-  standard: { inhale: 2000, exhale: 1000 },
-  fast: { inhale: 1300, exhale: 700 }
+  slow: { inhale: 2300, exhale: 1700 },      // 4.0s (15 rpm)
+  standard: { inhale: 1850, exhale: 1350 },  // 3.2s (~19 rpm)
+  fast: { inhale: 1350, exhale: 950 }        // 2.3s (~26 rpm)
 };
 
 export const useBreathingTimer = () => {
@@ -48,8 +48,8 @@ export const useBreathingTimer = () => {
   const currentSubPhaseRef = useRef<'inhale' | 'exhale' | 'idle'>('idle');
 
   const getBreathTiming = useCallback((totalMs: number) => {
-    // Wim Hof: ~65% inhalación profunda activa, ~35% exhalación pasiva (soltar)
-    const inhale = totalMs * 0.65;
+    // Inhalación activa (~60%), exhalación pasiva/soltar (~40%)
+    const inhale = totalMs * 0.60;
     return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
   }, []);
 

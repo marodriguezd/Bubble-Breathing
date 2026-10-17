@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { BreathingSphere } from './BreathingSphere';
-import { playRetentionMinuteCue } from '../services/zenAudioService';
-import { Square, Play, Pause, RotateCcw } from 'lucide-react';
+import { playRetentionMinuteCue, playTargetReachedCue, playPersonalBestCue } from '../services/zenAudioService';
+import { Square, Play, Pause, RotateCcw, Trophy } from 'lucide-react';
 
 export const RetentionScreen = () => {
   const { config } = useSettings();
@@ -22,6 +22,10 @@ export const RetentionScreen = () => {
   const { t } = useTranslation();
 
   const lastBeepMinuteRef = useRef(0);
+  const targetReachedRef = useRef(false);
+  const pbReachedRef = useRef(false);
+  const [isNewPb, setIsNewPb] = useState(false);
+  const historicalBestRef = useRef<number>(0);
   const startTimeRef = useRef<number | null>(null);
   const accumulatedSecRef = useRef(0);
 
@@ -32,8 +36,32 @@ export const RetentionScreen = () => {
       if (startTimeRef.current === null) {
         startTimeRef.current = Date.now();
         lastBeepMinuteRef.current = 0;
+        targetReachedRef.current = false;
+        pbReachedRef.current = false;
+        setIsNewPb(false);
         accumulatedSecRef.current = 0;
         setRetentionTime(0);
+
+        let best = 0;
+        try {
+          const store = JSON.parse(localStorage.getItem('omega_wimhof_store') || '{}');
+          if (store.breathingHistory) {
+            store.breathingHistory.forEach((s: any) => {
+              if (Array.isArray(s.retentionTimes)) {
+                best = Math.max(best, ...s.retentionTimes);
+              } else if (s.totalRetentionTime) {
+                best = Math.max(best, s.totalRetentionTime);
+              }
+            });
+          }
+        } catch (e) {}
+        try {
+          const legacy = JSON.parse(localStorage.getItem('bubbleBreathingHistory') || '[]');
+          legacy.forEach((s: any) => {
+            best = Math.max(best, s.retentionSeconds || 0);
+          });
+        } catch (e) {}
+        historicalBestRef.current = best;
       }
 
       if (isPaused) {
@@ -56,6 +84,27 @@ export const RetentionScreen = () => {
         const totalSec = accumulatedSecRef.current + currentElapsed;
         setRetentionTime(totalSec);
 
+        // Target retention goal reached alert (with open stopwatch!)
+        if (
+          config.targetRetentionSec > 0 &&
+          totalSec >= config.targetRetentionSec &&
+          !targetReachedRef.current
+        ) {
+          targetReachedRef.current = true;
+          playTargetReachedCue(config.volume);
+        }
+
+        // Live Personal Best alert & celebratory cue
+        if (
+          historicalBestRef.current >= 30 &&
+          totalSec > historicalBestRef.current &&
+          !pbReachedRef.current
+        ) {
+          pbReachedRef.current = true;
+          setIsNewPb(true);
+          playPersonalBestCue(config.volume);
+        }
+
         // Per-minute chime & subtle haptic feedback
         const currentMinute = Math.floor(totalSec / 60);
         if (currentMinute > 0 && totalSec % 60 === 0 && currentMinute > lastBeepMinuteRef.current) {
@@ -70,6 +119,9 @@ export const RetentionScreen = () => {
     } else {
       startTimeRef.current = null;
       accumulatedSecRef.current = 0;
+      targetReachedRef.current = false;
+      pbReachedRef.current = false;
+      setIsNewPb(false);
     }
 
     return () => {
@@ -115,11 +167,54 @@ export const RetentionScreen = () => {
         {formatTime(retentionTime)}
       </div>
 
+      {isNewPb && (
+        <div 
+          className="pb-live-badge"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.4rem',
+            backgroundColor: 'rgba(255, 215, 0, 0.15)',
+            border: '1px solid #ffd700',
+            color: '#ffd700',
+            padding: '0.3rem 0.8rem',
+            borderRadius: '9999px',
+            fontSize: '0.8rem',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            margin: '0.2rem auto',
+            boxShadow: '0 0 14px rgba(255, 215, 0, 0.4)'
+          }}
+        >
+          <Trophy size={16} color="#ffd700" />
+          <span>{t('newPersonalBest', { defaultValue: '¡NUEVO RÉCORD PERSONAL!' })}</span>
+        </div>
+      )}
+
+      {config.targetRetentionSec > 0 && (
+        <div style={{
+          fontSize: '0.82rem',
+          fontWeight: 600,
+          color: retentionTime >= config.targetRetentionSec ? 'var(--omega-warm-amber, #ff7a00)' : 'var(--color-muted)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.35rem',
+          marginBottom: '0.4rem'
+        }}>
+          {retentionTime >= config.targetRetentionSec
+            ? `🎯 ${t('targetReachedNotice', { defaultValue: '¡Meta alcanzada! Sigue a tu ritmo' })}`
+            : `${t('targetGoalLabel', { defaultValue: 'Meta' })}: ${config.targetRetentionSec}s`}
+        </div>
+      )}
+
       {/* Wim Hof Rounded Hexagon Sphere */}
       <BreathingSphere
         phase="retention"
         scale={isPaused ? 1.0 : 1.05}
         isPulsing={!isPaused}
+        progress={config.targetRetentionSec > 0 ? Math.min(100, Math.round((retentionTime / config.targetRetentionSec) * 100)) : 0}
         durationMs={800}
         onClick={handleTransitionToRecovery}
         icon={<Square size={44} fill="currentColor" />}

@@ -6,14 +6,14 @@ import { BreathingSphere } from './BreathingSphere';
 import { VolumeX, CloudRain, Wind, Waves, Play, Square } from 'lucide-react';
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2500, exhale: 1500 },
-  standard: { inhale: 2000, exhale: 1000 },
-  fast: { inhale: 1300, exhale: 700 }
+  slow: { inhale: 2300, exhale: 1700 },      // 4.0s por ciclo (15 rpm)
+  standard: { inhale: 1850, exhale: 1350 },  // 3.2s por ciclo (~19 rpm)
+  fast: { inhale: 1350, exhale: 950 }        // 2.3s por ciclo (~26 rpm)
 };
 
 const getBreathTiming = (totalMs: number) => {
-  // Wim Hof: ~65% inhalación (larga y activa), ~35% exhalación (corta y pasiva)
-  const inhale = totalMs * 0.65;
+  // Inhalación diafragmática profunda activa (~60%), exhalación pasiva/soltar (~40%)
+  const inhale = totalMs * 0.60;
   return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
 };
 
@@ -162,7 +162,7 @@ export const ConfigScreen = () => {
       <div className="preview-label" id="previewLabel">{t('previewLabel')}</div>
       
       <div className="speed-selector">
-        {['slow', 'standard', 'custom', 'fast'].map((s) => (
+        {['slow', 'standard', 'fast', 'custom'].map((s) => (
           <button 
             key={s}
             className={`speed-btn ${config.speed === s ? 'active' : ''}`}
@@ -182,7 +182,7 @@ export const ConfigScreen = () => {
             </label>
             <input 
               type="range" 
-              min="1.0" max="8.0" step="0.1" 
+              min="1.5" max="6.0" step="0.1" 
               value={config.customTime} 
               onChange={(e) => updateConfig({ customTime: parseFloat(e.target.value) })}
               className="slider" 
@@ -214,6 +214,46 @@ export const ConfigScreen = () => {
             onChange={(e) => updateConfig({ breaths: parseInt(e.target.value, 10) })}
             className="slider" 
           />
+        </div>
+
+        <div className="slider-group">
+          <label>
+            <span className="slider-label">{t('targetRetentionLabel', { defaultValue: 'Meta de apnea por ronda:' })}</span>
+            <span>{config.targetRetentionSec === 0 ? t('targetRetentionFree', { defaultValue: 'Libre' }) : `${config.targetRetentionSec}s`}</span>
+          </label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.4rem', marginTop: '0.4rem' }}>
+            {[0, 60, 90, 120, 180].map((sec) => (
+              <button
+                key={sec}
+                type="button"
+                className={`speed-btn ${config.targetRetentionSec === sec ? 'active' : ''}`}
+                style={{ padding: '0.35rem 0.2rem', fontSize: '0.75rem', borderRadius: '8px' }}
+                onClick={() => updateConfig({ targetRetentionSec: sec })}
+              >
+                {sec === 0 ? t('targetRetentionFree', { defaultValue: 'Libre' }) : `${sec}s`}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="slider-group">
+          <label>
+            <span className="slider-label">{t('recoveryDurationLabel', { defaultValue: 'Inhalación de recuperación:' })}</span>
+            <span>{config.recoveryDurationSec || 15}s</span>
+          </label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem', marginTop: '0.4rem' }}>
+            {[10, 15, 20, 30].map((sec) => (
+              <button
+                key={sec}
+                type="button"
+                className={`speed-btn ${(config.recoveryDurationSec || 15) === sec ? 'active' : ''}`}
+                style={{ padding: '0.35rem 0.2rem', fontSize: '0.75rem', borderRadius: '8px' }}
+                onClick={() => updateConfig({ recoveryDurationSec: sec })}
+              >
+                {sec}s
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="soundscape-selector-group">
@@ -318,7 +358,7 @@ export const ConfigScreen = () => {
         <button 
           className="reset-config-btn" 
           onClick={() => {
-            updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5, soundscape: 'none' });
+            updateConfig({ speed: 'standard', customTime: 3.0, rounds: 3, breaths: 30, volume: 0.5, soundscape: 'none', targetRetentionSec: 0 });
             setTestingSoundscape(false);
           }}
         >
