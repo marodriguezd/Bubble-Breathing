@@ -236,118 +236,131 @@ export const ConfigScreen = () => {
           </div>
         </div>
 
-        <div className="slider-group">
-          <label>
-            <span className="slider-label">{t('recoveryDurationLabel', { defaultValue: 'Inhalación de recuperación:' })}</span>
-            <span>{config.recoveryDurationSec || 15}s</span>
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem', marginTop: '0.4rem' }}>
-            {[10, 15, 20, 30].map((sec) => (
-              <button
-                key={sec}
-                type="button"
-                className={`speed-btn ${(config.recoveryDurationSec || 15) === sec ? 'active' : ''}`}
-                style={{ padding: '0.35rem 0.2rem', fontSize: '0.75rem', borderRadius: '8px' }}
-                onClick={() => updateConfig({ recoveryDurationSec: sec })}
-              >
-                {sec}s
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="soundscape-selector-group">
-          <details className="soundscape-details">
-            <summary className="soundscape-summary">
-              <div className="soundscape-summary-left">
-                <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
-                <span className="soundscape-current-value">
-                  {t(`soundscape_${config.soundscape}`)}
-                </span>
-              </div>
-              <div className="soundscape-summary-right">
-                <span className="soundscape-arrow">▼</span>
-              </div>
-            </summary>
-            
-            <div className="soundscape-expanded-content">
-              <div className="soundscape-grid">
-                <button 
-                  type="button"
-                  className={`soundscape-btn ${config.soundscape === 'none' ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateConfig({ soundscape: 'none' });
-                    setTestingSoundscape(false);
-                  }}
-                >
-                  <span className="soundscape-icon" style={{ display: 'flex' }}><VolumeX size={20} /></span>
-                  <span className="soundscape-name">{t('soundscape_none')}</span>
-                </button>
-                <button 
-                  type="button"
-                  className={`soundscape-btn ${config.soundscape === 'rain' ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateConfig({ soundscape: 'rain' });
-                  }}
-                >
-                  <span className="soundscape-icon" style={{ display: 'flex' }}><CloudRain size={20} /></span>
-                  <span className="soundscape-name">{t('soundscape_rain')}</span>
-                </button>
-                <button 
-                  type="button"
-                  className={`soundscape-btn ${config.soundscape === 'whitenoise' ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateConfig({ soundscape: 'whitenoise' });
-                  }}
-                >
-                  <span className="soundscape-icon" style={{ display: 'flex' }}><Wind size={20} /></span>
-                  <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
-                </button>
-                <button 
-                  type="button"
-                  className={`soundscape-btn ${config.soundscape === 'ocean' ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateConfig({ soundscape: 'ocean' });
-                  }}
-                >
-                  <span className="soundscape-icon" style={{ display: 'flex' }}><Waves size={20} /></span>
-                  <span className="soundscape-name">{t('soundscape_ocean')}</span>
-                </button>
-              </div>
-              
-              {config.soundscape !== 'none' && (
-                <button
-                  type="button"
-                  className={`soundscape-test-btn ${testingSoundscape ? 'testing' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTestingSoundscape(!testingSoundscape);
-                  }}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-                >
-                  {testingSoundscape ? <><Square size={16} fill="currentColor" /> {t('stop_preview')}</> : <><Play size={16} fill="currentColor" /> {t('test_soundscape')}</>}
-                </button>
-              )}
+        <details className="advanced-settings-details">
+          <summary className="advanced-settings-summary">
+            <div className="advanced-settings-summary-left">
+              <span className="advanced-settings-icon" style={{ fontSize: '1rem' }}>⚙️</span>
+              <span>{t('advancedSettingsLabel', { defaultValue: 'Ajustes avanzados' })}</span>
             </div>
-          </details>
-        </div>
+            <div className="advanced-settings-summary-right">
+              <span className="advanced-settings-arrow">▼</span>
+            </div>
+          </summary>
+          <div className="advanced-settings-expanded-content">
+            <div className="slider-group">
+              <label>
+                <span className="slider-label">{t('recoveryDurationLabel', { defaultValue: 'Inhalación de recuperación:' })}</span>
+                <span>{config.recoveryDurationSec || 15}s</span>
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem', marginTop: '0.4rem' }}>
+                {[10, 15, 20, 30].map((sec) => (
+                  <button
+                    key={sec}
+                    type="button"
+                    className={`speed-btn ${(config.recoveryDurationSec || 15) === sec ? 'active' : ''}`}
+                    style={{ padding: '0.35rem 0.2rem', fontSize: '0.75rem', borderRadius: '8px' }}
+                    onClick={() => updateConfig({ recoveryDurationSec: sec })}
+                  >
+                    {sec}s
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        <div className="slider-group">
-          <label>
-            <span className="slider-label">{t('volumeLabel')}</span>
-            <span>{Math.round(config.volume * 100)}%</span>
-          </label>
-          <input 
-            type="range" min="0" max="100" step="5" 
-            value={Math.round(config.volume * 100)} 
-            onChange={(e) => updateConfig({ volume: parseInt(e.target.value, 10) / 100 })}
-            className="slider" 
-          />
-        </div>
+            <div className="soundscape-selector-group">
+              <details className="soundscape-details">
+                <summary className="soundscape-summary">
+                  <div className="soundscape-summary-left">
+                    <span className="slider-label">{t('soundscapeLabel', { defaultValue: 'Sound:' })}</span>
+                    <span className="soundscape-current-value">
+                      {t(`soundscape_${config.soundscape}`)}
+                    </span>
+                  </div>
+                  <div className="soundscape-summary-right">
+                    <span className="soundscape-arrow">▼</span>
+                  </div>
+                </summary>
+                
+                <div className="soundscape-expanded-content">
+                  <div className="soundscape-grid">
+                    <button 
+                      type="button"
+                      className={`soundscape-btn ${config.soundscape === 'none' ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateConfig({ soundscape: 'none' });
+                        setTestingSoundscape(false);
+                      }}
+                    >
+                      <span className="soundscape-icon" style={{ display: 'flex' }}><VolumeX size={20} /></span>
+                      <span className="soundscape-name">{t('soundscape_none')}</span>
+                    </button>
+                    <button 
+                      type="button"
+                      className={`soundscape-btn ${config.soundscape === 'rain' ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateConfig({ soundscape: 'rain' });
+                      }}
+                    >
+                      <span className="soundscape-icon" style={{ display: 'flex' }}><CloudRain size={20} /></span>
+                      <span className="soundscape-name">{t('soundscape_rain')}</span>
+                    </button>
+                    <button 
+                      type="button"
+                      className={`soundscape-btn ${config.soundscape === 'whitenoise' ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateConfig({ soundscape: 'whitenoise' });
+                      }}
+                    >
+                      <span className="soundscape-icon" style={{ display: 'flex' }}><Wind size={20} /></span>
+                      <span className="soundscape-name">{t('soundscape_whitenoise')}</span>
+                    </button>
+                    <button 
+                      type="button"
+                      className={`soundscape-btn ${config.soundscape === 'ocean' ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateConfig({ soundscape: 'ocean' });
+                      }}
+                    >
+                      <span className="soundscape-icon" style={{ display: 'flex' }}><Waves size={20} /></span>
+                      <span className="soundscape-name">{t('soundscape_ocean')}</span>
+                    </button>
+                  </div>
+                  
+                  {config.soundscape !== 'none' && (
+                    <button
+                      type="button"
+                      className={`soundscape-test-btn ${testingSoundscape ? 'testing' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setTestingSoundscape(!testingSoundscape);
+                      }}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                    >
+                      {testingSoundscape ? <><Square size={16} fill="currentColor" /> {t('stop_preview')}</> : <><Play size={16} fill="currentColor" /> {t('test_soundscape')}</>}
+                    </button>
+                  )}
+                </div>
+              </details>
+            </div>
+
+            <div className="slider-group">
+              <label>
+                <span className="slider-label">{t('volumeLabel')}</span>
+                <span>{Math.round(config.volume * 100)}%</span>
+              </label>
+              <input 
+                type="range" min="0" max="100" step="5" 
+                value={Math.round(config.volume * 100)} 
+                onChange={(e) => updateConfig({ volume: parseInt(e.target.value, 10) / 100 })}
+                className="slider" 
+              />
+            </div>
+          </div>
+        </details>
       </div>
 
       <div className="estimated-time">
