@@ -184,6 +184,7 @@ export const ConfigScreen = () => {
               type="range" 
               min="1.5" max="6.0" step="0.1" 
               value={config.customTime} 
+              style={{ '--slider-fill': `${Math.round(((config.customTime - 1.5) / (6.0 - 1.5)) * 100)}%` } as React.CSSProperties}
               onChange={(e) => updateConfig({ customTime: parseFloat(e.target.value) })}
               className="slider" 
             />
@@ -198,6 +199,7 @@ export const ConfigScreen = () => {
           <input 
             type="range" min="1" max="11" 
             value={config.rounds} 
+            style={{ '--slider-fill': `${Math.round(((config.rounds - 1) / (11 - 1)) * 100)}%` } as React.CSSProperties}
             onChange={(e) => updateConfig({ rounds: parseInt(e.target.value, 10) })}
             className="slider" 
           />
@@ -211,6 +213,7 @@ export const ConfigScreen = () => {
           <input 
             type="range" min="5" max="60" step="5" 
             value={config.breaths} 
+            style={{ '--slider-fill': `${Math.round(((config.breaths - 5) / (60 - 5)) * 100)}%` } as React.CSSProperties}
             onChange={(e) => updateConfig({ breaths: parseInt(e.target.value, 10) })}
             className="slider" 
           />
@@ -355,6 +358,7 @@ export const ConfigScreen = () => {
               <input 
                 type="range" min="0" max="100" step="5" 
                 value={Math.round(config.volume * 100)} 
+                style={{ '--slider-fill': `${Math.round(config.volume * 100)}%` } as React.CSSProperties}
                 onChange={(e) => updateConfig({ volume: parseInt(e.target.value, 10) / 100 })}
                 className="slider" 
               />

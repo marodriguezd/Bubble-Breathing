@@ -362,15 +362,18 @@ body {
   text-align: center;
   position: relative;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .screen::-webkit-scrollbar {
-  width: 4px;
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .screen::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
-  border-radius: 2px;
+  display: none;
 }
 
 .screen.active {
@@ -533,10 +536,10 @@ body {
 }
 
 .speed-btn.active {
-  background: var(--color-primary);
-  color: #fff;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 15px rgba(76, 161, 175, 0.5);
+  border: 1.5px solid var(--zen-teal-primary, #00a896);
+  background: linear-gradient(135deg, rgba(0, 168, 150, 0.25), rgba(2, 195, 154, 0.15));
+  box-shadow: 0 0 12px rgba(0, 168, 150, 0.35), inset 0 0 8px rgba(0, 168, 150, 0.15);
+  color: #ffffff;
 }
 
 .speed-btn:hover:not(.active) {
@@ -576,15 +579,16 @@ body {
   -moz-appearance: none;
   appearance: none;
   width: 100%;
-  height: 0.5rem;
+  height: 0.55rem;
   border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to right, var(--omega-primary-cyan, #00f0ff) 0%, var(--omega-primary-cyan, #00f0ff) var(--slider-fill, 0%), rgba(255, 255, 255, 0.12) var(--slider-fill, 0%), rgba(255, 255, 255, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
   outline: none;
   display: block;
   margin: 0.8rem 0;
   cursor: pointer;
+  accent-color: var(--omega-primary-cyan, #00f0ff);
 }
 
 .slider::-webkit-slider-thumb {
@@ -593,9 +597,9 @@ body {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-primary), #2980b9);
+  background: linear-gradient(135deg, var(--omega-primary-cyan, #00f0ff), #0077cc);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 240, 255, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.3);
   border: 2px solid #fff;
   margin-top: -0.55rem;
   transition: transform 0.2s ease;
