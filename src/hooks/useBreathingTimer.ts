@@ -6,7 +6,8 @@ import {
   playExhaleCue, 
   playLastBreathCue, 
   playRetentionMinuteCue,
-  playRecoveryCue
+  playRecoveryCue,
+  triggerHaptic
 } from '../services/zenAudioService';
 
 // Legacy exports for backwards compatibility
@@ -15,11 +16,7 @@ export const playTone = (_frequency: number, _duration: number, _volume: number)
 };
 
 export const vibrate = (pattern: number | number[]) => {
-  if (typeof navigator !== 'undefined' && navigator.vibrate) {
-    try {
-      navigator.vibrate(pattern);
-    } catch (_) {}
-  }
+  triggerHaptic('medium', pattern).catch(() => {});
 };
 
 const speedSettings: Record<string, { inhale: number; exhale: number }> = {
