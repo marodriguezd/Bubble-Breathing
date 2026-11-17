@@ -14,7 +14,20 @@ export const ConfigScreen = () => {
   const [previewBreathCount, setPreviewBreathCount] = useState(1);
   const [previewSubPhase, setPreviewSubPhase] = useState<'idle' | 'inhale' | 'exhale'>('idle');
   const [testingSoundscape, setTestingSoundscape] = useState<boolean>(false);
+  const [isTabActive, setIsTabActive] = useState<boolean>(true);
   const testSoundscapeRef = useRef<HTMLAudioElement | null>(null);
+  const currentTrackRef = useRef<string>('');
+
+  useEffect(() => {
+    const onTabChange = (e: Event) => {
+      const detail = (e as CustomEvent<{ tab?: string }>).detail;
+      if (detail?.tab) {
+        setIsTabActive(detail.tab === 'breathing');
+      }
+    };
+    window.addEventListener('omega-tab-change', onTabChange);
+    return () => window.removeEventListener('omega-tab-change', onTabChange);
+  }, []);
 
   const handleStart = () => {
     setTestingSoundscape(false);
@@ -35,26 +48,30 @@ export const ConfigScreen = () => {
     };
   }, []);
 
-  // Control playback of the soundscape preview
   useEffect(() => {
     if (testingSoundscape && config.soundscape && config.soundscape !== 'none') {
       if (!testSoundscapeRef.current) {
         testSoundscapeRef.current = new Audio();
         testSoundscapeRef.current.loop = true;
       }
-      const baseUrl = import.meta.env.BASE_URL || '/';
+      const baseUrl = (import.meta.env.BASE_URL || './').replace(/\/?$/, '/');
       const src = `${baseUrl}assets/${config.soundscape}.mp3`;
-      if (testSoundscapeRef.current.src !== src) {
+      if (currentTrackRef.current !== src) {
+        currentTrackRef.current = src;
         testSoundscapeRef.current.src = src;
       }
       testSoundscapeRef.current.volume = config.volume;
       testSoundscapeRef.current.play().catch(e => console.warn("Preview playback failed:", e));
-    } else {
-      if (testSoundscapeRef.current) {
-        testSoundscapeRef.current.pause();
-      }
+    } else if (testSoundscapeRef.current) {
+      testSoundscapeRef.current.pause();
     }
-  }, [testingSoundscape, config.soundscape, config.volume]);
+  }, [testingSoundscape, config.soundscape]);
+
+  useEffect(() => {
+    if (testSoundscapeRef.current) {
+      testSoundscapeRef.current.volume = config.volume;
+    }
+  }, [config.volume]);
 
   const getEstimatedTime = () => {
     const timings = config.speed === 'custom'
@@ -76,6 +93,10 @@ export const ConfigScreen = () => {
     : speedSettings[config.speed] || speedSettings.standard;
 
   useEffect(() => {
+    if (!isTabActive) {
+      setPreviewSubPhase('idle');
+      return;
+    }
     setPreviewBreathCount(1);
     setPreviewSubPhase('idle');
 
@@ -107,7 +128,7 @@ export const ConfigScreen = () => {
       if (previewInhaleTimer) clearTimeout(previewInhaleTimer);
       if (previewExhaleTimer) clearTimeout(previewExhaleTimer);
     };
-  }, [config.speed, config.customTime, timings.inhale, timings.exhale]);
+  }, [isTabActive, config.speed, config.customTime, timings.inhale, timings.exhale]);
 
   const getPreviewStyles = () => {
     let scale = 1.0;
