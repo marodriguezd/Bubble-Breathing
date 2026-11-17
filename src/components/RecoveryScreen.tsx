@@ -62,9 +62,8 @@ export const RecoveryScreen = () => {
       return;
     }
 
-    if (startTimeRef.current === null) {
-      startTimeRef.current = Date.now();
-      accumulatedMsRef.current = 0;
+    if (startTimeRef.current === null && accumulatedMsRef.current === 0) {
+      startTimeRef.current = performance.now();
       soundPlayedRef.current = { inhale: false, hold: false, exhale: false };
       setRecoverySubPhase('inhaling');
       setDisplayNumber(3);
@@ -72,19 +71,19 @@ export const RecoveryScreen = () => {
 
     if (isPaused) {
       if (startTimeRef.current !== null) {
-        accumulatedMsRef.current += Date.now() - startTimeRef.current;
+        accumulatedMsRef.current += performance.now() - startTimeRef.current;
         startTimeRef.current = null;
       }
       return;
     }
 
     if (startTimeRef.current === null) {
-      startTimeRef.current = Date.now();
+      startTimeRef.current = performance.now();
     }
 
     const tick = () => {
       if (startTimeRef.current === null) return;
-      const now = Date.now();
+      const now = performance.now();
       const elapsed = accumulatedMsRef.current + (now - startTimeRef.current);
 
       if (elapsed < INHALE_DURATION_MS) {
@@ -141,7 +140,7 @@ export const RecoveryScreen = () => {
 
   const getInstructionText = () => {
     if (recoverySubPhase === 'inhaling') return t('inhaleInstruction', { defaultValue: 'Inhala hondo y llena los pulmones' });
-    if (recoverySubPhase === 'holding') return t('holdAirInstruction', { defaultValue: `Mantén el aire durante ${config.recoveryDurationSec || 15} segundos` });
+    if (recoverySubPhase === 'holding') return t('holdAirSecondsInstruction', { seconds: config.recoveryDurationSec || 15, defaultValue: `Mantén el aire durante ${config.recoveryDurationSec || 15} segundos` });
     if (recoverySubPhase === 'exhaling') return t('releaseAirInstruction', { defaultValue: 'Suelta todo el aire...' });
     return '';
   };

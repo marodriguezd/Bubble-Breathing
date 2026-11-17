@@ -159,10 +159,10 @@ export const ResultsScreen = () => {
         </div>
 
         <p style={{ fontSize: '0.95rem', color: 'var(--color-primary)', margin: '0.4rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-          <Flame size={18} /> Streak: {currentStreak}
+          <Flame size={18} /> {t('currentStreak')}: {currentStreak}
         </p>
         <p style={{ fontSize: '0.85rem', color: 'var(--color-text)', margin: '0.4rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-          <Trophy size={16} /> Best: {longestStreak}
+          <Trophy size={16} /> {t('bestStreak')}: {longestStreak}
         </p>
       </div>
       <button className="start-button" onClick={resetSession}>{t('newSessionBtn')}</button>

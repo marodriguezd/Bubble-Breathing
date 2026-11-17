@@ -4,7 +4,7 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { BreathingSphere } from './BreathingSphere';
 import { playRetentionMinuteCue, playTargetReachedCue, playPersonalBestCue } from '../services/zenAudioService';
-import { Square, Play, Pause, RotateCcw, Trophy } from 'lucide-react';
+import { Play, Pause, RotateCcw, Trophy } from 'lucide-react';
 
 export const RetentionScreen = () => {
   const { config } = useSettings();
@@ -27,19 +27,17 @@ export const RetentionScreen = () => {
   const [isNewPb, setIsNewPb] = useState(false);
   const historicalBestRef = useRef<number>(0);
   const startTimeRef = useRef<number | null>(null);
-  const accumulatedSecRef = useRef(0);
+  const accumulatedMsRef = useRef(0);
 
   useEffect(() => {
     let animFrame: number | null = null;
 
     if (phase === 'retention') {
-      if (startTimeRef.current === null) {
-        startTimeRef.current = Date.now();
+      if (startTimeRef.current === null && accumulatedMsRef.current === 0) {
         lastBeepMinuteRef.current = 0;
         targetReachedRef.current = false;
         pbReachedRef.current = false;
         setIsNewPb(false);
-        accumulatedSecRef.current = 0;
         setRetentionTime(0);
 
         let best = 0;
@@ -65,9 +63,9 @@ export const RetentionScreen = () => {
       }
 
       if (isPaused) {
-        // Paused: freeze timer
+        // Paused: freeze timer preserving sub-second precision
         if (startTimeRef.current !== null) {
-          accumulatedSecRef.current += Math.max(0, Math.floor((Date.now() - startTimeRef.current) / 1000));
+          accumulatedMsRef.current += Math.max(0, performance.now() - startTimeRef.current);
           startTimeRef.current = null;
         }
         return;
@@ -75,13 +73,13 @@ export const RetentionScreen = () => {
 
       // Active unpaused retention
       if (startTimeRef.current === null) {
-        startTimeRef.current = Date.now();
+        startTimeRef.current = performance.now();
       }
 
       const tick = () => {
         if (startTimeRef.current === null) return;
-        const currentElapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
-        const totalSec = accumulatedSecRef.current + currentElapsed;
+        const totalMs = accumulatedMsRef.current + (performance.now() - startTimeRef.current);
+        const totalSec = Math.floor(totalMs / 1000);
         setRetentionTime(totalSec);
 
         // Target retention goal reached alert (with open stopwatch!)
@@ -118,7 +116,7 @@ export const RetentionScreen = () => {
       animFrame = requestAnimationFrame(tick);
     } else {
       startTimeRef.current = null;
-      accumulatedSecRef.current = 0;
+      accumulatedMsRef.current = 0;
       targetReachedRef.current = false;
       pbReachedRef.current = false;
       setIsNewPb(false);
@@ -129,7 +127,7 @@ export const RetentionScreen = () => {
         cancelAnimationFrame(animFrame);
       }
     };
-  }, [phase, isPaused, config.volume, setRetentionTime]);
+  }, [phase, isPaused, config.volume, config.targetRetentionSec, setRetentionTime]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -140,9 +138,10 @@ export const RetentionScreen = () => {
   if (phase !== 'retention') return null;
 
   const handleTransitionToRecovery = () => {
-    const finalElapsed = startTimeRef.current !== null
-      ? accumulatedSecRef.current + Math.max(0, Math.floor((Date.now() - startTimeRef.current) / 1000))
-      : retentionTime;
+    const totalMs = startTimeRef.current !== null
+      ? accumulatedMsRef.current + Math.max(0, performance.now() - startTimeRef.current)
+      : accumulatedMsRef.current;
+    const finalElapsed = Math.floor(totalMs / 1000);
 
     setRoundResults((prev) => {
       if (prev.some(r => r.round === currentRound)) {
@@ -161,10 +160,6 @@ export const RetentionScreen = () => {
 
       <div className="instruction" style={{ color: 'var(--omega-primary-cyan, #00f0ff)' }}>
         {t('retentionInstruction', { defaultValue: 'Apnea: Relájate y aguanta sin aire' })}
-      </div>
-
-      <div className="retention-timer" style={{ margin: '0.5rem 0' }}>
-        {formatTime(retentionTime)}
       </div>
 
       {isNewPb && (
@@ -209,7 +204,7 @@ export const RetentionScreen = () => {
         </div>
       )}
 
-      {/* Wim Hof Rounded Hexagon Sphere */}
+      {/* Wim Hof Circular Breathing Bubble with live MM:SS inside */}
       <BreathingSphere
         phase="retention"
         scale={isPaused ? 1.0 : 1.05}
@@ -217,7 +212,7 @@ export const RetentionScreen = () => {
         progress={config.targetRetentionSec > 0 ? Math.min(100, Math.round((retentionTime / config.targetRetentionSec) * 100)) : 0}
         durationMs={800}
         onClick={handleTransitionToRecovery}
-        icon={<Square size={44} fill="currentColor" />}
+        counter={formatTime(retentionTime)}
       />
 
       <div className="tap-instruction" style={{ fontSize: '0.85rem' }}>

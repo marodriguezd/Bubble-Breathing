@@ -66,7 +66,7 @@ export const ExerciseScreen = () => {
     if (isLastBreath) {
       return breathSubPhase === 'inhale' 
         ? t('lastBreathInhale', { defaultValue: '¡Última inhalación profunda!' })
-        : t('lastBreathExhale', { defaultValue: 'Suelta todo y aguanta...' });
+        : t('lastBreathExhale', { defaultValue: 'Suelta todo y entra en apnea...' });
     }
     if (breathSubPhase === 'inhale') {
       return t('breatheIn', { defaultValue: 'Inhala profundamente' });
