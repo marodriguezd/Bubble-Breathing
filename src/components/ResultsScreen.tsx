@@ -51,7 +51,6 @@ export const ResultsScreen = () => {
     }
   }, [phase, addSession, totalRetentionTime, roundResults, config.speed, config.customTime, config.rounds]);
 
-  // Reset saved flag and cached session duration when session resets
   useEffect(() => {
     if (phase === 'idle') {
       savedRef.current = false;
@@ -113,7 +112,6 @@ export const ResultsScreen = () => {
           </div>
         )}
 
-        {/* Bodily Sensation Check-in Chips */}
         <div style={{
           margin: '1.2rem auto',
           maxWidth: '360px',

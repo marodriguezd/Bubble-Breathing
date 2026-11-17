@@ -3,6 +3,7 @@ import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { BreathingSphere } from './BreathingSphere';
+import { formatTimeDigital } from '../utils/timeFormat';
 import { playRetentionMinuteCue, playTargetReachedCue, playPersonalBestCue } from '../services/zenAudioService';
 import { Play, Pause, RotateCcw, Trophy } from 'lucide-react';
 
@@ -63,7 +64,6 @@ export const RetentionScreen = () => {
       }
 
       if (isPaused) {
-        // Paused: freeze timer preserving sub-second precision
         if (startTimeRef.current !== null) {
           accumulatedMsRef.current += Math.max(0, performance.now() - startTimeRef.current);
           startTimeRef.current = null;
@@ -71,7 +71,6 @@ export const RetentionScreen = () => {
         return;
       }
 
-      // Active unpaused retention
       if (startTimeRef.current === null) {
         startTimeRef.current = performance.now();
       }
@@ -82,7 +81,6 @@ export const RetentionScreen = () => {
         const totalSec = Math.floor(totalMs / 1000);
         setRetentionTime(totalSec);
 
-        // Target retention goal reached alert (with open stopwatch!)
         if (
           config.targetRetentionSec > 0 &&
           totalSec >= config.targetRetentionSec &&
@@ -92,7 +90,6 @@ export const RetentionScreen = () => {
           playTargetReachedCue(config.volume);
         }
 
-        // Live Personal Best alert & celebratory cue
         if (
           historicalBestRef.current >= 30 &&
           totalSec > historicalBestRef.current &&
@@ -103,7 +100,6 @@ export const RetentionScreen = () => {
           playPersonalBestCue(config.volume);
         }
 
-        // Per-minute chime & subtle haptic feedback
         const currentMinute = Math.floor(totalSec / 60);
         if (currentMinute > 0 && totalSec % 60 === 0 && currentMinute > lastBeepMinuteRef.current) {
           lastBeepMinuteRef.current = currentMinute;
@@ -128,12 +124,6 @@ export const RetentionScreen = () => {
       }
     };
   }, [phase, isPaused, config.volume, config.targetRetentionSec, setRetentionTime]);
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  };
 
   if (phase !== 'retention') return null;
 
@@ -204,7 +194,6 @@ export const RetentionScreen = () => {
         </div>
       )}
 
-      {/* Wim Hof Circular Breathing Bubble with live MM:SS inside */}
       <BreathingSphere
         phase="retention"
         scale={isPaused ? 1.0 : 1.05}
@@ -212,28 +201,27 @@ export const RetentionScreen = () => {
         progress={config.targetRetentionSec > 0 ? Math.min(100, Math.round((retentionTime / config.targetRetentionSec) * 100)) : 0}
         durationMs={800}
         onClick={handleTransitionToRecovery}
-        counter={formatTime(retentionTime)}
+        counter={formatTimeDigital(retentionTime)}
       />
 
       <div className="tap-instruction" style={{ fontSize: '0.85rem' }}>
         {t('tapInstruction', { defaultValue: 'Pulsa el hexágono cuando sientas la necesidad de respirar' })}
       </div>
 
-      {/* Control Dock: Reset, Play/Pause, Finish Retention */}
       <div className="controls-panel" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
         <button 
           className="control-btn" 
-          title="Reiniciar"
+          title={t('resetSessionLabel')}
           onClick={resetSession}
-          aria-label="Reiniciar sesión"
+          aria-label={t('resetSessionLabel')}
         >
           <RotateCcw size={22} />
         </button>
         <button 
           className="control-btn primary-btn" 
           onClick={togglePause}
-          title={isPaused ? 'Reanudar' : 'Pausa'}
-          aria-label={isPaused ? 'Reanudar' : 'Pausa'}
+          title={isPaused ? t('resumeLabel') : t('pauseLabel')}
+          aria-label={isPaused ? t('resumeLabel') : t('pauseLabel')}
         >
           {isPaused ? <Play size={28} fill="currentColor" /> : <Pause size={28} fill="currentColor" />}
         </button>

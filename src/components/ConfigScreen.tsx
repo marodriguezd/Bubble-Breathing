@@ -3,19 +3,8 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useSession } from '../contexts/SessionContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { BreathingSphere } from './BreathingSphere';
+import { speedSettings, getBreathTiming } from '../hooks/useBreathingTimer';
 import { VolumeX, CloudRain, Wind, Waves, Play, Square } from 'lucide-react';
-
-const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2300, exhale: 1700 },      // 4.0s por ciclo (15 rpm)
-  standard: { inhale: 1850, exhale: 1350 },  // 3.2s por ciclo (~19 rpm)
-  fast: { inhale: 1350, exhale: 950 }        // 2.3s por ciclo (~26 rpm)
-};
-
-const getBreathTiming = (totalMs: number) => {
-  // Inhalación diafragmática profunda activa (~60%), exhalación pasiva/soltar (~40%)
-  const inhale = totalMs * 0.60;
-  return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
-};
 
 export const ConfigScreen = () => {
   const { config, updateConfig } = useSettings();

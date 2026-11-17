@@ -87,7 +87,6 @@ export const RecoveryScreen = () => {
       const elapsed = accumulatedMsRef.current + (now - startTimeRef.current);
 
       if (elapsed < INHALE_DURATION_MS) {
-        // Phase 1: Inhaling (0 - 3s)
         if (!soundPlayedRef.current.inhale) {
           soundPlayedRef.current.inhale = true;
           playInhaleCue(config.volume, INHALE_DURATION_MS);
@@ -97,7 +96,6 @@ export const RecoveryScreen = () => {
         setDisplayNumber(remSec);
         setProgressPercent((elapsed / INHALE_DURATION_MS) * 100);
       } else if (elapsed < INHALE_DURATION_MS + holdDurationMs) {
-        // Phase 2: Holding breath (3s - holdDurationMs)
         const holdElapsed = elapsed - INHALE_DURATION_MS;
         if (!soundPlayedRef.current.hold) {
           soundPlayedRef.current.hold = true;
@@ -108,7 +106,6 @@ export const RecoveryScreen = () => {
         setDisplayNumber(remSec);
         setProgressPercent(((holdDurationMs - holdElapsed) / holdDurationMs) * 100);
       } else if (elapsed < totalRecoveryMs) {
-        // Phase 3: Exhaling / Releasing
         const exhaleElapsed = elapsed - (INHALE_DURATION_MS + holdDurationMs);
         if (!soundPlayedRef.current.exhale) {
           soundPlayedRef.current.exhale = true;
@@ -119,7 +116,6 @@ export const RecoveryScreen = () => {
         setDisplayNumber(remSec);
         setProgressPercent(0);
       } else {
-        // Phase 4: Recovery cycle fully completed!
         handleFinishRecovery();
         return;
       }
@@ -178,7 +174,6 @@ export const RecoveryScreen = () => {
         {getInstructionText()}
       </div>
 
-      {/* Wim Hof Rounded Hexagon Sphere */}
       <BreathingSphere
         phase="recovery"
         scale={sphereScale}
@@ -189,21 +184,20 @@ export const RecoveryScreen = () => {
         isPulsing={recoverySubPhase === 'holding' && !isPaused}
       />
 
-      {/* Control Dock: Reset, Play/Pause */}
       <div className="controls-panel" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
         <button 
           className="control-btn" 
-          title="Reiniciar"
+          title={t('resetSessionLabel')}
           onClick={resetSession}
-          aria-label="Reiniciar sesión"
+          aria-label={t('resetSessionLabel')}
         >
           <RotateCcw size={22} />
         </button>
         <button 
           className="control-btn primary-btn" 
           onClick={togglePause}
-          title={isPaused ? 'Reanudar' : 'Pausa'}
-          aria-label={isPaused ? 'Reanudar' : 'Pausa'}
+          title={isPaused ? t('resumeLabel') : t('pauseLabel')}
+          aria-label={isPaused ? t('resumeLabel') : t('pauseLabel')}
         >
           {isPaused ? <Play size={28} fill="currentColor" /> : <Pause size={28} fill="currentColor" />}
         </button>

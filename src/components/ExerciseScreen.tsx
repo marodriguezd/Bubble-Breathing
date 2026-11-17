@@ -3,18 +3,8 @@ import { useSession } from '../contexts/SessionContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { BreathingSphere } from './BreathingSphere';
+import { speedSettings, getBreathTiming } from '../hooks/useBreathingTimer';
 import { RotateCcw, Play, Pause, SkipForward } from 'lucide-react';
-
-const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2300, exhale: 1700 },      // 4.0s (15 rpm)
-  standard: { inhale: 1850, exhale: 1350 },  // 3.2s (~19 rpm)
-  fast: { inhale: 1350, exhale: 950 }        // 2.3s (~26 rpm)
-};
-
-const getBreathTiming = (totalMs: number) => {
-  const inhale = totalMs * 0.60;
-  return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
-};
 
 export const ExerciseScreen = () => {
   const { config } = useSettings();
@@ -79,12 +69,10 @@ export const ExerciseScreen = () => {
 
   return (
     <div id="exerciseScreen" className="screen active" style={{ justifyContent: 'space-evenly' }}>
-      {/* Round Information */}
       <div className="round-info" id="roundInfo">
         {t('roundInfo', { current: currentRound, total: config.rounds === 11 ? '∞' : config.rounds })}
       </div>
 
-      {/* Dynamic Breath Instruction */}
       <div 
         className="instruction" 
         id="exerciseInstruction"
@@ -93,7 +81,6 @@ export const ExerciseScreen = () => {
         {getSubPhaseInstruction()}
       </div>
 
-      {/* Wim Hof Sacred Geometry Rounded Hexagon */}
       <BreathingSphere
         phase="breathing"
         scale={scale}
@@ -106,35 +93,33 @@ export const ExerciseScreen = () => {
         onClick={togglePause}
       />
 
-      {/* Control Dock: Reset, Play/Pause, Skip */}
       <div className="controls-panel" style={{ marginTop: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
         <button 
           className="control-btn" 
-          title="Reiniciar"
+          title={t('resetSessionLabel')}
           onClick={resetSession}
-          aria-label="Reiniciar sesión"
+          aria-label={t('resetSessionLabel')}
         >
           <RotateCcw size={22} />
         </button>
         <button 
           className="control-btn primary-btn" 
           onClick={togglePause}
-          title={isPaused ? 'Reanudar' : 'Pausa'}
-          aria-label={isPaused ? 'Reanudar' : 'Pausa'}
+          title={isPaused ? t('resumeLabel') : t('pauseLabel')}
+          aria-label={isPaused ? t('resumeLabel') : t('pauseLabel')}
         >
           {isPaused ? <Play size={28} fill="currentColor" /> : <Pause size={28} fill="currentColor" />}
         </button>
         <button 
           className="control-btn" 
-          title="Saltar a retención"
+          title={t('skipToRetentionBtn')}
           onClick={handleSkipToRetention}
-          aria-label="Saltar a retención"
+          aria-label={t('skipToRetentionBtn')}
         >
           <SkipForward size={22} />
         </button>
       </div>
 
-      {/* Skip Button Footer */}
       <div id="exerciseFooter" className="exercise-footer">
         <button className="skip-button" onClick={handleSkipToRetention}>
           {t('skipToRetentionBtn')}

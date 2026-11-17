@@ -5,36 +5,38 @@ import {
   playInhaleCue, 
   playExhaleCue, 
   playLastBreathCue, 
-  playRetentionMinuteCue,
-  playRecoveryCue,
   triggerHaptic
 } from '../services/zenAudioService';
 
-// Legacy exports for backwards compatibility
 export const playTone = (_frequency: number, _duration: number, _volume: number) => {
-  // Handled by zenAudioService; kept as no-op or proxy for backward compatibility
+  // Handled by zenAudioService; kept as no-op for backward compatibility
 };
 
 export const vibrate = (pattern: number | number[]) => {
   triggerHaptic('medium', pattern).catch(() => {});
 };
 
-const speedSettings: Record<string, { inhale: number; exhale: number }> = {
-  slow: { inhale: 2300, exhale: 1700 },      // 4.0s (15 rpm)
-  standard: { inhale: 1850, exhale: 1350 },  // 3.2s (~19 rpm)
-  fast: { inhale: 1350, exhale: 950 }        // 2.3s (~26 rpm)
+export const speedSettings: Record<string, { inhale: number; exhale: number }> = {
+  slow: { inhale: 2300, exhale: 1700 },
+  standard: { inhale: 1850, exhale: 1350 },
+  fast: { inhale: 1350, exhale: 950 }
+};
+
+export const getBreathTiming = (totalMs: number) => {
+  // Inhalación activa (~60%), exhalación pasiva/soltar (~40%)
+  const inhale = totalMs * 0.60;
+  return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
 };
 
 export const useBreathingTimer = () => {
   const { config } = useSettings();
   const {
     phase, setPhase,
-    currentRound, setCurrentRound,
+    currentRound,
     setCurrentBreath,
     setRetentionTime,
-    setSessionStartTime,
-    isPlaying, setIsPlaying,
-    isPaused, setIsPaused,
+    isPlaying,
+    isPaused,
     setBreathSubPhase
   } = useSession();
 
@@ -44,20 +46,13 @@ export const useBreathingTimer = () => {
   const animFrameRef = useRef<number | null>(null);
   const currentSubPhaseRef = useRef<'inhale' | 'exhale' | 'idle'>('idle');
 
-  const getBreathTiming = useCallback((totalMs: number) => {
-    // Inhalación activa (~60%), exhalación pasiva/soltar (~40%)
-    const inhale = totalMs * 0.60;
-    return { inhale: Math.round(inhale), exhale: Math.round(totalMs - inhale) };
-  }, []);
-
   const getTimings = useCallback(() => {
     if (config.speed === 'custom') {
       return getBreathTiming(config.customTime * 1000);
     }
     return speedSettings[config.speed] || speedSettings.standard;
-  }, [config.speed, config.customTime, getBreathTiming]);
+  }, [config.speed, config.customTime]);
 
-  // Stop active animation frames
   const stopLoop = useCallback(() => {
     if (animFrameRef.current !== null) {
       cancelAnimationFrame(animFrameRef.current);
@@ -76,7 +71,6 @@ export const useBreathingTimer = () => {
     }
   }, [isPlaying, phase, currentRound, setBreathSubPhase]);
 
-  // Main high-precision breath runner
   useEffect(() => {
     if (!isPlaying || phase !== 'breathing') {
       stopLoop();
@@ -84,7 +78,6 @@ export const useBreathingTimer = () => {
     }
 
     if (isPaused) {
-      // Pause: accumulate elapsed time and stop ticking
       if (breathStartTimeRef.current !== null) {
         accumulatedMsRef.current += performance.now() - breathStartTimeRef.current;
         breathStartTimeRef.current = null;
@@ -93,11 +86,9 @@ export const useBreathingTimer = () => {
       return;
     }
 
-    // Active, unpaused breathing
     const timings = getTimings();
     const totalBreathMs = timings.inhale + timings.exhale;
 
-    // Initialize first breath if just starting
     if (breathStartTimeRef.current === null) {
       breathStartTimeRef.current = performance.now();
       if (breathRef.current === 0) {
@@ -116,26 +107,22 @@ export const useBreathingTimer = () => {
       const elapsed = accumulatedMsRef.current + (now - breathStartTimeRef.current);
 
       if (elapsed < timings.inhale) {
-        // Inhaling
         if (currentSubPhaseRef.current !== 'inhale') {
           currentSubPhaseRef.current = 'inhale';
           setBreathSubPhase('inhale');
           playInhaleCue(config.volume, timings.inhale);
         }
       } else if (elapsed < totalBreathMs) {
-        // Exhaling
         if (currentSubPhaseRef.current !== 'exhale') {
           currentSubPhaseRef.current = 'exhale';
           setBreathSubPhase('exhale');
           playExhaleCue(config.volume, timings.exhale);
         }
       } else {
-        // Breath cycle completed! Transition to next breath or retention
         accumulatedMsRef.current = 0;
         breathStartTimeRef.current = performance.now();
 
         if (breathRef.current >= config.breaths) {
-          // All breaths completed for this round -> trigger Apnea Retention automatically!
           stopLoop();
           breathRef.current = 0;
           accumulatedMsRef.current = 0;
@@ -147,7 +134,6 @@ export const useBreathingTimer = () => {
           playLastBreathCue(config.volume);
           return;
         } else {
-          // Increment breath count
           breathRef.current += 1;
           setCurrentBreath(breathRef.current);
           currentSubPhaseRef.current = 'inhale';
@@ -177,29 +163,5 @@ export const useBreathingTimer = () => {
     stopLoop
   ]);
 
-  const startSession = () => {
-    breathRef.current = 0;
-    accumulatedMsRef.current = 0;
-    breathStartTimeRef.current = null;
-    setIsPlaying(true);
-    setIsPaused(false);
-    setCurrentRound(1);
-    setCurrentBreath(0);
-    setRetentionTime(0);
-    setSessionStartTime(Date.now());
-    setPhase('breathing');
-  };
-
-  const stopSession = () => {
-    stopLoop();
-    breathRef.current = 0;
-    accumulatedMsRef.current = 0;
-    breathStartTimeRef.current = null;
-    setIsPlaying(false);
-    setIsPaused(false);
-    setBreathSubPhase('idle');
-    setSessionStartTime(null);
-  };
-
-  return { startSession, stopSession, getTimings };
+  return { getTimings };
 };
