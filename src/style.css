@@ -715,11 +715,16 @@ body {
 }
 
 #resultsContent {
-  max-height: 300px;
-  /* Adjust this value as needed */
-  overflow-y: auto;
-  padding-right: 10px;
-  /* To avoid content overlapping with the scrollbar */
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#resultsScreen.screen.active::before,
+#resultsScreen.screen.active::after {
+  display: none;
 }
 
 .result-item {
